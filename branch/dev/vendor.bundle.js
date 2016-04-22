@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b221e0a6fb2eea64041d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0f69b3c6ab855b532538"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -22154,8 +22154,9 @@
 
 	  var data = _ref5.data;
 	  var fields = _ref5.fields;
+	  var overwriteValues = _ref5.overwriteValues;
 
-	  return _extends({}, (0, _initializeState2.default)(data, fields, state), (_extends2 = {
+	  return _extends({}, (0, _initializeState2.default)(data, fields, state, overwriteValues), (_extends2 = {
 	    _asyncValidating: false,
 	    _active: undefined
 	  }, _extends2[globalErrorKey] = undefined, _extends2._initialized = true, _extends2._submitting = false, _extends2._submitFailed = false, _extends2));
@@ -22626,8 +22627,11 @@
 
 	var _fieldValue = __webpack_require__(190);
 
-	var makeEntry = function makeEntry(value) {
-	  return (0, _fieldValue.makeFieldValue)(value === undefined ? {} : { initial: value, value: value });
+	var makeEntry = function makeEntry(value, previousValue, overwriteValues) {
+	  return (0, _fieldValue.makeFieldValue)(value === undefined ? {} : {
+	    initial: value,
+	    value: overwriteValues ? value : previousValue
+	  });
 	};
 
 	/**
@@ -22635,6 +22639,7 @@
 	 */
 	var initializeState = function initializeState(values, fields) {
 	  var state = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var overwriteValues = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
 
 	  if (!fields) {
 	    throw new Error('fields must be passed when initializing state');
@@ -22671,8 +22676,8 @@
 	              return initializeField(rest, srcValue, destArray && destArray[srcIndex]);
 	            });
 	          } else {
-	            result[key] = srcArray.map(function (srcValue) {
-	              return makeEntry(srcValue);
+	            result[key] = srcArray.map(function (srcValue, srcIndex) {
+	              return makeEntry(srcValue, destArray && destArray[srcIndex] && destArray[srcIndex].value, overwriteValues);
 	            });
 	          }
 	        } else {
@@ -22680,7 +22685,7 @@
 	        }
 	      })();
 	    } else {
-	      result[path] = makeEntry(src && src[path]);
+	      result[path] = makeEntry(src && src[path], dest && dest[path] && dest[path].value, overwriteValues);
 	    }
 	    return result;
 	  };
@@ -23473,7 +23478,7 @@
 	          this.fields = (0, _readFields2.default)(nextProps, this.props, this.fields, this.asyncValidate, isReactNative);
 	        }
 	        if (!(0, _deepEqual2.default)(this.props.initialValues, nextProps.initialValues)) {
-	          this.props.initialize(nextProps.initialValues, nextProps.fields);
+	          this.props.initialize(nextProps.initialValues, nextProps.fields, !this.props.form._initialized);
 	        }
 	      };
 
@@ -23748,10 +23753,12 @@
 	};
 
 	var initialize = exports.initialize = function initialize(data, fields) {
+	  var overwriteValues = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+
 	  if (!Array.isArray(fields)) {
 	    throw new Error('must provide fields array to initialize() action creator');
 	  }
-	  return { type: _actionTypes.INITIALIZE, data: data, fields: fields };
+	  return { type: _actionTypes.INITIALIZE, data: data, fields: fields, overwriteValues: overwriteValues };
 	};
 
 	var removeArrayValue = exports.removeArrayValue = function removeArrayValue(path, index) {
@@ -23958,7 +23965,7 @@
 
 	  var previousFields = previousProps.fields;
 	  var values = (0, _getValues2.default)(fields, form);
-	  var syncErrors = validate(values, props);
+	  var syncErrors = validate(values, props) || {};
 	  var errors = {};
 	  var formError = syncErrors._error || form._error;
 	  var allValid = !formError;

@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b221e0a6fb2eea64041d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0f69b3c6ab855b532538"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8982,26 +8982,38 @@
 	        string: {
 	            name: 'some String w/o description',
 	            type: 'string',
-	            "defaultValue": "Some default value"
+	            defaultValue: "Some default value"
 	        },
 	        text: {
 	            name: 'some Text',
 	            type: 'text',
-	            "defaultValue": "Some default value",
-	            "description": "This is pretty self explanatory..."
+	            defaultValue: "Some default value",
+	            description: "This is pretty self explanatory..."
 	        },
 	        boolean: {
 	            name: 'some Boolean',
 	            type: 'boolean',
-	            "defaultValue": true,
-	            "description": "This is pretty self explanatory..."
+	            defaultValue: true,
+	            description: "This is pretty self explanatory..."
 	        },
 	        multi: {
 	            name: 'some Options',
 	            type: 'option',
-	            "description": "This is pretty self explanatory...",
-	            "defaultValue": "old",
-	            "options": [{
+	            description: "This is pretty self explanatory...",
+	            defaultValue: "old",
+	            options: [{
+	                "name": "0-50",
+	                "value": "young"
+	            }, {
+	                "name": "51-100",
+	                "value": "old"
+	            }]
+	        },
+	        multi2: {
+	            name: 'option w/o default',
+	            type: 'option',
+	            description: "This is pretty self explanatory...",
+	            options: [{
 	                "name": "0-50",
 	                "value": "young"
 	            }, {

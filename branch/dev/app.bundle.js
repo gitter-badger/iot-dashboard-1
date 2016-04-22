@@ -2343,7 +2343,7 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2414,23 +2414,45 @@ webpackJsonp([0],[
 	var Modal = exports.Modal = function (_React$Component) {
 	    _inherits(Modal, _React$Component);
 
-	    function Modal() {
+	    function Modal(props) {
 	        _classCallCheck(this, Modal);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).call(this, props));
+
+	        _this.state = {
+	            selectedType: ''
+	        };
+	        return _this;
 	    }
 
 	    _createClass(Modal, [{
+	        key: 'onSubmit',
+	        value: function onSubmit(formData, dispatch) {
+	            this.props.addDatasource(this.state.selectedType, formData);
+	            return true;
+	        }
+	    }, {
+	        key: 'resetForm',
+	        value: function resetForm() {
+	            this.props.restForm('datasource-settings');
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
 
-	            var props = this.props;
-
 	            var actions = [{
-	                className: "ui right black button",
+	                className: "ui right button",
+	                label: "Reset",
+	                onClick: function onClick() {
+	                    _this2.resetForm();
+	                    return false;
+	                }
+	            }, {
+	                className: "ui right red button",
 	                label: "Cancel",
 	                onClick: function onClick() {
+	                    _this2.resetForm();
 	                    return true;
 	                }
 	            }, {
@@ -2438,23 +2460,21 @@ webpackJsonp([0],[
 	                iconClass: "save icon",
 	                label: "Create",
 	                onClick: function onClick() {
-	                    var options = {
-	                        hash: true,
-	                        disabled: true,
-	                        empty: true,
-	                        realBooleans: true
-	                    };
-
-	                    var formData = (0, _formSerializer2.default)(_this2.refs.form, options);
-	                    var type = formData.type;
-
-	                    var dsProps = _objectWithoutProperties(formData, ['type']);
-
-	                    _this2.props.addDatasource(type, dsProps);
-	                    _this2.setState({ selectedType: "" });
-	                    return true;
+	                    var success = _this2.refs.form.submit();
+	                    if (success) _this2.resetForm();
+	                    return success;
 	                }
 	            }];
+
+	            var datasources = _datasourcePlugins2.default.getPlugins();
+	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: {} };
+	            var fields = (0, _collection.valuesOf)(selectedSource.settings, "id").map(function (setting) {
+	                return setting.id;
+	            });
+	            var initialValues = (0, _collection.valuesOf)(selectedSource.settings, "id").reduce(function (initialValues, setting) {
+	                initialValues[setting.id] = setting.defaultValue;
+	                return initialValues;
+	            }, { interval: 5 });
 
 	            return _react2.default.createElement(
 	                _modal2.default,
@@ -2468,7 +2488,42 @@ webpackJsonp([0],[
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'column' },
-	                        _react2.default.createElement(DatasourceForm, null)
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'field' },
+	                            _react2.default.createElement(
+	                                'label',
+	                                null,
+	                                'Type'
+	                            ),
+	                            _react2.default.createElement(
+	                                'select',
+	                                _extends({ className: 'ui fluid dropdown', name: 'type', value: this.state.selectedType,
+	                                    onChange: function onChange(e) {
+	                                        _this2.setState({ selectedType: e.target.value });
+	                                    }
+	                                }, fields.type),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    { key: 'none', value: '' },
+	                                    'Select Type...'
+	                                ),
+	                                (0, _collection.valuesOf)(datasources).map(function (source) {
+	                                    return _react2.default.createElement(
+	                                        'option',
+	                                        { key: source.type, value: source.type },
+	                                        source.name
+	                                    );
+	                                })
+	                            )
+	                        ),
+	                        _react2.default.createElement(SettingsReduxForm, { ref: 'form',
+	                            form: 'datasource-settings',
+	                            selectedType: this.state.selectedType,
+	                            onSubmit: this.onSubmit.bind(this),
+	                            fields: ["type", "name", "interval"].concat(_toConsumableArray(fields)),
+	                            initialValues: initialValues
+	                        })
 	                    )
 	                )
 	            );
@@ -2479,34 +2534,33 @@ webpackJsonp([0],[
 	}(_react2.default.Component);
 
 	Modal.propTypes = {
-	    addDatasource: Prop.func.isRequired
+	    addDatasource: Prop.func.isRequired,
+	    restForm: Prop.func.isRequired
 	};
 
 	var CreateDatasourceDialog = (0, _reactRedux.connect)(function (state) {
 	    return {};
 	}, function (dispatch) {
 	    return {
+	        restForm: function restForm(id) {
+	            return dispatch((0, _reduxForm.reset)(id));
+	        },
 	        addDatasource: function addDatasource(type, dsProps) {
 	            dispatch(Datasource.addDatasource(type, dsProps));
 	        }
 	    };
 	})(Modal);
 
-	var DatasourceForm = function (_React$Componen) {
-	    _inherits(DatasourceForm, _React$Componen);
+	var SettingsForm = function (_React$Component2) {
+	    _inherits(SettingsForm, _React$Component2);
 
-	    function DatasourceForm(props) {
-	        _classCallCheck(this, DatasourceForm);
+	    function SettingsForm() {
+	        _classCallCheck(this, SettingsForm);
 
-	        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(DatasourceForm).call(this, props));
-
-	        _this3.state = {
-	            selectedType: ''
-	        };
-	        return _this3;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SettingsForm).apply(this, arguments));
 	    }
 
-	    _createClass(DatasourceForm, [{
+	    _createClass(SettingsForm, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            this._initSemanticUi();
@@ -2528,44 +2582,13 @@ webpackJsonp([0],[
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this4 = this;
-
-	            var props = props;
-	            var datasources = _datasourcePlugins2.default.getPlugins();
-	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: {} };
+	            var props = this.props;
+	            var fields = props.fields;
+	            var selectedSource = _datasourcePlugins2.default.getPlugin(props.selectedType) || { settings: {} };
 
 	            return _react2.default.createElement(
 	                'form',
-	                { className: 'ui form', ref: 'form' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'field' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        null,
-	                        'Type'
-	                    ),
-	                    _react2.default.createElement(
-	                        'select',
-	                        { className: 'ui fluid dropdown', name: 'type', value: this.state.selectedType,
-	                            onChange: function onChange(e) {
-	                                _this4.setState({ selectedType: e.target.value });
-	                            }
-	                        },
-	                        _react2.default.createElement(
-	                            'option',
-	                            { key: 'none', value: '' },
-	                            'Select Type...'
-	                        ),
-	                        (0, _collection.valuesOf)(datasources).map(function (source) {
-	                            return _react2.default.createElement(
-	                                'option',
-	                                { key: source.type, value: source.type },
-	                                source.name
-	                            );
-	                        })
-	                    )
-	                ),
+	                { className: 'ui form' },
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'two fields' },
@@ -2577,7 +2600,7 @@ webpackJsonp([0],[
 	                            null,
 	                            'Name'
 	                        ),
-	                        _react2.default.createElement('input', { name: 'name', placeholder: 'Name of the Datasource ...' })
+	                        _react2.default.createElement('input', _extends({ name: 'name', placeholder: 'Name of the Datasource ...' }, fields.name))
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -2587,7 +2610,7 @@ webpackJsonp([0],[
 	                            null,
 	                            'Update Intervall'
 	                        ),
-	                        _react2.default.createElement('input', { name: 'interval', placeholder: 'Update Interval in Seconds ...', defaultValue: '5' })
+	                        _react2.default.createElement('input', _extends({ name: 'interval', placeholder: 'Update Interval in Seconds ...' }, fields.interval))
 	                    )
 	                ),
 	                _react2.default.createElement(ui.Divider, null),
@@ -2596,7 +2619,7 @@ webpackJsonp([0],[
 	                        'div',
 	                        { key: chunk[0].id, className: 'two fields' },
 	                        selectedSource ? chunk.map(function (setting) {
-	                            return _react2.default.createElement(SettingsUi.Field, _extends({ key: setting.id }, setting));
+	                            return _react2.default.createElement(SettingsUi.Field, _extends({ key: setting.id }, setting, { field: fields[setting.id] }));
 	                        }) : null
 	                    );
 	                })
@@ -2604,13 +2627,14 @@ webpackJsonp([0],[
 	        }
 	    }]);
 
-	    return DatasourceForm;
-	}(_react2.default.Componen);
+	    return SettingsForm;
+	}(_react2.default.Component);
 
-	SettingsFormRedux = (0, _reduxForm.reduxForm)({ // <----- THIS IS THE IMPORTANT PART!
-	    form: 'datasource-settings', // a unique name for this form
-	    fields: ['firstName', 'lastName', 'email'] // all the fields in your form
-	})(ContactForm);
+	SettingsForm.propTypes = {
+	    selectedType: Prop.string.isRequired
+	};
+
+	var SettingsReduxForm = (0, _reduxForm.reduxForm)({})(SettingsForm);
 
 	exports.Modal = CreateDatasourceDialog;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(234)))
@@ -2652,12 +2676,16 @@ webpackJsonp([0],[
 	    "my-random": {
 	        id: "my-random",
 	        type: "random",
-	        name: "Random Datasource"
+	        props: {
+	            name: "Random Datasource"
+	        }
 	    }
 	};
 
 	function addDatasource(dsType, props) {
 	    if (!dsType) {
+	        console.warn("dsType: ", dsType);
+	        console.warn("props: ", props);
 	        throw new Error("Can not add Datasource without Type");
 	    }
 
@@ -10832,6 +10860,9 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	exports.Field = Field;
 
 	var _react = __webpack_require__(2);
@@ -10845,6 +10876,8 @@ webpackJsonp([0],[
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Prop = _react2.default.PropTypes;
 
 	function Field(props) {
 	    return _react2.default.createElement(
@@ -10860,22 +10893,30 @@ webpackJsonp([0],[
 	    );
 	}
 
+	Field.propTypes = {
+	    field: Prop.object.isRequired, // redux-form field info
+	    name: Prop.string.isRequired,
+	    type: Prop.string.isRequired,
+	    description: Prop.string
+	};
+
 	function SettingsInput(props) {
 	    switch (props.type) {
 	        case "text":
-	            return _react2.default.createElement('textarea', { rows: '3', name: props.id, placeholder: props.description, defaultValue: props.defaultValue });
+	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
 	        case "string":
-	            return _react2.default.createElement('input', { name: props.id, placeholder: props.description, defaultValue: props.defaultValue });
+	            return _react2.default.createElement('input', _extends({ placeholder: props.description }, props.field));
 	        case "boolean":
-	            return _react2.default.createElement('input', { name: props.id, type: 'checkbox', defaultValue: props.defaultValue });
-	        /*<div className="ui checkbox">
-	            <input type="checkbox" tabIndex="0" className="hidden"/>
-	            <label>{props.description}</label>
-	        </div>;*/
+	            return _react2.default.createElement('input', _extends({ type: 'checkbox' }, props.field));
 	        case "option":
 	            return _react2.default.createElement(
 	                'select',
-	                { name: props.id, defaultValue: props.defaultValue, className: 'ui fluid dropdown' },
+	                _extends({ className: 'ui fluid dropdown' }, props.field),
+	                _react2.default.createElement(
+	                    'option',
+	                    null,
+	                    "Select " + props.name + " ..."
+	                ),
 	                props.options.map(function (option) {
 	                    return _react2.default.createElement(
 	                        'option',
@@ -10888,6 +10929,14 @@ webpackJsonp([0],[
 	            console.error("Unknown type for settings field: " + props.type);
 	    }
 	}
+
+	Field.propTypes = {
+	    field: Prop.object.isRequired, // redux-form field info
+	    description: Prop.string,
+	    options: Prop.arrayOf(Prop.shape({
+	        value: Prop.string.isRequired
+	    }.isRequired))
+	};
 
 /***/ },
 /* 311 */
@@ -11626,26 +11675,38 @@ webpackJsonp([0],[
 	        string: {
 	            name: 'some String w/o description',
 	            type: 'string',
-	            "defaultValue": "Some default value"
+	            defaultValue: "Some default value"
 	        },
 	        text: {
 	            name: 'some Text',
 	            type: 'text',
-	            "defaultValue": "Some default value",
-	            "description": "This is pretty self explanatory..."
+	            defaultValue: "Some default value",
+	            description: "This is pretty self explanatory..."
 	        },
 	        boolean: {
 	            name: 'some Boolean',
 	            type: 'boolean',
-	            "defaultValue": true,
-	            "description": "This is pretty self explanatory..."
+	            defaultValue: true,
+	            description: "This is pretty self explanatory..."
 	        },
 	        multi: {
 	            name: 'some Options',
 	            type: 'option',
-	            "description": "This is pretty self explanatory...",
-	            "defaultValue": "old",
-	            "options": [{
+	            description: "This is pretty self explanatory...",
+	            defaultValue: "old",
+	            options: [{
+	                "name": "0-50",
+	                "value": "young"
+	            }, {
+	                "name": "51-100",
+	                "value": "old"
+	            }]
+	        },
+	        multi2: {
+	            name: 'option w/o default',
+	            type: 'option',
+	            description: "This is pretty self explanatory...",
+	            options: [{
 	                "name": "0-50",
 	                "value": "young"
 	            }, {
