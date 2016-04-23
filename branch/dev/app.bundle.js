@@ -31,6 +31,8 @@ webpackJsonp([0],[
 
 	var _pageLayout2 = _interopRequireDefault(_pageLayout);
 
+	var _collection = __webpack_require__(239);
+
 	var _persistence = __webpack_require__(315);
 
 	var Persist = _interopRequireWildcard(_persistence);
@@ -99,18 +101,7 @@ webpackJsonp([0],[
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	// Datasources
-
-	// Reducers
-
-	// Redux Middleware
-
-
 	_widgetPlugins2.default.register(TextWidget);
-	// Widgets
-
-	// Css
-
 	_widgetPlugins2.default.register(ChartWidget);
 
 	_datasourcePlugins2.default.register(RandomDatasource);
@@ -151,6 +142,20 @@ webpackJsonp([0],[
 	});
 	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware, logger // must be last
 	));
+
+	var state = store.getState();
+	cleanupState();
+
+	function cleanupState() {
+	    (0, _collection.valuesOf)(state.widgets).forEach(function (widgetState) {
+	        var widgetPlugin = _widgetPlugins2.default.getPlugin(widgetState.type);
+	        if (!widgetPlugin) {
+	            console.error("No WidgetPlugin for type '" + widgetState.type + "'! Deleting the widget.");
+	            store.dispatch(Widgets.deleteWidget(widgetState.id));
+	            return null;
+	        }
+	    });
+	}
 
 	DatasourceWorker.initializeWorkers(store.getState().datasources, store.dispatch);
 
@@ -628,7 +633,7 @@ webpackJsonp([0],[
 	            var widgets = widgetData.map(function (data) {
 	                var widget = _widgetPlugins2.default.getPlugin(data.type);
 	                if (!widget) {
-	                    console.warn("No WidgetPlugin for type '" + data.type + "'! Skipping rendering of that widget.");
+	                    console.warn("No WidgetPlugin for type '" + data.type + "'! Skipping rendering.");
 	                    return null;
 	                }
 	                return (0, _widgetFrame2.default)({ widget: data, datasources: props.datasources });
@@ -657,7 +662,8 @@ webpackJsonp([0],[
 	WidgetGrid.propTypes = {
 	    widgets: Prop.array.isRequired,
 	    datasources: Prop.object.isRequired,
-	    onLayoutChange: Prop.func
+	    onLayoutChange: Prop.func,
+	    deleteWidget: Prop.func
 	};
 
 	exports.default = (0, _reactRedux.connect)(function (state) {
@@ -671,6 +677,9 @@ webpackJsonp([0],[
 	    return {
 	        onLayoutChange: function onLayoutChange(layout) {
 	            dispatch(Widgets.updateLayout(layout));
+	        },
+	        deleteWidget: function deleteWidget(id) {
+	            return dispatch(Widgets.deleteWidget(id));
 	        }
 	    };
 	})(WidgetGrid);
@@ -1954,7 +1963,7 @@ webpackJsonp([0],[
 	    var dataResolver = function dataResolver(id) {
 	        var ds = props.datasources[id];
 	        if (!ds) {
-	            console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState, " Returning empty data!");
+	            //console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState, " Returning empty data!");
 	            return [];
 	        }
 
