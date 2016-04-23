@@ -502,7 +502,6 @@ webpackJsonp([0],[
 	                                    "Simple"
 	                                ),
 	                                React.createElement(Nav.AddWidget, { text: "Text", type: "text" }),
-	                                React.createElement(Nav.AddWidget, { text: "Clock", type: "time" }),
 	                                React.createElement(Nav.AddWidget, { text: "Chart", type: "chart" })
 	                            )
 	                        )
@@ -734,7 +733,7 @@ webpackJsonp([0],[
 	        "props": { "name": "Random Values", "datasource": "initial_random_source" },
 	        "row": 0,
 	        "col": 0,
-	        "width": 4,
+	        "width": 3,
 	        "height": 1
 	    },
 	    "initial_text": {
@@ -743,7 +742,7 @@ webpackJsonp([0],[
 	        "name": "text",
 	        "props": { "name": "Random data", "datasource": "initial_random_source" },
 	        "row": 0,
-	        "col": 4,
+	        "col": 3,
 	        "width": 2,
 	        "height": 2
 	    }
@@ -1300,6 +1299,16 @@ webpackJsonp([0],[
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "column" },
+	                        selectedWidget.description ? _react2.default.createElement(
+	                            "div",
+	                            { className: "ui icon message" },
+	                            _react2.default.createElement("i", { className: "idea icon" }),
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "content" },
+	                                selectedWidget.description
+	                            )
+	                        ) : null,
 	                        _react2.default.createElement(_settingsForm2.default, { ref: "form",
 	                            form: FORM_ID,
 	                            settings: settings,
@@ -1681,10 +1690,10 @@ webpackJsonp([0],[
 	            return _react2.default.createElement(
 	                'form',
 	                { className: 'ui form' },
-	                (0, _collection.chunk)(this.props.settings, 2).map(function (chunk) {
+	                (0, _collection.chunk)(this.props.settings, 1).map(function (chunk) {
 	                    return _react2.default.createElement(
 	                        'div',
-	                        { key: chunk[0].id, className: 'two fields' },
+	                        { key: chunk[0].id, className: 'field' },
 	                        chunk.map(function (setting) {
 	                            return _react2.default.createElement(Field, _extends({ key: setting.id }, setting, { field: fields[setting.id] }));
 	                        })
@@ -1948,7 +1957,8 @@ webpackJsonp([0],[
 	            console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState, " Returning empty data!");
 	            return [];
 	        }
-	        return [].concat(_toConsumableArray(ds.data));
+
+	        return ds.data ? [].concat(_toConsumableArray(ds.data)) : [];
 	    };
 
 	    return React.createElement(
@@ -2977,14 +2987,17 @@ webpackJsonp([0],[
 
 	            var datasources = _datasourcePlugins2.default.getPlugins();
 	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: [] };
-
-	            var settings = [].concat(_toConsumableArray(selectedSource.settings));
+	            var settings = [];
+	            if (selectedSource.settings) {
+	                settings = [].concat(_toConsumableArray(selectedSource.settings));
+	            }
+	            /*
 	            unshiftIfNotExists(settings, {
 	                id: 'interval',
 	                name: 'Interval',
 	                type: 'string',
 	                defaultValue: "5"
-	            });
+	            });*/
 	            unshiftIfNotExists(settings, {
 	                id: 'name',
 	                name: 'Name',
@@ -11539,12 +11552,8 @@ webpackJsonp([0],[
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "text",
+	    description: "Display content of a datasource as plain text",
 	    settings: [{
-	        id: 'text',
-	        name: 'Text',
-	        type: 'string',
-	        description: "Some text that will be displayed ..."
-	    }, {
 	        id: 'datasource',
 	        name: 'Datasource',
 	        type: 'datasource',
@@ -11571,8 +11580,7 @@ webpackJsonp([0],[
 	                return React.createElement(
 	                    'p',
 	                    null,
-	                    'No data in datasource: ',
-	                    this.props.datasource
+	                    'No data'
 	                );
 	            }
 
@@ -11622,6 +11630,7 @@ webpackJsonp([0],[
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "chart",
+	    description: "Renders a line chart. Will be way more flexible in future.",
 	    settings: [{
 	        id: 'datasource',
 	        name: 'Datasource',
@@ -11750,7 +11759,11 @@ webpackJsonp([0],[
 	        this.props = props;
 	        // Initialize with non random values to demonstrate loading of historic values
 	        this.history = history || []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
-	        this.x = history[history.length - 1].x + 1 || 0;
+	        this.x = 0;
+
+	        if (this.history.length > 1) {
+	            this.x = history[history.length - 1].x + 1 || 0;
+	        }
 	    }
 
 	    // TODO: We can not edit datasources yet :)
