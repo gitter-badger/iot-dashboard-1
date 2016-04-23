@@ -3154,7 +3154,7 @@ webpackJsonp([0],[
 	        id: "initial_random_source",
 	        type: "random",
 	        props: {
-	            name: "Random Datasource",
+	            name: "Random",
 	            min: 10,
 	            max: 20,
 	            maxValues: 20
