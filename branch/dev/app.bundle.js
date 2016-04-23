@@ -31,21 +31,21 @@ webpackJsonp([0],[
 
 	var _pageLayout2 = _interopRequireDefault(_pageLayout);
 
-	var _persistence = __webpack_require__(312);
+	var _persistence = __webpack_require__(313);
 
 	var Persist = _interopRequireWildcard(_persistence);
 
-	__webpack_require__(313);
-
-	__webpack_require__(321);
+	__webpack_require__(314);
 
 	__webpack_require__(322);
 
-	var _reduxLogger = __webpack_require__(324);
+	__webpack_require__(323);
+
+	var _reduxLogger = __webpack_require__(325);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reduxThunk = __webpack_require__(325);
+	var _reduxThunk = __webpack_require__(326);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -57,41 +57,41 @@ webpackJsonp([0],[
 
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 
-	var _layouts = __webpack_require__(263);
+	var _layouts = __webpack_require__(266);
 
 	var Layouts = _interopRequireWildcard(_layouts);
 
-	var _datasource = __webpack_require__(268);
+	var _datasource = __webpack_require__(270);
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
-	var _actionNames = __webpack_require__(236);
+	var _actionNames = __webpack_require__(235);
 
-	var _widgetPlugins = __webpack_require__(235);
+	var _widgetPlugins = __webpack_require__(234);
 
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 
-	var _timeWidget = __webpack_require__(326);
+	var _timeWidget = __webpack_require__(327);
 
 	var TimeWidget = _interopRequireWildcard(_timeWidget);
 
-	var _textWidget = __webpack_require__(327);
+	var _textWidget = __webpack_require__(328);
 
 	var TextWidget = _interopRequireWildcard(_textWidget);
 
-	var _chartWidget = __webpack_require__(328);
+	var _chartWidget = __webpack_require__(329);
 
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 
-	var _datasourcePlugins = __webpack_require__(309);
+	var _datasourcePlugins = __webpack_require__(311);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _randomDatasource = __webpack_require__(331);
+	var _randomDatasource = __webpack_require__(332);
 
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 
-	var _timeDatasource = __webpack_require__(332);
+	var _timeDatasource = __webpack_require__(333);
 
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 
@@ -386,7 +386,7 @@ webpackJsonp([0],[
 /* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -402,27 +402,33 @@ webpackJsonp([0],[
 
 	var WidgetGrid = _interopRequireWildcard(_widgetGrid);
 
-	var _navigation = __webpack_require__(260);
+	var _navigation = __webpack_require__(264);
 
 	var Nav = _interopRequireWildcard(_navigation);
 
-	var _jquery = __webpack_require__(234);
+	var _jquery = __webpack_require__(238);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _widgetConfig = __webpack_require__(233);
-
-	var _layouts = __webpack_require__(262);
+	var _layouts = __webpack_require__(265);
 
 	var Layouts = _interopRequireWildcard(_layouts);
 
-	var _import = __webpack_require__(264);
+	var _widgetConfigDialog = __webpack_require__(236);
+
+	var _widgetConfigDialog2 = _interopRequireDefault(_widgetConfigDialog);
+
+	var _import = __webpack_require__(267);
 
 	var Import = _interopRequireWildcard(_import);
 
-	var _datasource = __webpack_require__(267);
+	var _datasourceConfigDialog = __webpack_require__(269);
 
-	var Datasources = _interopRequireWildcard(_datasource);
+	var _datasourceConfigDialog2 = _interopRequireDefault(_datasourceConfigDialog);
+
+	var _datasourceNavItem = __webpack_require__(312);
+
+	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -444,7 +450,7 @@ webpackJsonp([0],[
 	    }
 
 	    _createClass(Layout, [{
-	        key: 'componentDidMount',
+	        key: "componentDidMount",
 	        value: function componentDidMount() {
 	            (0, _jquery2.default)('.main.menu .add-widget').popup({
 	                popup: '.widgets-menu.popup',
@@ -459,63 +465,63 @@ webpackJsonp([0],[
 	            });
 	        }
 	    }, {
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return React.createElement(
-	                'div',
-	                { className: 'container' },
-	                React.createElement(_widgetConfig.WidgetConfigDialog, null),
+	                "div",
+	                { className: "container" },
+	                React.createElement(_widgetConfigDialog2.default, null),
 	                React.createElement(Import.Modal, null),
-	                React.createElement(Datasources.Modal, null),
+	                React.createElement(_datasourceConfigDialog2.default, null),
 	                React.createElement(
-	                    'div',
-	                    { className: 'ui flowing basic widgets-menu menu popup' },
+	                    "div",
+	                    { className: "ui flowing basic widgets-menu menu popup" },
 	                    React.createElement(
-	                        'div',
-	                        { className: 'ui sixteen column relaxed divided grid' },
+	                        "div",
+	                        { className: "ui sixteen column relaxed divided grid" },
 	                        React.createElement(
-	                            'div',
-	                            { className: 'column' },
+	                            "div",
+	                            { className: "column" },
 	                            React.createElement(
-	                                'div',
-	                                { className: 'ui link list' },
+	                                "div",
+	                                { className: "ui link list" },
 	                                React.createElement(
-	                                    'h4',
-	                                    { className: 'ui header' },
-	                                    'Simple'
+	                                    "h4",
+	                                    { className: "ui header" },
+	                                    "Simple"
 	                                ),
-	                                React.createElement(Nav.AddWidget, { text: 'Text', type: 'text' }),
-	                                React.createElement(Nav.AddWidget, { text: 'Clock', type: 'time' }),
-	                                React.createElement(Nav.AddWidget, { text: 'Chart', type: 'chart' })
+	                                React.createElement(Nav.AddWidget, { text: "Text", type: "text" }),
+	                                React.createElement(Nav.AddWidget, { text: "Clock", type: "time" }),
+	                                React.createElement(Nav.AddWidget, { text: "Chart", type: "chart" })
 	                            )
 	                        )
 	                    )
 	                ),
 	                React.createElement(
-	                    'div',
-	                    { className: 'ui fixed inverted main menu' },
+	                    "div",
+	                    { className: "ui fixed inverted main menu" },
 	                    React.createElement(
-	                        'div',
-	                        { className: 'ui container' },
+	                        "div",
+	                        { className: "ui container" },
 	                        React.createElement(
-	                            'a',
-	                            { href: '#', className: 'header item' },
-	                            'Dashboard'
+	                            "a",
+	                            { href: "#", className: "header item" },
+	                            "Dashboard"
 	                        ),
 	                        React.createElement(Import.TopNavItem, null),
 	                        React.createElement(Layouts.TopNavItem, null),
-	                        React.createElement(Datasources.TopNavItem, null),
+	                        React.createElement(_datasourceNavItem2.default, null),
 	                        React.createElement(
-	                            'a',
-	                            { className: 'add-widget item' },
-	                            'New Widget ',
-	                            React.createElement('i', { className: 'dropdown icon' })
+	                            "a",
+	                            { className: "add-widget item" },
+	                            "New Widget ",
+	                            React.createElement("i", { className: "dropdown icon" })
 	                        )
 	                    )
 	                ),
 	                React.createElement(
-	                    'div',
-	                    { className: 'ui grid' },
+	                    "div",
+	                    { className: "ui grid" },
 	                    React.createElement(WidgetGrid.WidgetGrid, null)
 	                )
 	            );
@@ -558,7 +564,7 @@ webpackJsonp([0],[
 
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 
-	var _reactGridLayout = __webpack_require__(239);
+	var _reactGridLayout = __webpack_require__(243);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -570,7 +576,7 @@ webpackJsonp([0],[
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	__webpack_require__(256);
+	__webpack_require__(260);
 
 	var ResponsiveGrid = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
 
@@ -663,15 +669,15 @@ webpackJsonp([0],[
 
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 
-	var _widgetPlugins = __webpack_require__(235);
+	var _widgetPlugins = __webpack_require__(234);
 
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 
-	var _collection = __webpack_require__(237);
+	var _collection = __webpack_require__(239);
 
-	var _reducer = __webpack_require__(238);
+	var _reducer = __webpack_require__(242);
 
-	var _actionNames = __webpack_require__(236);
+	var _actionNames = __webpack_require__(235);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -823,7 +829,7 @@ webpackJsonp([0],[
 	 * Contains generic UI controls, shared by all Widgets
 	 */
 	var WidgetFrame = exports.WidgetFrame = function WidgetFrame(widgetState) {
-	    var widget = _widgetPlugins2.default.getWidget(widgetState.type);
+	    var widget = _widgetPlugins2.default.getPlugin(widgetState.type);
 	    console.assert(widget, "No registered widget with type: " + widgetState.type);
 	    return React.createElement(
 	        'div',
@@ -963,57 +969,79 @@ webpackJsonp([0],[
 /* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.ConfigDialog = exports.WidgetConfigDialog = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+	exports.createWidget = createWidget;
+	exports.createOrUpdateWidget = createOrUpdateWidget;
 	exports.openWidgetCreateDialog = openWidgetCreateDialog;
 	exports.openWidgetConfigDialog = openWidgetConfigDialog;
 	exports.widgetConfigDialog = widgetConfigDialog;
-	exports.createWidget = createWidget;
 
 	var _react = __webpack_require__(2);
 
 	var React = _interopRequireWildcard(_react);
 
-	var _jquery = __webpack_require__(234);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
 	var _widgets = __webpack_require__(231);
 
 	var Widgets = _interopRequireWildcard(_widgets);
 
-	var _widgetPlugins = __webpack_require__(235);
+	var _widgetPlugins = __webpack_require__(234);
 
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 
-	var _reactRedux = __webpack_require__(173);
+	var _actionNames = __webpack_require__(235);
 
-	var _actionNames = __webpack_require__(236);
+	var _widgetConfigDialog = __webpack_require__(236);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var initialState = {
 	    type: null,
 	    name: null,
 	    props: {}
 	};
+
+	/**
+	 * Triggered when the user intends to create a widget of a certain type
+	 */
+	function createWidget(type) {
+	    var widget = _widgetPlugins2.default.getPlugin(type);
+	    return function (dispatch, getState) {
+	        if (!widget.settings && widget.settings.length > 0) {
+	            dispatch(Widgets.addWidget(type, widget.defaultProps));
+	            return;
+	        }
+	        dispatch(openWidgetCreateDialog(type, widget.defaultProps));
+	    };
+	}
+
+	/**
+	 * Creates or updates an actual widget
+	 */
+	function createOrUpdateWidget(id, type, props) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+
+	        var widget = state.widgets[id];
+
+	        if (widget && widget.type !== type) {
+	            throw new Error("Can not update widget of type " + widget.type + " with props of type " + type);
+	        }
+	        if (widget) {
+	            dispatch(Widgets.updateWidgetProps(id, props));
+	        } else {
+	            dispatch(Widgets.addWidget(type, props));
+	        }
+	    };
+	}
 
 	function openWidgetCreateDialog(type, defaultProps) {
 	    return function (dispatch) {
@@ -1022,7 +1050,7 @@ webpackJsonp([0],[
 	            widgetType: type,
 	            widgetProps: defaultProps
 	        });
-	        ConfigDialog.showModal(type);
+	        (0, _widgetConfigDialog.showDialog)();
 	    };
 	}
 
@@ -1037,7 +1065,7 @@ webpackJsonp([0],[
 	            type: _actionNames.START_CONFIGURE_WIDGET,
 	            widget: widget
 	        });
-	        ConfigDialog.showModal();
+	        (0, _widgetConfigDialog.showDialog)();
 	    };
 	}
 
@@ -1065,157 +1093,8 @@ webpackJsonp([0],[
 	    }
 	}
 
-	var WidgetConfigDialog = exports.WidgetConfigDialog = function WidgetConfigDialog() {
-	    return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(ConfigDialogContainer, null)
-	    );
-	};
-
-	function createWidget(type) {
-	    var widget = _widgetPlugins2.default.getWidget(type);
-	    return function (dispatch, getState) {
-	        if (!widget.configDialog) {
-	            dispatch(Widgets.addWidget(type, widget.defaultProps));
-	            return;
-	        }
-	        dispatch(openWidgetCreateDialog(type, widget.defaultProps));
-	    };
-	}
-
-	var ConfigDialog = function (_React$Component) {
-	    _inherits(ConfigDialog, _React$Component);
-
-	    function ConfigDialog(props) {
-	        _classCallCheck(this, ConfigDialog);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ConfigDialog).call(this, props));
-	    }
-
-	    _createClass(ConfigDialog, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            (0, _jquery2.default)('.ui.modal.widget-config').modal({
-	                detachable: false,
-	                closable: false,
-	                onApprove: function onApprove($element) {
-	                    return false;
-	                },
-	                onDeny: function onDeny($element) {
-	                    return false;
-	                }
-	            });
-	        }
-	    }, {
-	        key: 'setWidgetProps',
-	        value: function setWidgetProps(props) {
-	            this.widgetProps = props;
-	        }
-	    }, {
-	        key: 'handlePositive',
-	        value: function handlePositive() {
-	            console.assert(this.refs.configForm.handlePositive, "props.handlePositive() is missing on widget config dialog for widget " + this.props.widgetType);
-	            var widgetProps = this.refs.configForm.handlePositive();
-	            if (widgetProps !== false) {
-	                widgetProps = _extends({}, this.props.widgetProps, widgetProps);
-	                if (this.props.widgetId) {
-	                    this.props.dispatch(Widgets.updateWidgetProps(this.props.widgetId, widgetProps));
-	                } else {
-	                    this.props.dispatch(Widgets.addWidget(this.props.widgetType, widgetProps));
-	                }
-	                ConfigDialog.closeModal(this.props.widgetType);
-	            }
-	        }
-	    }, {
-	        key: 'handleDeny',
-	        value: function handleDeny() {
-	            var handleDeny = this.refs.configForm.handleDeny.bind(this.refs.configForm);
-	            var denyResult = handleDeny ? handleDeny() : true;
-	            if (denyResult !== false) {
-	                ConfigDialog.closeModal(this.props.widgetType);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var widget = _widgetPlugins2.default.getWidget(this.props.widgetType);
-
-	            if (!widget) {
-	                return React.createElement(
-	                    'div',
-	                    { className: "ui modal widget-config" },
-	                    React.createElement(
-	                        'h1',
-	                        null,
-	                        'Invalid state. Do not know which widget to configure'
-	                    )
-	                );
-	            }
-
-	            return React.createElement(
-	                'div',
-	                { className: "ui modal widget-config" },
-	                React.createElement(
-	                    'div',
-	                    { className: 'header' },
-	                    'Configure ',
-	                    this.props.widgetName,
-	                    ' Widget'
-	                ),
-	                React.createElement(widget.configDialog, {
-	                    ref: "configForm",
-	                    widgetProps: this.props.widgetProps
-	                }),
-	                React.createElement(
-	                    'div',
-	                    { className: 'actions' },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'ui black cancel button',
-	                            onClick: this.handleDeny.bind(this) },
-	                        'Cancel'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { className: 'ui right labeled icon positive button',
-	                            onClick: this.handlePositive.bind(this) },
-	                        'Save',
-	                        React.createElement('i', { className: 'checkmark icon' })
-	                    )
-	                )
-	            );
-	        }
-	    }], [{
-	        key: 'showModal',
-	        value: function showModal() {
-	            (0, _jquery2.default)('.ui.modal.widget-config').modal('show');
-	        }
-	    }, {
-	        key: 'closeModal',
-	        value: function closeModal() {
-	            (0, _jquery2.default)('.ui.modal.widget-config').modal('hide');
-	        }
-	    }]);
-
-	    return ConfigDialog;
-	}(React.Component);
-
-	var ConfigDialogContainer = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        widgetId: state.widgetConfig.id,
-	        widgetType: state.widgetConfig.type,
-	        widgetName: state.widgetConfig.name,
-	        widgetProps: state.widgetConfig.props,
-	        title: "Configure Text Widget" // TODO: get this dynamically e.g from widgetState
-	    };
-	})(ConfigDialog);
-
-	exports.ConfigDialog = ConfigDialogContainer;
-
 /***/ },
-/* 234 */,
-/* 235 */
+/* 234 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1242,18 +1121,17 @@ webpackJsonp([0],[
 	        value: function register(module) {
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on widget module. Every module must export TYPE_INFO");
 	            this.widgets[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                widget: module.Widget,
-	                configDialog: module.ConfigDialog ? module.ConfigDialog : null
+	                widget: module.Widget
 	            });
 	        }
 	    }, {
-	        key: "getWidget",
-	        value: function getWidget(type) {
+	        key: "getPlugin",
+	        value: function getPlugin(type) {
 	            return this.widgets[type];
 	        }
 	    }, {
-	        key: "getWidgets",
-	        value: function getWidgets() {
+	        key: "getPlugins",
+	        value: function getPlugins() {
 	            var _this = this;
 
 	            return Object.keys(this.widgets).map(function (key) {
@@ -1269,7 +1147,7 @@ webpackJsonp([0],[
 	exports.default = WidgetPlugins;
 
 /***/ },
-/* 236 */
+/* 235 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1303,7 +1181,346 @@ webpackJsonp([0],[
 	var DELETE_DATASOURCE = exports.DELETE_DATASOURCE = "DELETE_DATASOURCE";
 
 /***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.showDialog = showDialog;
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _modal = __webpack_require__(237);
+
+	var _modal2 = _interopRequireDefault(_modal);
+
+	var _widgetPlugins = __webpack_require__(234);
+
+	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
+
+	var _widgetConfig = __webpack_require__(233);
+
+	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _settingsForm = __webpack_require__(241);
+
+	var _settingsForm2 = _interopRequireDefault(_settingsForm);
+
+	var _reduxForm = __webpack_require__(182);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Prop = _react2.default.PropTypes;
+
+	var DIALOG_ID = "widget-settings-dialog";
+	var FORM_ID = "widget-settings-form";
+
+	function showDialog() {
+	    _modal2.default.showModal(DIALOG_ID);
+	}
+
+	var WidgetConfigModal = function (_React$Component) {
+	    _inherits(WidgetConfigModal, _React$Component);
+
+	    function WidgetConfigModal(props) {
+	        _classCallCheck(this, WidgetConfigModal);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(WidgetConfigModal).call(this, props));
+	    }
+
+	    _createClass(WidgetConfigModal, [{
+	        key: "onSubmit",
+	        value: function onSubmit(formData, dispatch) {
+	            dispatch(WidgetConfig.createOrUpdateWidget(this.props.widgetId, this.props.widgetType, formData));
+	            return true;
+	        }
+	    }, {
+	        key: "resetForm",
+	        value: function resetForm() {
+	            this.props.resetForm(FORM_ID);
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var _this2 = this;
+
+	            var actions = [{
+	                className: "ui right button",
+	                label: "Reset",
+	                onClick: function onClick() {
+	                    _this2.resetForm();
+	                    return false;
+	                }
+	            }, {
+	                className: "ui right red button",
+	                label: "Cancel",
+	                onClick: function onClick() {
+	                    _this2.resetForm();
+	                    return true;
+	                }
+	            }, {
+	                className: "ui right labeled icon positive button",
+	                iconClass: "save icon",
+	                label: "Save",
+	                onClick: function onClick() {
+	                    var success = _this2.refs.form.submit();
+	                    if (success) _this2.resetForm();
+	                    return success;
+	                }
+	            }];
+
+	            var props = this.props;
+	            var widgets = _widgetPlugins2.default.getPlugins();
+	            var selectedWidget = _widgetPlugins2.default.getPlugin(this.props.widgetType) || { settings: [] };
+
+	            if (!selectedWidget) {
+	                return _react2.default.createElement(
+	                    "div",
+	                    null,
+	                    "Unknown WidgetType: ",
+	                    this.props.widgetType
+	                );
+	            }
+
+	            console.log("selectedWidget", selectedWidget);
+	            // Add additional fields
+	            var settings = [].concat(_toConsumableArray(selectedWidget.settings));
+	            settings.unshift({
+	                id: 'name',
+	                name: 'Name',
+	                type: 'string',
+	                defaultValue: ""
+	            });
+
+	            var fields = settings.map(function (setting) {
+	                return setting.id;
+	            });
+	            var initialValues = settings.reduce(function (initialValues, setting) {
+	                initialValues[setting.id] = setting.defaultValue;
+	                return initialValues;
+	            }, _extends({}, props.widgetProps));
+
+	            return _react2.default.createElement(
+	                _modal2.default,
+	                { id: DIALOG_ID,
+	                    title: "Configure " + props.widgetType + " Widget",
+	                    actions: actions
+	                },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "ui one column grid" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "column" },
+	                        _react2.default.createElement(_settingsForm2.default, { ref: "form",
+	                            form: FORM_ID,
+	                            settings: settings,
+	                            onSubmit: this.onSubmit.bind(this),
+	                            fields: [].concat(_toConsumableArray(fields)),
+	                            initialValues: initialValues
+	                        })
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return WidgetConfigModal;
+	}(_react2.default.Component);
+
+	WidgetConfigModal.propTypes = {
+	    widgetId: Prop.string,
+	    resetForm: Prop.func.isRequired, // reset
+	    widgetType: Prop.string,
+	    widgetProps: Prop.object.isRequired
+	};
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        widgetId: state.widgetConfig.id,
+	        widgetType: state.widgetConfig.type,
+	        widgetProps: state.widgetConfig.props
+	    };
+	}, function (dispatch) {
+	    return {
+	        resetForm: function resetForm(id) {
+	            return dispatch((0, _reduxForm.reset)(id));
+	        }
+	    };
+	})(WidgetConfigModal);
+
+/***/ },
 /* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _collection = __webpack_require__(239);
+
+	var _elements = __webpack_require__(240);
+
+	var ui = _interopRequireWildcard(_elements);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Prop = _react2.default.PropTypes;
+
+	var ModalDialog = function (_React$Component) {
+	    _inherits(ModalDialog, _React$Component);
+
+	    function ModalDialog() {
+	        _classCallCheck(this, ModalDialog);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ModalDialog).apply(this, arguments));
+	    }
+
+	    _createClass(ModalDialog, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            console.log("Mounted Modal: " + this.props.id);
+	            $('.ui.modal.' + this.props.id).modal({
+	                detachable: false,
+	                closable: false,
+	                observeChanges: true,
+	                onApprove: function onApprove($element) {
+	                    return false;
+	                },
+	                onDeny: function onDeny($element) {
+	                    return false;
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'setWidgetProps',
+	        value: function setWidgetProps(props) {
+	            this.widgetProps = props;
+	        }
+	    }, {
+	        key: 'onClick',
+	        value: function onClick(e, action) {
+	            if (action.onClick(e)) {
+	                ModalDialog.closeModal(this.props.id);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var key = 0;
+	            var actions = this.props.actions.map(function (action) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { key: key++, className: action.className, onClick: function onClick(e) {
+	                            return _this2.onClick(e, action);
+	                        } },
+	                    action.label,
+	                    action.iconClass ? _react2.default.createElement('i', { className: action.iconClass }) : null
+	                );
+	            });
+
+	            var props = this.props;
+	            console.log("Render Modal: " + this.props.id);
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'ui modal ' + this.props.id },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'header' },
+	                    props.title
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'content' },
+	                    props.children
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'actions' },
+	                    actions
+	                )
+	            );
+	        }
+	    }], [{
+	        key: 'showModal',
+	        value: function showModal(id) {
+	            console.log("Show Modal: " + id);
+	            $('.ui.modal.' + id).modal('show');
+	        }
+	    }, {
+	        key: 'closeModal',
+	        value: function closeModal(id) {
+	            console.log("Close Modal: " + id);
+	            $('.ui.modal.' + id).modal('hide');
+	        }
+	    }]);
+
+	    return ModalDialog;
+	}(_react2.default.Component);
+
+	exports.default = ModalDialog;
+
+
+	ModalDialog.propTypes = {
+	    children: _react2.default.PropTypes.element.isRequired,
+	    title: Prop.string.isRequired,
+	    id: Prop.string.isRequired,
+	    actions: Prop.arrayOf(Prop.shape({
+	        className: Prop.string.isRequired,
+	        iconClass: Prop.string,
+	        label: Prop.string.isRequired,
+	        onClick: Prop.func.isRequired
+	    })).isRequired,
+	    handlePositive: Prop.func,
+	    handleDeny: Prop.func
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238)))
+
+/***/ },
+/* 238 */,
+/* 239 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1355,135 +1572,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 238 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	exports.genCrudReducer = genCrudReducer;
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	/**
-	 * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
-	 * The key of properties always matches the id property of the value object.
-	 *
-	 * @param actionNames
-	 * Object with: create, update, delete action names
-	 * @param elementReducer
-	 * A reducer for a single object that supports the actionNames.create and actionNames.update action.
-	 * @param initialState (optional)
-	 * @param idProperty
-	 * The name of the property to fetch the id from the action. Default: 'id'
-	 * @returns {crudReducer}
-	 */
-	function genCrudReducer(actionNames, elementReducer) {
-	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
-
-	    console.assert(actionNames.length === 3, "ActionNames must contain 3 names for create, update, delete in that order");
-
-	    var _actionNames = _slicedToArray(actionNames, 3);
-
-	    var CREATE_ACTION = _actionNames[0];
-	    var UPDATE_ACTION = _actionNames[1];
-	    var DELETE_ACTION = _actionNames[2];
-
-	    console.assert(CREATE_ACTION.includes("ADD") || CREATE_ACTION.includes("CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
-	    console.assert(UPDATE_ACTION.includes("UPDATE"), "The update action name should probably contain UPDATE, but is: " + UPDATE_ACTION);
-	    console.assert(DELETE_ACTION.includes("DELETE") || DELETE_ACTION.includes("REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
-
-	    return function crudReducer(state, action) {
-	        var id = action[idProperty];
-	        switch (action.type) {
-	            case CREATE_ACTION:
-	                return _extends({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
-	            case DELETE_ACTION:
-	                var deleted = state[id];
-
-	                var newState = _objectWithoutProperties(state, [id]);
-
-	                return newState;
-	            case UPDATE_ACTION:
-	                //if(id === undefined) return state;
-	                var elementState = state[id];
-	                console.assert(elementState, "Can not find element with id: " + id);
-	                return _extends({}, state, _defineProperty({}, id, elementReducer(elementState, action)));
-	            default:
-	                return state;
-	        }
-	    };
-	}
-
-/***/ },
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AddWidget = undefined;
-
-	var _react = __webpack_require__(2);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactRedux = __webpack_require__(173);
-
-	var _widgetConfig = __webpack_require__(233);
-
-	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
-
-	var _elements = __webpack_require__(261);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {};
-	};
-
-	var AddWidget = exports.AddWidget = (0, _reactRedux.connect)(mapStateToProps, function (dispatch) {
-	    return {
-	        onClick: function onClick(props) {
-	            dispatch(WidgetConfig.createWidget(props.type, { text: "My Text component " + (Math.random() * 1000).toFixed() }));
-	        }
-	    };
-	})(_elements.LinkItem);
-
-/***/ },
-/* 261 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1557,7 +1646,297 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 262 */
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elements = __webpack_require__(240);
+
+	var ui = _interopRequireWildcard(_elements);
+
+	var _reduxForm = __webpack_require__(182);
+
+	var _collection = __webpack_require__(239);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Prop = _react2.default.PropTypes;
+
+	var SettingsForm = function (_React$Component) {
+	    _inherits(SettingsForm, _React$Component);
+
+	    function SettingsForm() {
+	        _classCallCheck(this, SettingsForm);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SettingsForm).apply(this, arguments));
+	    }
+
+	    _createClass(SettingsForm, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this._initSemanticUi();
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            this._initSemanticUi();
+	        }
+	    }, {
+	        key: '_initSemanticUi',
+	        value: function _initSemanticUi() {
+	            $('.icon.help.circle').popup({
+	                position: "top left",
+	                offset: -10
+	            });
+	            $('.ui.checkbox').checkbox();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var props = this.props;
+	            var fields = props.fields;
+
+	            return _react2.default.createElement(
+	                'form',
+	                { className: 'ui form' },
+	                (0, _collection.chunk)(this.props.settings, 2).map(function (chunk) {
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { key: chunk[0].id, className: 'two fields' },
+	                        chunk.map(function (setting) {
+	                            return _react2.default.createElement(Field, _extends({ key: setting.id }, setting, { field: fields[setting.id] }));
+	                        })
+	                    );
+	                })
+	            );
+	        }
+	    }]);
+
+	    return SettingsForm;
+	}(_react2.default.Component);
+
+	SettingsForm.propTypes = {
+	    settings: Prop.arrayOf(Prop.shape({
+	        id: Prop.string.isRequired,
+	        type: Prop.string.isRequired,
+	        name: Prop.string.isRequired
+	    })).isRequired
+	};
+
+	exports.default = (0, _reduxForm.reduxForm)({})(SettingsForm);
+
+
+	function Field(props) {
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'field' },
+	        _react2.default.createElement(
+	            'label',
+	            null,
+	            props.name,
+	            props.description && props.type !== 'boolean' ? _react2.default.createElement(ui.Icon, { type: 'help circle', 'data-content': props.description }) : null
+	        ),
+	        _react2.default.createElement(SettingsInput, props)
+	    );
+	}
+
+	Field.propTypes = {
+	    field: Prop.object.isRequired, // redux-form field info
+	    name: Prop.string.isRequired,
+	    type: Prop.string.isRequired,
+	    description: Prop.string
+	};
+
+	function SettingsInput(props) {
+	    switch (props.type) {
+	        case "text":
+	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
+	        case "string":
+	            return _react2.default.createElement('input', _extends({ placeholder: props.description }, props.field));
+	        case "boolean":
+	            return _react2.default.createElement('input', _extends({ type: 'checkbox' }, props.field));
+	        case "option":
+	            return _react2.default.createElement(
+	                'select',
+	                _extends({ className: 'ui fluid dropdown' }, props.field),
+	                _react2.default.createElement(
+	                    'option',
+	                    null,
+	                    "Select " + props.name + " ..."
+	                ),
+	                props.options.map(function (option) {
+	                    return _react2.default.createElement(
+	                        'option',
+	                        { key: option.value, value: option.value },
+	                        option.name
+	                    );
+	                })
+	            );
+	        default:
+	            console.error("Unknown type for settings field: " + props.type);
+	    }
+	}
+
+	Field.propTypes = {
+	    field: Prop.object.isRequired, // redux-form field info
+	    description: Prop.string,
+	    options: Prop.arrayOf(Prop.shape({
+	        value: Prop.string.isRequired
+	    }.isRequired))
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238)))
+
+/***/ },
+/* 242 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	exports.genCrudReducer = genCrudReducer;
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	/**
+	 * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
+	 * The key of properties always matches the id property of the value object.
+	 *
+	 * @param actionNames
+	 * Object with: create, update, delete action names
+	 * @param elementReducer
+	 * A reducer for a single object that supports the actionNames.create and actionNames.update action.
+	 * @param initialState (optional)
+	 * @param idProperty
+	 * The name of the property to fetch the id from the action. Default: 'id'
+	 * @returns {crudReducer}
+	 */
+	function genCrudReducer(actionNames, elementReducer) {
+	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
+
+	    console.assert(actionNames.length === 3, "ActionNames must contain 3 names for create, update, delete in that order");
+
+	    var _actionNames = _slicedToArray(actionNames, 3);
+
+	    var CREATE_ACTION = _actionNames[0];
+	    var UPDATE_ACTION = _actionNames[1];
+	    var DELETE_ACTION = _actionNames[2];
+
+	    console.assert(CREATE_ACTION.includes("ADD") || CREATE_ACTION.includes("CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
+	    console.assert(UPDATE_ACTION.includes("UPDATE"), "The update action name should probably contain UPDATE, but is: " + UPDATE_ACTION);
+	    console.assert(DELETE_ACTION.includes("DELETE") || DELETE_ACTION.includes("REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
+
+	    return function crudReducer(state, action) {
+	        var id = action[idProperty];
+	        switch (action.type) {
+	            case CREATE_ACTION:
+	                return _extends({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
+	            case DELETE_ACTION:
+	                var deleted = state[id];
+
+	                var newState = _objectWithoutProperties(state, [id]);
+
+	                return newState;
+	            case UPDATE_ACTION:
+	                //if(id === undefined) return state;
+	                var elementState = state[id];
+	                console.assert(elementState, "Can not find element with id: " + id);
+	                return _extends({}, state, _defineProperty({}, id, elementReducer(elementState, action)));
+	            default:
+	                return state;
+	        }
+	    };
+	}
+
+/***/ },
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AddWidget = undefined;
+
+	var _react = __webpack_require__(2);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _widgetConfig = __webpack_require__(233);
+
+	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
+
+	var _elements = __webpack_require__(240);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {};
+	};
+
+	var AddWidget = exports.AddWidget = (0, _reactRedux.connect)(mapStateToProps, function (dispatch) {
+	    return {
+	        onClick: function onClick(props) {
+	            dispatch(WidgetConfig.createWidget(props.type, { text: "My Text component " + (Math.random() * 1000).toFixed() }));
+	        }
+	    };
+	})(_elements.LinkItem);
+
+/***/ },
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1577,13 +1956,13 @@ webpackJsonp([0],[
 
 	var _reactRedux = __webpack_require__(173);
 
-	var _collection = __webpack_require__(237);
+	var _collection = __webpack_require__(239);
 
-	var _layouts = __webpack_require__(263);
+	var _layouts = __webpack_require__(266);
 
 	var Layouts = _interopRequireWildcard(_layouts);
 
-	var _elements = __webpack_require__(261);
+	var _elements = __webpack_require__(240);
 
 	var ui = _interopRequireWildcard(_elements);
 
@@ -1780,7 +2159,7 @@ webpackJsonp([0],[
 	})(ui.LinkItem);
 
 /***/ },
-/* 263 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1806,9 +2185,9 @@ webpackJsonp([0],[
 
 	var _uuid = __webpack_require__(232);
 
-	var _reducer = __webpack_require__(238);
+	var _reducer = __webpack_require__(242);
 
-	var _actionNames = __webpack_require__(236);
+	var _actionNames = __webpack_require__(235);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1927,7 +2306,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 264 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1945,11 +2324,11 @@ webpackJsonp([0],[
 
 	var _reactRedux = __webpack_require__(173);
 
-	var _import = __webpack_require__(265);
+	var _import = __webpack_require__(268);
 
 	var Import = _interopRequireWildcard(_import);
 
-	var _modal = __webpack_require__(266);
+	var _modal = __webpack_require__(237);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
@@ -2089,7 +2468,7 @@ webpackJsonp([0],[
 	exports.Modal = ModalContainer;
 
 /***/ },
-/* 265 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2104,13 +2483,13 @@ webpackJsonp([0],[
 	exports.deserialize = deserialize;
 	exports.doImport = doImport;
 
-	var _modal = __webpack_require__(266);
+	var _modal = __webpack_require__(237);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _actionNames = __webpack_require__(236);
+	var _actionNames = __webpack_require__(235);
 
-	var _layouts = __webpack_require__(263);
+	var _layouts = __webpack_require__(266);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2144,198 +2523,48 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 266 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(173);
-
-	var _collection = __webpack_require__(237);
-
-	var _elements = __webpack_require__(261);
-
-	var ui = _interopRequireWildcard(_elements);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Prop = _react2.default.PropTypes;
-
-	var ModalDialog = function (_React$Component) {
-	    _inherits(ModalDialog, _React$Component);
-
-	    function ModalDialog() {
-	        _classCallCheck(this, ModalDialog);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ModalDialog).apply(this, arguments));
-	    }
-
-	    _createClass(ModalDialog, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            console.log("Mounted Modal: " + this.props.id);
-	            $('.ui.modal.' + this.props.id).modal({
-	                detachable: false,
-	                closable: false,
-	                observeChanges: true,
-	                onApprove: function onApprove($element) {
-	                    return false;
-	                },
-	                onDeny: function onDeny($element) {
-	                    return false;
-	                }
-	            });
-	        }
-	    }, {
-	        key: 'setWidgetProps',
-	        value: function setWidgetProps(props) {
-	            this.widgetProps = props;
-	        }
-	    }, {
-	        key: 'onClick',
-	        value: function onClick(e, action) {
-	            if (action.onClick(e)) {
-	                ModalDialog.closeModal(this.props.id);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            var key = 0;
-	            var actions = this.props.actions.map(function (action) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { key: key++, className: action.className, onClick: function onClick(e) {
-	                            return _this2.onClick(e, action);
-	                        } },
-	                    action.label,
-	                    action.iconClass ? _react2.default.createElement('i', { className: action.iconClass }) : null
-	                );
-	            });
-
-	            var props = this.props;
-	            console.log("Render Modal: " + this.props.id);
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'ui modal ' + this.props.id },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'header' },
-	                    props.title
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'content' },
-	                    props.children
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'actions' },
-	                    actions
-	                )
-	            );
-	        }
-	    }], [{
-	        key: 'showModal',
-	        value: function showModal(id) {
-	            console.log("Show Modal: " + id);
-	            $('.ui.modal.' + id).modal('show');
-	        }
-	    }, {
-	        key: 'closeModal',
-	        value: function closeModal(id) {
-	            console.log("Close Modal: " + id);
-	            $('.ui.modal.' + id).modal('hide');
-	        }
-	    }]);
-
-	    return ModalDialog;
-	}(_react2.default.Component);
-
-	exports.default = ModalDialog;
-
-
-	ModalDialog.propTypes = {
-	    children: _react2.default.PropTypes.element.isRequired,
-	    title: Prop.string.isRequired,
-	    id: Prop.string.isRequired,
-	    actions: Prop.arrayOf(Prop.shape({
-	        className: Prop.string.isRequired,
-	        iconClass: Prop.string,
-	        label: Prop.string.isRequired,
-	        onClick: Prop.func.isRequired
-	    })).isRequired,
-	    handlePositive: Prop.func,
-	    handleDeny: Prop.func
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(234)))
-
-/***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Modal = exports.TopNavItem = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	exports.showDialog = showDialog;
+
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _modal = __webpack_require__(266);
+	var _modal = __webpack_require__(237);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _datasource = __webpack_require__(268);
+	var _datasource = __webpack_require__(270);
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
-	var _datasourcePlugins = __webpack_require__(309);
+	var _datasourcePlugins = __webpack_require__(311);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
 	var _reactRedux = __webpack_require__(173);
 
-	var _collection = __webpack_require__(237);
+	var _collection = __webpack_require__(239);
 
-	var _elements = __webpack_require__(261);
+	var _elements = __webpack_require__(240);
 
 	var ui = _interopRequireWildcard(_elements);
 
-	var _settings = __webpack_require__(310);
+	var _settingsForm = __webpack_require__(241);
 
-	var SettingsUi = _interopRequireWildcard(_settings);
-
-	var _formSerializer = __webpack_require__(311);
-
-	var _formSerializer2 = _interopRequireDefault(_formSerializer);
+	var _settingsForm2 = _interopRequireDefault(_settingsForm);
 
 	var _reduxForm = __webpack_require__(182);
 
@@ -2353,71 +2582,20 @@ webpackJsonp([0],[
 
 	var Prop = _react2.default.PropTypes;
 
-	var TopNavItem = function TopNavItem(props) {
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'ui simple dropdown item' },
-	        'Datasources',
-	        _react2.default.createElement('i', { className: 'dropdown icon' }),
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'ui menu' },
-	            _react2.default.createElement(
-	                ui.LinkItem,
-	                { icon: 'plus', onClick: function onClick() {
-	                        props.createDatasource();
-	                    } },
-	                'Add Datasource'
-	            ),
-	            _react2.default.createElement(ui.Divider, null),
-	            (0, _collection.valuesOf)(props.datasources).map(function (ds) {
-	                return _react2.default.createElement(
-	                    ui.LinkItem,
-	                    { key: ds.id, onClick: function onClick() {/*Edit*/} },
-	                    _react2.default.createElement(ui.Icon, { type: 'delete', size: 'huge', align: 'right', onClick: function onClick() {
-	                            return props.deleteDatasource(ds.id);
-	                        } }),
-	                    ds.props.name
-	                );
-	            })
-	        )
-	    );
-	};
+	var DIALOG_ID = "datasource-settings-dialog";
+	var FORM_ID = "datasource-settings-form";
 
-	TopNavItem.propTypes = {
-	    createDatasource: Prop.func.isRequired,
-	    deleteDatasource: Prop.func.isRequired,
-	    datasources: Prop.objectOf(Prop.shape({
-	        type: Prop.string.isRequired,
-	        id: Prop.string.isRequired,
-	        props: Prop.object.isRequired
-	    })).isRequired
-	};
+	function showDialog() {
+	    _modal2.default.showModal(DIALOG_ID);
+	}
 
-	var TopItemNavComponent = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        datasources: state.datasources
-	    };
-	}, function (dispatch) {
-	    return {
-	        createDatasource: function createDatasource() {
-	            return _modal2.default.showModal("datasource-create");
-	        },
-	        deleteDatasource: function deleteDatasource(id) {
-	            return dispatch(Datasource.deleteDatasource(id));
-	        }
-	    };
-	})(TopNavItem);
+	var DatasourceConfigModal = function (_React$Component) {
+	    _inherits(DatasourceConfigModal, _React$Component);
 
-	exports.TopNavItem = TopItemNavComponent;
+	    function DatasourceConfigModal(props) {
+	        _classCallCheck(this, DatasourceConfigModal);
 
-	var Modal = exports.Modal = function (_React$Component) {
-	    _inherits(Modal, _React$Component);
-
-	    function Modal(props) {
-	        _classCallCheck(this, Modal);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).call(this, props));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DatasourceConfigModal).call(this, props));
 
 	        _this.state = {
 	            selectedType: ''
@@ -2425,7 +2603,7 @@ webpackJsonp([0],[
 	        return _this;
 	    }
 
-	    _createClass(Modal, [{
+	    _createClass(DatasourceConfigModal, [{
 	        key: 'onSubmit',
 	        value: function onSubmit(formData, dispatch) {
 	            this.props.addDatasource(this.state.selectedType, formData);
@@ -2434,7 +2612,7 @@ webpackJsonp([0],[
 	    }, {
 	        key: 'resetForm',
 	        value: function resetForm() {
-	            this.props.restForm('datasource-settings');
+	            this.props.resetForm('datasource-settings');
 	        }
 	    }, {
 	        key: 'render',
@@ -2467,18 +2645,34 @@ webpackJsonp([0],[
 	            }];
 
 	            var datasources = _datasourcePlugins2.default.getPlugins();
-	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: {} };
-	            var fields = (0, _collection.valuesOf)(selectedSource.settings, "id").map(function (setting) {
+	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: [] };
+
+	            var settings = [].concat(_toConsumableArray(selectedSource.settings));
+	            settings.unshift({
+	                id: 'name',
+	                name: 'Name',
+	                type: 'string',
+	                defaultValue: ""
+	            }, {
+	                id: 'interval',
+	                name: 'Interval',
+	                type: 'string',
+	                defaultValue: "5"
+	            });
+
+	            var fields = settings.map(function (setting) {
 	                return setting.id;
 	            });
-	            var initialValues = (0, _collection.valuesOf)(selectedSource.settings, "id").reduce(function (initialValues, setting) {
+	            var initialValues = settings.reduce(function (initialValues, setting) {
 	                initialValues[setting.id] = setting.defaultValue;
 	                return initialValues;
 	            }, { interval: 5 });
 
+	            // TODO: Add the additional fields (type, name interval) dynamically to the settings array
+
 	            return _react2.default.createElement(
 	                _modal2.default,
-	                { id: 'datasource-create',
+	                { id: DIALOG_ID,
 	                    title: 'Create Datasource',
 	                    actions: actions
 	                },
@@ -2517,11 +2711,12 @@ webpackJsonp([0],[
 	                                })
 	                            )
 	                        ),
-	                        _react2.default.createElement(SettingsReduxForm, { ref: 'form',
-	                            form: 'datasource-settings',
-	                            selectedType: this.state.selectedType,
+	                        _react2.default.createElement(ui.Divider, null),
+	                        _react2.default.createElement(_settingsForm2.default, { ref: 'form',
+	                            form: FORM_ID,
 	                            onSubmit: this.onSubmit.bind(this),
 	                            fields: ["type", "name", "interval"].concat(_toConsumableArray(fields)),
+	                            settings: settings,
 	                            initialValues: initialValues
 	                        })
 	                    )
@@ -2530,117 +2725,29 @@ webpackJsonp([0],[
 	        }
 	    }]);
 
-	    return Modal;
+	    return DatasourceConfigModal;
 	}(_react2.default.Component);
 
-	Modal.propTypes = {
+	DatasourceConfigModal.propTypes = {
 	    addDatasource: Prop.func.isRequired,
-	    restForm: Prop.func.isRequired
+	    resetForm: Prop.func.isRequired
 	};
 
-	var CreateDatasourceDialog = (0, _reactRedux.connect)(function (state) {
+	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return {};
 	}, function (dispatch) {
 	    return {
-	        restForm: function restForm(id) {
+	        resetForm: function resetForm(id) {
 	            return dispatch((0, _reduxForm.reset)(id));
 	        },
 	        addDatasource: function addDatasource(type, dsProps) {
 	            dispatch(Datasource.addDatasource(type, dsProps));
 	        }
 	    };
-	})(Modal);
-
-	var SettingsForm = function (_React$Component2) {
-	    _inherits(SettingsForm, _React$Component2);
-
-	    function SettingsForm() {
-	        _classCallCheck(this, SettingsForm);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SettingsForm).apply(this, arguments));
-	    }
-
-	    _createClass(SettingsForm, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            this._initSemanticUi();
-	        }
-	    }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {
-	            this._initSemanticUi();
-	        }
-	    }, {
-	        key: '_initSemanticUi',
-	        value: function _initSemanticUi() {
-	            $('.icon.help.circle').popup({
-	                position: "top left",
-	                offset: -10
-	            });
-	            $('.ui.checkbox').checkbox();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var props = this.props;
-	            var fields = props.fields;
-	            var selectedSource = _datasourcePlugins2.default.getPlugin(props.selectedType) || { settings: {} };
-
-	            return _react2.default.createElement(
-	                'form',
-	                { className: 'ui form' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'two fields' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'field' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            null,
-	                            'Name'
-	                        ),
-	                        _react2.default.createElement('input', _extends({ name: 'name', placeholder: 'Name of the Datasource ...' }, fields.name))
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'field' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            null,
-	                            'Update Intervall'
-	                        ),
-	                        _react2.default.createElement('input', _extends({ name: 'interval', placeholder: 'Update Interval in Seconds ...' }, fields.interval))
-	                    )
-	                ),
-	                _react2.default.createElement(ui.Divider, null),
-	                (0, _collection.chunk)((0, _collection.valuesOf)(selectedSource.settings, 'id'), 2).map(function (chunk) {
-	                    return _react2.default.createElement(
-	                        'div',
-	                        { key: chunk[0].id, className: 'two fields' },
-	                        selectedSource ? chunk.map(function (setting) {
-	                            return _react2.default.createElement(SettingsUi.Field, _extends({ key: setting.id }, setting, { field: fields[setting.id] }));
-	                        }) : null
-	                    );
-	                })
-	            );
-	        }
-	    }]);
-
-	    return SettingsForm;
-	}(_react2.default.Component);
-
-	SettingsForm.propTypes = {
-	    selectedType: Prop.string.isRequired
-	};
-
-	var SettingsReduxForm = (0, _reduxForm.reduxForm)({})(SettingsForm);
-
-	exports.Modal = CreateDatasourceDialog;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(234)))
+	})(DatasourceConfigModal);
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2652,15 +2759,15 @@ webpackJsonp([0],[
 	exports.deleteDatasource = deleteDatasource;
 	exports.datasources = datasources;
 
-	var _chai = __webpack_require__(269);
+	var _chai = __webpack_require__(271);
 
-	var _datasourcePlugins = __webpack_require__(309);
+	var _datasourcePlugins = __webpack_require__(311);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _reducer = __webpack_require__(238);
+	var _reducer = __webpack_require__(242);
 
-	var _actionNames = __webpack_require__(236);
+	var _actionNames = __webpack_require__(235);
 
 	var Action = _interopRequireWildcard(_actionNames);
 
@@ -2731,14 +2838,14 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(270);
+	module.exports = __webpack_require__(272);
 
 
 /***/ },
-/* 270 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -2760,13 +2867,13 @@ webpackJsonp([0],[
 	 * Assertion Error
 	 */
 
-	exports.AssertionError = __webpack_require__(271);
+	exports.AssertionError = __webpack_require__(273);
 
 	/*!
 	 * Utils for plugins (not exported)
 	 */
 
-	var util = __webpack_require__(272);
+	var util = __webpack_require__(274);
 
 	/**
 	 * # .use(function)
@@ -2797,47 +2904,47 @@ webpackJsonp([0],[
 	 * Configuration
 	 */
 
-	var config = __webpack_require__(285);
+	var config = __webpack_require__(287);
 	exports.config = config;
 
 	/*!
 	 * Primary `Assertion` prototype
 	 */
 
-	var assertion = __webpack_require__(304);
+	var assertion = __webpack_require__(306);
 	exports.use(assertion);
 
 	/*!
 	 * Core Assertions
 	 */
 
-	var core = __webpack_require__(305);
+	var core = __webpack_require__(307);
 	exports.use(core);
 
 	/*!
 	 * Expect interface
 	 */
 
-	var expect = __webpack_require__(306);
+	var expect = __webpack_require__(308);
 	exports.use(expect);
 
 	/*!
 	 * Should interface
 	 */
 
-	var should = __webpack_require__(307);
+	var should = __webpack_require__(309);
 	exports.use(should);
 
 	/*!
 	 * Assert interface
 	 */
 
-	var assert = __webpack_require__(308);
+	var assert = __webpack_require__(310);
 	exports.use(assert);
 
 
 /***/ },
-/* 271 */
+/* 273 */
 /***/ function(module, exports) {
 
 	/*!
@@ -2955,7 +3062,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 272 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -2974,124 +3081,124 @@ webpackJsonp([0],[
 	 * test utility
 	 */
 
-	exports.test = __webpack_require__(273);
+	exports.test = __webpack_require__(275);
 
 	/*!
 	 * type utility
 	 */
 
-	exports.type = __webpack_require__(275);
+	exports.type = __webpack_require__(277);
 
 	/*!
 	 * expectTypes utility
 	 */
-	exports.expectTypes = __webpack_require__(277);
+	exports.expectTypes = __webpack_require__(279);
 
 	/*!
 	 * message utility
 	 */
 
-	exports.getMessage = __webpack_require__(278);
+	exports.getMessage = __webpack_require__(280);
 
 	/*!
 	 * actual utility
 	 */
 
-	exports.getActual = __webpack_require__(279);
+	exports.getActual = __webpack_require__(281);
 
 	/*!
 	 * Inspect util
 	 */
 
-	exports.inspect = __webpack_require__(280);
+	exports.inspect = __webpack_require__(282);
 
 	/*!
 	 * Object Display util
 	 */
 
-	exports.objDisplay = __webpack_require__(284);
+	exports.objDisplay = __webpack_require__(286);
 
 	/*!
 	 * Flag utility
 	 */
 
-	exports.flag = __webpack_require__(274);
+	exports.flag = __webpack_require__(276);
 
 	/*!
 	 * Flag transferring utility
 	 */
 
-	exports.transferFlags = __webpack_require__(286);
+	exports.transferFlags = __webpack_require__(288);
 
 	/*!
 	 * Deep equal utility
 	 */
 
-	exports.eql = __webpack_require__(287);
+	exports.eql = __webpack_require__(289);
 
 	/*!
 	 * Deep path value
 	 */
 
-	exports.getPathValue = __webpack_require__(295);
+	exports.getPathValue = __webpack_require__(297);
 
 	/*!
 	 * Deep path info
 	 */
 
-	exports.getPathInfo = __webpack_require__(296);
+	exports.getPathInfo = __webpack_require__(298);
 
 	/*!
 	 * Check if a property exists
 	 */
 
-	exports.hasProperty = __webpack_require__(297);
+	exports.hasProperty = __webpack_require__(299);
 
 	/*!
 	 * Function name
 	 */
 
-	exports.getName = __webpack_require__(281);
+	exports.getName = __webpack_require__(283);
 
 	/*!
 	 * add Property
 	 */
 
-	exports.addProperty = __webpack_require__(298);
+	exports.addProperty = __webpack_require__(300);
 
 	/*!
 	 * add Method
 	 */
 
-	exports.addMethod = __webpack_require__(299);
+	exports.addMethod = __webpack_require__(301);
 
 	/*!
 	 * overwrite Property
 	 */
 
-	exports.overwriteProperty = __webpack_require__(300);
+	exports.overwriteProperty = __webpack_require__(302);
 
 	/*!
 	 * overwrite Method
 	 */
 
-	exports.overwriteMethod = __webpack_require__(301);
+	exports.overwriteMethod = __webpack_require__(303);
 
 	/*!
 	 * Add a chainable method
 	 */
 
-	exports.addChainableMethod = __webpack_require__(302);
+	exports.addChainableMethod = __webpack_require__(304);
 
 	/*!
 	 * Overwrite chainable method
 	 */
 
-	exports.overwriteChainableMethod = __webpack_require__(303);
+	exports.overwriteChainableMethod = __webpack_require__(305);
 
 
 /***/ },
-/* 273 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3104,7 +3211,7 @@ webpackJsonp([0],[
 	 * Module dependancies
 	 */
 
-	var flag = __webpack_require__(274);
+	var flag = __webpack_require__(276);
 
 	/**
 	 * # test(object, expression)
@@ -3125,7 +3232,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 274 */
+/* 276 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3164,14 +3271,14 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 275 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(276);
+	module.exports = __webpack_require__(278);
 
 
 /***/ },
-/* 276 */
+/* 278 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3311,7 +3418,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 277 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3334,9 +3441,9 @@ webpackJsonp([0],[
 	 * @api public
 	 */
 
-	var AssertionError = __webpack_require__(271);
-	var flag = __webpack_require__(274);
-	var type = __webpack_require__(275);
+	var AssertionError = __webpack_require__(273);
+	var flag = __webpack_require__(276);
+	var type = __webpack_require__(277);
 
 	module.exports = function (obj, types) {
 	  var obj = flag(obj, 'object');
@@ -3359,7 +3466,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 278 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3372,10 +3479,10 @@ webpackJsonp([0],[
 	 * Module dependancies
 	 */
 
-	var flag = __webpack_require__(274)
-	  , getActual = __webpack_require__(279)
-	  , inspect = __webpack_require__(280)
-	  , objDisplay = __webpack_require__(284);
+	var flag = __webpack_require__(276)
+	  , getActual = __webpack_require__(281)
+	  , inspect = __webpack_require__(282)
+	  , objDisplay = __webpack_require__(286);
 
 	/**
 	 * ### .getMessage(object, message, negateMessage)
@@ -3416,7 +3523,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 279 */
+/* 281 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3442,15 +3549,15 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 280 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// This is (almost) directly from Node.js utils
 	// https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-	var getName = __webpack_require__(281);
-	var getProperties = __webpack_require__(282);
-	var getEnumerableProperties = __webpack_require__(283);
+	var getName = __webpack_require__(283);
+	var getProperties = __webpack_require__(284);
+	var getEnumerableProperties = __webpack_require__(285);
 
 	module.exports = inspect;
 
@@ -3783,7 +3890,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 281 */
+/* 283 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3811,7 +3918,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 282 */
+/* 284 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3853,7 +3960,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 283 */
+/* 285 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3885,7 +3992,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 284 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3898,8 +4005,8 @@ webpackJsonp([0],[
 	 * Module dependancies
 	 */
 
-	var inspect = __webpack_require__(280);
-	var config = __webpack_require__(285);
+	var inspect = __webpack_require__(282);
+	var config = __webpack_require__(287);
 
 	/**
 	 * ### .objDisplay (object)
@@ -3941,7 +4048,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 285 */
+/* 287 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -4002,7 +4109,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 286 */
+/* 288 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4053,14 +4160,14 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 287 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(288);
+	module.exports = __webpack_require__(290);
 
 
 /***/ },
-/* 288 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -4073,14 +4180,14 @@ webpackJsonp([0],[
 	 * Module dependencies
 	 */
 
-	var type = __webpack_require__(289);
+	var type = __webpack_require__(291);
 
 	/*!
 	 * Buffer.isBuffer browser shim
 	 */
 
 	var Buffer;
-	try { Buffer = __webpack_require__(291).Buffer; }
+	try { Buffer = __webpack_require__(293).Buffer; }
 	catch(ex) {
 	  Buffer = {};
 	  Buffer.isBuffer = function() { return false; }
@@ -4323,14 +4430,14 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 289 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(290);
+	module.exports = __webpack_require__(292);
 
 
 /***/ },
-/* 290 */
+/* 292 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4478,7 +4585,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 291 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -4491,9 +4598,9 @@ webpackJsonp([0],[
 
 	'use strict'
 
-	var base64 = __webpack_require__(292)
-	var ieee754 = __webpack_require__(293)
-	var isArray = __webpack_require__(294)
+	var base64 = __webpack_require__(294)
+	var ieee754 = __webpack_require__(295)
+	var isArray = __webpack_require__(296)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -6030,10 +6137,10 @@ webpackJsonp([0],[
 	  return i
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(291).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(293).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 292 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -6163,7 +6270,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 293 */
+/* 295 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -6253,7 +6360,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 294 */
+/* 296 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -6264,7 +6371,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 295 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6274,7 +6381,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var getPathInfo = __webpack_require__(296);
+	var getPathInfo = __webpack_require__(298);
 
 	/**
 	 * ### .getPathValue(path, object)
@@ -6313,7 +6420,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 296 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6322,7 +6429,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var hasProperty = __webpack_require__(297);
+	var hasProperty = __webpack_require__(299);
 
 	/**
 	 * ### .getPathInfo(path, object)
@@ -6430,7 +6537,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 297 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6439,7 +6546,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var type = __webpack_require__(275);
+	var type = __webpack_require__(277);
 
 	/**
 	 * ### .hasProperty(object, name)
@@ -6500,7 +6607,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 298 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6509,8 +6616,8 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var config = __webpack_require__(285);
-	var flag = __webpack_require__(274);
+	var config = __webpack_require__(287);
+	var flag = __webpack_require__(276);
 
 	/**
 	 * ### addProperty (ctx, name, getter)
@@ -6554,7 +6661,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 299 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6563,7 +6670,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var config = __webpack_require__(285);
+	var config = __webpack_require__(287);
 
 	/**
 	 * ### .addMethod (ctx, name, method)
@@ -6590,7 +6697,7 @@ webpackJsonp([0],[
 	 * @name addMethod
 	 * @api public
 	 */
-	var flag = __webpack_require__(274);
+	var flag = __webpack_require__(276);
 
 	module.exports = function (ctx, name, method) {
 	  ctx[name] = function () {
@@ -6604,7 +6711,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 300 */
+/* 302 */
 /***/ function(module, exports) {
 
 	/*!
@@ -6665,7 +6772,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 301 */
+/* 303 */
 /***/ function(module, exports) {
 
 	/*!
@@ -6723,7 +6830,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 302 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6736,9 +6843,9 @@ webpackJsonp([0],[
 	 * Module dependencies
 	 */
 
-	var transferFlags = __webpack_require__(286);
-	var flag = __webpack_require__(274);
-	var config = __webpack_require__(285);
+	var transferFlags = __webpack_require__(288);
+	var flag = __webpack_require__(276);
+	var config = __webpack_require__(287);
 
 	/*!
 	 * Module variables
@@ -6841,7 +6948,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 303 */
+/* 305 */
 /***/ function(module, exports) {
 
 	/*!
@@ -6901,7 +7008,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 304 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6911,7 +7018,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var config = __webpack_require__(285);
+	var config = __webpack_require__(287);
 
 	module.exports = function (_chai, util) {
 	  /*!
@@ -7038,7 +7145,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 305 */
+/* 307 */
 /***/ function(module, exports) {
 
 	/*!
@@ -8904,7 +9011,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 306 */
+/* 308 */
 /***/ function(module, exports) {
 
 	/*!
@@ -8944,7 +9051,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 307 */
+/* 309 */
 /***/ function(module, exports) {
 
 	/*!
@@ -9151,7 +9258,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 308 */
+/* 310 */
 /***/ function(module, exports) {
 
 	/*!
@@ -10802,7 +10909,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 309 */
+/* 311 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10852,26 +10959,40 @@ webpackJsonp([0],[
 	exports.default = DatasourcePlugins;
 
 /***/ },
-/* 310 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	exports.Field = Field;
-
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _elements = __webpack_require__(261);
+	var _modal = __webpack_require__(237);
+
+	var _modal2 = _interopRequireDefault(_modal);
+
+	var _datasource = __webpack_require__(270);
+
+	var Datasource = _interopRequireWildcard(_datasource);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _collection = __webpack_require__(239);
+
+	var _elements = __webpack_require__(240);
 
 	var ui = _interopRequireWildcard(_elements);
+
+	var _reduxForm = __webpack_require__(182);
+
+	var _datasourceConfigDialog = __webpack_require__(269);
+
+	var DatasourceConfigDialog = _interopRequireWildcard(_datasourceConfigDialog);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -10879,346 +11000,64 @@ webpackJsonp([0],[
 
 	var Prop = _react2.default.PropTypes;
 
-	function Field(props) {
+	var TopNavItem = function TopNavItem(props) {
 	    return _react2.default.createElement(
-	        'div',
-	        { className: 'field' },
+	        "div",
+	        { className: "ui simple dropdown item" },
+	        "Datasources",
+	        _react2.default.createElement("i", { className: "dropdown icon" }),
 	        _react2.default.createElement(
-	            'label',
-	            null,
-	            props.name,
-	            props.description && props.type !== 'boolean' ? _react2.default.createElement(ui.Icon, { type: 'help circle', 'data-content': props.description }) : null
-	        ),
-	        _react2.default.createElement(SettingsInput, props)
+	            "div",
+	            { className: "ui menu" },
+	            _react2.default.createElement(
+	                ui.LinkItem,
+	                { icon: "plus", onClick: function onClick() {
+	                        props.createDatasource();
+	                    } },
+	                "Add Datasource"
+	            ),
+	            _react2.default.createElement(ui.Divider, null),
+	            (0, _collection.valuesOf)(props.datasources).map(function (ds) {
+	                return _react2.default.createElement(
+	                    ui.LinkItem,
+	                    { key: ds.id, onClick: function onClick() {/*Edit*/} },
+	                    _react2.default.createElement(ui.Icon, { type: "delete", size: "huge", align: "right", onClick: function onClick() {
+	                            return props.deleteDatasource(ds.id);
+	                        } }),
+	                    ds.props.name
+	                );
+	            })
+	        )
 	    );
-	}
-
-	Field.propTypes = {
-	    field: Prop.object.isRequired, // redux-form field info
-	    name: Prop.string.isRequired,
-	    type: Prop.string.isRequired,
-	    description: Prop.string
 	};
 
-	function SettingsInput(props) {
-	    switch (props.type) {
-	        case "text":
-	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
-	        case "string":
-	            return _react2.default.createElement('input', _extends({ placeholder: props.description }, props.field));
-	        case "boolean":
-	            return _react2.default.createElement('input', _extends({ type: 'checkbox' }, props.field));
-	        case "option":
-	            return _react2.default.createElement(
-	                'select',
-	                _extends({ className: 'ui fluid dropdown' }, props.field),
-	                _react2.default.createElement(
-	                    'option',
-	                    null,
-	                    "Select " + props.name + " ..."
-	                ),
-	                props.options.map(function (option) {
-	                    return _react2.default.createElement(
-	                        'option',
-	                        { key: option.value, value: option.value },
-	                        option.name
-	                    );
-	                })
-	            );
-	        default:
-	            console.error("Unknown type for settings field: " + props.type);
-	    }
-	}
-
-	Field.propTypes = {
-	    field: Prop.object.isRequired, // redux-form field info
-	    description: Prop.string,
-	    options: Prop.arrayOf(Prop.shape({
-	        value: Prop.string.isRequired
-	    }.isRequired))
+	TopNavItem.propTypes = {
+	    createDatasource: Prop.func.isRequired,
+	    deleteDatasource: Prop.func.isRequired,
+	    datasources: Prop.objectOf(Prop.shape({
+	        type: Prop.string.isRequired,
+	        id: Prop.string.isRequired,
+	        props: Prop.object.isRequired
+	    })).isRequired
 	};
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        datasources: state.datasources
+	    };
+	}, function (dispatch) {
+	    return {
+	        createDatasource: function createDatasource() {
+	            return DatasourceConfigDialog.showDialog();
+	        },
+	        deleteDatasource: function deleteDatasource(id) {
+	            return dispatch(Datasource.deleteDatasource(id));
+	        }
+	    };
+	})(TopNavItem);
 
 /***/ },
-/* 311 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	exports.default = serializeForm;
-	var defaultOptions = {
-	    hash: true,
-	    disabled: true,
-	    empty: true,
-	    realBooleans: true
-	};
-
-	function serializeForm(form) {
-	    var options = arguments.length <= 1 || arguments[1] === undefined ? defaultOptions : arguments[1];
-
-	    return serialize(form, options);
-	}
-
-	// get successful control from form and assemble into object
-	// http://www.w3.org/TR/html401/interact/forms.html#h-17.13.2
-
-	// types which indicate a submit action and are not successful controls
-	// these will be ignored
-	var k_r_submitter = /^(?:submit|button|image|reset|file)$/i;
-
-	// node names which could be successful controls
-	var k_r_success_contrls = /^(?:input|select|textarea|keygen)/i;
-
-	// Matches bracket notation.
-	var brackets = /(\[[^\[\]]*\])/g;
-
-	// serializes form fields
-	// @param form MUST be an HTMLForm element
-	// @param options is an optional argument to configure the serialization. Default output
-	// with no options specified is a url encoded string
-	//    - hash: [true | false] Configure the output type. If true, the output will
-	//    be a js object.
-	//    - serializer: [function] Optional serializer function to override the default one.
-	//    The function takes 3 arguments (result, key, value) and should return new result
-	//    hash and url encoded str serializers are provided with this module
-	//    - disabled: [true | false]. If true serialize disabled fields.
-	//    - empty: [true | false]. If true serialize empty fields
-	function serialize(form, options) {
-	    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) != 'object') {
-	        options = { hash: !!options };
-	    } else if (options.hash === undefined) {
-	        options.hash = true;
-	    }
-
-	    var result = options.hash ? {} : '';
-	    var serializer = options.serializer || (options.hash ? hash_serializer : str_serialize);
-
-	    var elements = form && form.elements ? form.elements : [];
-
-	    //Object store each radio and set if it's empty or not
-	    var radio_store = Object.create(null);
-
-	    for (var i = 0; i < elements.length; ++i) {
-	        var element = elements[i];
-
-	        // ingore disabled fields
-	        if (!options.disabled && element.disabled || !element.name) {
-	            continue;
-	        }
-	        // ignore anything that is not considered a success field
-	        if (!k_r_success_contrls.test(element.nodeName) || k_r_submitter.test(element.type)) {
-	            continue;
-	        }
-
-	        var key = element.name;
-	        var val = element.value;
-
-	        // we can't just use element.value for checkboxes cause some browsers lie to us
-	        // they say "on" for value when the box isn't checked
-	        if ((element.type === 'checkbox' || element.type === 'radio') && !element.checked) {
-	            val = undefined;
-	        }
-
-	        // If we want empty elements
-	        if (options.empty) {
-	            // for checkbox
-	            if (element.type === 'checkbox') {
-	                if (options.realBooleans) {
-	                    val = element.checked;
-	                } else {
-	                    val = element.checked ? element.value : '';
-	                }
-	            }
-
-	            // for radio
-	            if (element.type === 'radio') {
-	                if (!radio_store[element.name] && !element.checked) {
-	                    radio_store[element.name] = false;
-	                } else if (element.checked) {
-	                    radio_store[element.name] = true;
-	                }
-	            }
-
-	            // if options empty is true, continue only if its radio
-	            if (!val && element.type == 'radio') {
-	                continue;
-	            }
-	        } else {
-	            // value-less fields are ignored unless options.empty is true
-	            if (!val) {
-	                continue;
-	            }
-	        }
-
-	        // multi select boxes
-	        if (element.type === 'select-multiple') {
-	            val = [];
-
-	            var selectOptions = element.options;
-	            var isSelectedOptions = false;
-	            for (var j = 0; j < selectOptions.length; ++j) {
-	                var option = selectOptions[j];
-	                var allowedEmpty = options.empty && !option.value;
-	                var hasValue = option.value || allowedEmpty;
-	                if (option.selected && hasValue) {
-	                    isSelectedOptions = true;
-
-	                    // If using a hash serializer be sure to add the
-	                    // correct notation for an array in the multi-select
-	                    // context. Here the name attribute on the select element
-	                    // might be missing the trailing bracket pair. Both names
-	                    // "foo" and "foo[]" should be arrays.
-	                    if (options.hash && key.slice(key.length - 2) !== '[]') {
-	                        result = serializer(result, key + '[]', option.value);
-	                    } else {
-	                        result = serializer(result, key, option.value);
-	                    }
-	                }
-	            }
-
-	            // Serialize if no selected options and options.empty is true
-	            if (!isSelectedOptions && options.empty) {
-	                result = serializer(result, key, '');
-	            }
-
-	            continue;
-	        }
-
-	        result = serializer(result, key, val);
-	    }
-
-	    // Check for all empty radio buttons and serialize them with key=""
-	    if (options.empty) {
-	        for (var key in radio_store) {
-	            if (!radio_store[key]) {
-	                result = serializer(result, key, '');
-	            }
-	        }
-	    }
-
-	    return result;
-	}
-
-	function parse_keys(string) {
-	    var keys = [];
-	    var prefix = /^([^\[\]]*)/;
-	    var children = new RegExp(brackets);
-	    var match = prefix.exec(string);
-
-	    if (match[1]) {
-	        keys.push(match[1]);
-	    }
-
-	    while ((match = children.exec(string)) !== null) {
-	        keys.push(match[1]);
-	    }
-
-	    return keys;
-	}
-
-	function hash_assign(result, keys, value) {
-	    if (keys.length === 0) {
-	        result = value;
-	        return result;
-	    }
-
-	    var key = keys.shift();
-	    var between = key.match(/^\[(.+?)\]$/);
-
-	    if (key === '[]') {
-	        result = result || [];
-
-	        if (Array.isArray(result)) {
-	            result.push(hash_assign(null, keys, value));
-	        } else {
-	            // This might be the result of bad name attributes like "[][foo]",
-	            // in this case the original `result` object will already be
-	            // assigned to an object literal. Rather than coerce the object to
-	            // an array, or cause an exception the attribute "_values" is
-	            // assigned as an array.
-	            result._values = result._values || [];
-	            result._values.push(hash_assign(null, keys, value));
-	        }
-
-	        return result;
-	    }
-
-	    // Key is an attribute name and can be assigned directly.
-	    if (!between) {
-	        result[key] = hash_assign(result[key], keys, value);
-	    } else {
-	        var string = between[1];
-	        // +var converts the variable into a number
-	        // better than parseInt because it doesn't truncate away trailing
-	        // letters and actually fails if whole thing is not a number
-	        var index = +string;
-
-	        // If the characters between the brackets is not a number it is an
-	        // attribute name and can be assigned directly.
-	        if (isNaN(index)) {
-	            result = result || {};
-	            result[string] = hash_assign(result[string], keys, value);
-	        } else {
-	            result = result || [];
-	            result[index] = hash_assign(result[index], keys, value);
-	        }
-	    }
-
-	    return result;
-	}
-
-	// Object/hash encoding serializer.
-	function hash_serializer(result, key, value) {
-	    var matches = key.match(brackets);
-
-	    // Has brackets? Use the recursive assignment function to walk the keys,
-	    // construct any missing objects in the result tree and make the assignment
-	    // at the end of the chain.
-	    if (matches) {
-	        var keys = parse_keys(key);
-	        hash_assign(result, keys, value);
-	    } else {
-	        // Non bracket notation can make assignments directly.
-	        var existing = result[key];
-
-	        // If the value has been assigned already (for instance when a radio and
-	        // a checkbox have the same name attribute) convert the previous value
-	        // into an array before pushing into it.
-	        //
-	        // NOTE: If this requirement were removed all hash creation and
-	        // assignment could go through `hash_assign`.
-	        if (existing) {
-	            if (!Array.isArray(existing)) {
-	                result[key] = [existing];
-	            }
-
-	            result[key].push(value);
-	        } else {
-	            result[key] = value;
-	        }
-	    }
-
-	    return result;
-	}
-
-	// urlform encoding serializer
-	function str_serialize(result, key, value) {
-	    // encode newlines as \r\n cause the html spec says so
-	    value = value.replace(/(\r)?\n/g, '\r\n');
-	    value = encodeURIComponent(value);
-
-	    // spaces should be '+' rather than '%20'.
-	    value = value.replace(/%20/g, '+');
-	    return result + (result ? '&' : '') + encodeURIComponent(key) + '=' + value;
-	}
-
-/***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11229,6 +11068,9 @@ webpackJsonp([0],[
 	exports.persistenceMiddleware = persistenceMiddleware;
 	exports.saveToLocalStorage = saveToLocalStorage;
 	exports.loadFromLocalStorage = loadFromLocalStorage;
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 	function persistenceMiddleware(_ref) {
 	    var getState = _ref.getState;
 
@@ -11243,7 +11085,11 @@ webpackJsonp([0],[
 	}
 
 	function saveToLocalStorage(state) {
-	    window.localStorage.setItem("appState", JSON.stringify(state));
+	    var form = state.form;
+
+	    var savableState = _objectWithoutProperties(state, ["form"]);
+
+	    window.localStorage.setItem("appState", JSON.stringify(savableState));
 	}
 
 	function loadFromLocalStorage() {
@@ -11260,7 +11106,6 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 313 */,
 /* 314 */,
 /* 315 */,
 /* 316 */,
@@ -11273,7 +11118,8 @@ webpackJsonp([0],[
 /* 323 */,
 /* 324 */,
 /* 325 */,
-/* 326 */
+/* 326 */,
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11422,7 +11268,7 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11430,7 +11276,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.ConfigDialog = exports.Widget = exports.TYPE_INFO = undefined;
+	exports.Widget = exports.TYPE_INFO = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11450,9 +11296,12 @@ webpackJsonp([0],[
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "text",
-	    defaultProps: {
-	        name: "Text"
-	    }
+	    settings: [{
+	        id: 'text',
+	        name: 'Text',
+	        type: 'string',
+	        description: "Some text that will be displayed ..."
+	    }]
 	};
 
 	var Widget = exports.Widget = function (_Component) {
@@ -11478,79 +11327,8 @@ webpackJsonp([0],[
 	    return Widget;
 	}(_react.Component);
 
-	var ConfigDialog = function (_React$Component) {
-	    _inherits(ConfigDialog, _React$Component);
-
-	    function ConfigDialog(props) {
-	        _classCallCheck(this, ConfigDialog);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ConfigDialog).call(this, props));
-	    }
-
-	    /**
-	     * Handle positive action on the config dialog.
-	     * Return false to prevent closing.
-	     * Return the widget props that should be used for the widget after save
-	     */
-
-
-	    _createClass(ConfigDialog, [{
-	        key: 'handlePositive',
-	        value: function handlePositive() {
-	            var result = {
-	                text: this.input.value
-	            };
-	            this.input.value = "";
-	            return result;
-	        }
-	    }, {
-	        key: 'handleDeny',
-	        value: function handleDeny() {
-	            this.input.value = "";
-	            return true;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this3 = this;
-
-	            if (this.input) {
-	                this.input.value = this.props.widgetProps.text || "";
-	            }
-
-	            return React.createElement(
-	                'div',
-	                { className: 'content' },
-	                React.createElement(
-	                    'form',
-	                    { className: 'ui form' },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'field' },
-	                        React.createElement(
-	                            'label',
-	                            null,
-	                            'Text'
-	                        ),
-	                        React.createElement('input', { type: 'text', name: 'first-name', placeholder: 'Content of the widget',
-	                            defaultValue: this.props.widgetProps.text,
-	                            ref: function ref(node) {
-	                                _this3.input = node;
-	                            }
-	                        })
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ConfigDialog;
-	}(React.Component);
-
-	exports.ConfigDialog = ConfigDialog;
-
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11566,11 +11344,11 @@ webpackJsonp([0],[
 
 	var React = _interopRequireWildcard(_react);
 
-	var _d = __webpack_require__(329);
+	var _d = __webpack_require__(330);
 
 	var d3 = _interopRequireWildcard(_d);
 
-	var _c = __webpack_require__(330);
+	var _c = __webpack_require__(331);
 
 	var c3 = _interopRequireWildcard(_c);
 
@@ -11648,9 +11426,9 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 329 */,
 /* 330 */,
-/* 331 */
+/* 331 */,
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11662,7 +11440,7 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _chai = __webpack_require__(269);
+	var _chai = __webpack_require__(271);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -11671,7 +11449,50 @@ webpackJsonp([0],[
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "random",
 	    name: "Random",
-	    settings: {
+	    settings: [{
+	        id: 'string',
+	        name: 'some String w/o description',
+	        type: 'string',
+	        defaultValue: "Some default value"
+	    }, {
+	        id: 'text',
+	        name: 'some Text',
+	        type: 'text',
+	        defaultValue: "Some default value",
+	        description: "This is pretty self explanatory..."
+	    }, {
+	        id: 'bool',
+	        name: 'some Boolean',
+	        type: 'boolean',
+	        defaultValue: true,
+	        description: "This is pretty self explanatory..."
+	    }, {
+	        id: 'multi',
+	        name: 'some Options',
+	        type: 'option',
+	        description: "This is pretty self explanatory...",
+	        defaultValue: "old",
+	        options: [{
+	            "name": "0-50",
+	            "value": "young"
+	        }, {
+	            "name": "51-100",
+	            "value": "old"
+	        }]
+	    }, {
+	        id: 'multi2',
+	        name: 'option w/o default',
+	        type: 'option',
+	        description: "This is pretty self explanatory...",
+	        options: [{
+	            "name": "0-50",
+	            "value": "young"
+	        }, {
+	            "name": "51-100",
+	            "value": "old"
+	        }]
+	    }],
+	    settingsX: {
 	        string: {
 	            name: 'some String w/o description',
 	            type: 'string',
@@ -11745,7 +11566,7 @@ webpackJsonp([0],[
 	}();
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11757,7 +11578,7 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _chai = __webpack_require__(269);
+	var _chai = __webpack_require__(271);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
