@@ -31,21 +31,21 @@ webpackJsonp([0],[
 
 	var _pageLayout2 = _interopRequireDefault(_pageLayout);
 
-	var _persistence = __webpack_require__(313);
+	var _persistence = __webpack_require__(315);
 
 	var Persist = _interopRequireWildcard(_persistence);
 
-	__webpack_require__(314);
+	__webpack_require__(316);
 
-	__webpack_require__(322);
+	__webpack_require__(324);
 
-	__webpack_require__(323);
+	__webpack_require__(325);
 
-	var _reduxLogger = __webpack_require__(325);
+	var _reduxLogger = __webpack_require__(327);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reduxThunk = __webpack_require__(326);
+	var _reduxThunk = __webpack_require__(328);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -57,11 +57,11 @@ webpackJsonp([0],[
 
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 
-	var _layouts = __webpack_require__(266);
+	var _layouts = __webpack_require__(268);
 
 	var Layouts = _interopRequireWildcard(_layouts);
 
-	var _datasource = __webpack_require__(270);
+	var _datasource = __webpack_require__(272);
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
@@ -71,27 +71,31 @@ webpackJsonp([0],[
 
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 
-	var _timeWidget = __webpack_require__(327);
+	var _timeWidget = __webpack_require__(329);
 
 	var TimeWidget = _interopRequireWildcard(_timeWidget);
 
-	var _textWidget = __webpack_require__(328);
+	var _textWidget = __webpack_require__(330);
 
 	var TextWidget = _interopRequireWildcard(_textWidget);
 
-	var _chartWidget = __webpack_require__(329);
+	var _chartWidget = __webpack_require__(331);
 
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 
-	var _datasourcePlugins = __webpack_require__(311);
+	var _datasourceWorker = __webpack_require__(313);
+
+	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
+
+	var _datasourcePlugins = __webpack_require__(244);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _randomDatasource = __webpack_require__(332);
+	var _randomDatasource = __webpack_require__(334);
 
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 
-	var _timeDatasource = __webpack_require__(333);
+	var _timeDatasource = __webpack_require__(335);
 
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 
@@ -99,17 +103,17 @@ webpackJsonp([0],[
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	// Reducers
-
-	// Redux Middleware
-
-
-	_widgetPlugins2.default.register(TimeWidget);
 	// Datasources
 
 	// Widgets
 
 	// Css
+
+
+	_widgetPlugins2.default.register(TimeWidget);
+	// Reducers
+
+	// Redux Middleware
 
 	_widgetPlugins2.default.register(TextWidget);
 	_widgetPlugins2.default.register(ChartWidget);
@@ -142,6 +146,8 @@ webpackJsonp([0],[
 	var logger = (0, _reduxLogger2.default)();
 	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware, logger // must be last
 	));
+
+	DatasourceWorker.updateWorkers(store.getState().datasources, store.dispatch);
 
 	var element = document.getElementById('app');
 
@@ -400,9 +406,9 @@ webpackJsonp([0],[
 
 	var _widgetGrid = __webpack_require__(230);
 
-	var WidgetGrid = _interopRequireWildcard(_widgetGrid);
+	var _widgetGrid2 = _interopRequireDefault(_widgetGrid);
 
-	var _navigation = __webpack_require__(264);
+	var _navigation = __webpack_require__(266);
 
 	var Nav = _interopRequireWildcard(_navigation);
 
@@ -410,7 +416,7 @@ webpackJsonp([0],[
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _layouts = __webpack_require__(265);
+	var _layouts = __webpack_require__(267);
 
 	var Layouts = _interopRequireWildcard(_layouts);
 
@@ -418,15 +424,15 @@ webpackJsonp([0],[
 
 	var _widgetConfigDialog2 = _interopRequireDefault(_widgetConfigDialog);
 
-	var _import = __webpack_require__(267);
+	var _import = __webpack_require__(269);
 
 	var Import = _interopRequireWildcard(_import);
 
-	var _datasourceConfigDialog = __webpack_require__(269);
+	var _datasourceConfigDialog = __webpack_require__(271);
 
 	var _datasourceConfigDialog2 = _interopRequireDefault(_datasourceConfigDialog);
 
-	var _datasourceNavItem = __webpack_require__(312);
+	var _datasourceNavItem = __webpack_require__(314);
 
 	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 
@@ -509,20 +515,20 @@ webpackJsonp([0],[
 	                            "Dashboard"
 	                        ),
 	                        React.createElement(Import.TopNavItem, null),
-	                        React.createElement(Layouts.TopNavItem, null),
-	                        React.createElement(_datasourceNavItem2.default, null),
 	                        React.createElement(
 	                            "a",
 	                            { className: "add-widget item" },
 	                            "New Widget ",
 	                            React.createElement("i", { className: "dropdown icon" })
-	                        )
+	                        ),
+	                        React.createElement(Layouts.TopNavItem, null),
+	                        React.createElement(_datasourceNavItem2.default, null)
 	                    )
 	                ),
 	                React.createElement(
 	                    "div",
 	                    { className: "ui grid" },
-	                    React.createElement(WidgetGrid.WidgetGrid, null)
+	                    React.createElement(_widgetGrid2.default, null)
 	                )
 	            );
 	        }
@@ -542,7 +548,6 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.WidgetGrid = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -560,11 +565,17 @@ webpackJsonp([0],[
 
 	var Widgets = _interopRequireWildcard(_widgets);
 
+	var _widgetFrame = __webpack_require__(243);
+
+	var _widgetFrame2 = _interopRequireDefault(_widgetFrame);
+
 	var _widgetConfig = __webpack_require__(233);
 
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 
-	var _reactGridLayout = __webpack_require__(243);
+	var _reactGridLayout = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -576,7 +587,8 @@ webpackJsonp([0],[
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	__webpack_require__(260);
+	__webpack_require__(262);
+	var Prop = React.PropTypes;
 
 	var ResponsiveGrid = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
 
@@ -601,10 +613,17 @@ webpackJsonp([0],[
 	        value: function render() {
 	            var _React$createElement;
 
+	            var props = this.props;
 	            var widgetData = this.props.widgets || [];
+	            // WidgetFrame must be loaded as function, else the grid is not working properly.
 	            var widgets = widgetData.map(function (data) {
-	                return Widgets.WidgetFrame(data);
+	                return (0, _widgetFrame2.default)({ widget: data, datasources: props.datasources });
 	            });
+	            /* //Does NOT work that way:
+	             let widgets = widgetData.map((data) => <WidgetFrame {...data}
+	             key={data.id}
+	             _grid={{x: data.col, y: data.row, w: data.width, h: data.height}}
+	             />);*/
 	            return React.createElement(
 	                ResponsiveGrid,
 	                (_React$createElement = { className: 'column', cols: 12, rowHeight: 200,
@@ -618,11 +637,18 @@ webpackJsonp([0],[
 	    return WidgetGrid;
 	}(_react.Component);
 
-	var WidgetGridContainer = (0, _reactRedux.connect)(function (state) {
+	WidgetGrid.propTypes = {
+	    widgets: Prop.array.isRequired,
+	    datasources: Prop.object.isRequired,
+	    onLayoutChange: Prop.func
+	};
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return {
 	        widgets: Object.keys(state.widgets).map(function (id) {
 	            return state.widgets[id];
-	        }) || []
+	        }) || [],
+	        datasources: state.datasources || {}
 	    };
 	}, function (dispatch) {
 	    return {
@@ -631,7 +657,6 @@ webpackJsonp([0],[
 	        }
 	    };
 	})(WidgetGrid);
-	exports.WidgetGrid = WidgetGridContainer;
 
 /***/ },
 /* 231 */
@@ -642,9 +667,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.ConfigWidgetButton = exports.DeleteWidgetButton = exports.WidgetFrame = exports.initialWidgets = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	exports.initialWidgets = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -684,12 +707,6 @@ webpackJsonp([0],[
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var initialWidgets = exports.initialWidgets = {
 	    "initial_time_widget": {
@@ -769,7 +786,7 @@ webpackJsonp([0],[
 	    };
 	}
 
-	var widgetsCrudReducer = (0, _reducer.genCrudReducer)([_actionNames.ADD_WIDGET, _actionNames.UPDATE_WIDGET_PROPS, _actionNames.DELETE_WIDGET], widget);
+	var widgetsCrudReducer = (0, _reducer.genCrudReducer)([_actionNames.ADD_WIDGET, _actionNames.DELETE_WIDGET], widget);
 	function widgets() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialWidgets : arguments[0];
 	    var action = arguments[1];
@@ -823,97 +840,6 @@ webpackJsonp([0],[
 	            return state;
 	    }
 	}
-
-	/**
-	 * The Dragable Frame of a Widget.
-	 * Contains generic UI controls, shared by all Widgets
-	 */
-	var WidgetFrame = exports.WidgetFrame = function WidgetFrame(widgetState) {
-	    var widget = _widgetPlugins2.default.getPlugin(widgetState.type);
-	    console.assert(widget, "No registered widget with type: " + widgetState.type);
-	    return React.createElement(
-	        'div',
-	        { className: 'ui raised segments',
-	            style: { margin: 0 },
-	            key: widgetState.id,
-	            _grid: { x: widgetState.col, y: widgetState.row, w: widgetState.width, h: widgetState.height } },
-	        React.createElement(
-	            'div',
-	            { className: 'ui inverted segment' },
-	            React.createElement(
-	                'div',
-	                { className: 'ui tiny horizontal right floated inverted list' },
-	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
-	                    visible: widget.configDialog ? true : false, icon: 'configure' }),
-	                React.createElement(
-	                    'a',
-	                    { className: 'right item drag' },
-	                    React.createElement('i', { className: 'move icon drag' })
-	                ),
-	                React.createElement(DeleteWidgetButton, { className: 'right floated item', widgetState: widgetState, icon: 'remove' })
-	            ),
-	            React.createElement(
-	                'div',
-	                { className: 'ui item top attached' },
-	                widgetState.props.name || ' '
-	            )
-	        ),
-	        React.createElement(
-	            'div',
-	            { className: 'ui segment' },
-	            React.createElement(widget.widget, _extends({}, widgetState.props, { _state: widgetState }))
-	        )
-	    );
-	};
-
-	var WidgetButton = function (_React$Component) {
-	    _inherits(WidgetButton, _React$Component);
-
-	    function WidgetButton() {
-	        _classCallCheck(this, WidgetButton);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(WidgetButton).apply(this, arguments));
-	    }
-
-	    _createClass(WidgetButton, [{
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            var data = this.props.widgetState;
-	            return React.createElement(
-	                'a',
-	                { className: this.props.className + (this.props.visible !== false ? "" : " hidden transition"),
-	                    onClick: function onClick() {
-	                        return _this2.props.onClick(data);
-	                    } },
-	                React.createElement('i', { className: this.props.icon + " icon" })
-	            );
-	        }
-	    }]);
-
-	    return WidgetButton;
-	}(React.Component);
-
-	var DeleteWidgetButton = exports.DeleteWidgetButton = (0, _reactRedux.connect)(function (state) {
-	    return {};
-	}, function (dispatch) {
-	    return {
-	        onClick: function onClick(widgetState) {
-	            dispatch(deleteWidget(widgetState.id));
-	        }
-	    };
-	})(WidgetButton);
-
-	var ConfigWidgetButton = exports.ConfigWidgetButton = (0, _reactRedux.connect)(function (state) {
-	    return {};
-	}, function (dispatch) {
-	    return {
-	        onClick: function onClick(widgetState) {
-	            dispatch(WidgetConfig.openWidgetConfigDialog(widgetState.id));
-	        }
-	    };
-	})(WidgetButton);
 
 	// Local functions
 
@@ -1180,6 +1106,8 @@ webpackJsonp([0],[
 	var UPDATE_DATASOURCE = exports.UPDATE_DATASOURCE = "UPDATE_DATASOURCE";
 	var DELETE_DATASOURCE = exports.DELETE_DATASOURCE = "DELETE_DATASOURCE";
 
+	var SET_DATASOURCE_DATA = exports.SET_DATASOURCE_DATA = "SET_DATASOURCE_DATA";
+
 /***/ },
 /* 236 */
 /***/ function(module, exports, __webpack_require__) {
@@ -1320,7 +1248,9 @@ webpackJsonp([0],[
 	            var initialValues = settings.reduce(function (initialValues, setting) {
 	                initialValues[setting.id] = setting.defaultValue;
 	                return initialValues;
-	            }, _extends({}, props.widgetProps));
+	            }, {});
+	            // Overwrite with current widget props
+	            initialValues = _extends({}, initialValues, props.widgetProps);
 
 	            return _react2.default.createElement(
 	                _modal2.default,
@@ -1663,6 +1593,8 @@ webpackJsonp([0],[
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(173);
+
 	var _elements = __webpack_require__(240);
 
 	var ui = _interopRequireWildcard(_elements);
@@ -1769,6 +1701,7 @@ webpackJsonp([0],[
 	};
 
 	function SettingsInput(props) {
+
 	    switch (props.type) {
 	        case "text":
 	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
@@ -1793,8 +1726,11 @@ webpackJsonp([0],[
 	                    );
 	                })
 	            );
+	        case "datasource":
+	            return _react2.default.createElement(DatasourceInputContainer, props);
 	        default:
 	            console.error("Unknown type for settings field: " + props.type);
+	            return _react2.default.createElement('input', { placeholder: props.description, readonly: true, value: "Unknown field type: " + props.type });
 	    }
 	}
 
@@ -1805,6 +1741,37 @@ webpackJsonp([0],[
 	        value: Prop.string.isRequired
 	    }.isRequired))
 	};
+
+	function DatasourceInput(props) {
+	    var datasources = props.datasources;
+
+	    return _react2.default.createElement(
+	        'select',
+	        _extends({ className: 'ui fluid dropdown' }, props.field),
+	        _react2.default.createElement(
+	            'option',
+	            null,
+	            "Select " + props.name + " ..."
+	        ),
+	        (0, _collection.valuesOf)(datasources, "id").map(function (ds) {
+	            return _react2.default.createElement(
+	                'option',
+	                { key: ds.id, value: ds.id },
+	                ds.props.name + " (" + ds.type + ")"
+	            );
+	        })
+	    );
+	}
+
+	DatasourceInput.propTypes = {
+	    datasources: Prop.object.isRequired
+	};
+
+	var DatasourceInputContainer = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        datasources: state.datasources
+	    };
+	})(DatasourceInput);
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238)))
 
 /***/ },
@@ -1843,16 +1810,14 @@ webpackJsonp([0],[
 	function genCrudReducer(actionNames, elementReducer) {
 	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
 
-	    console.assert(actionNames.length === 3, "ActionNames must contain 3 names for create, update, delete in that order");
+	    console.assert(actionNames.length === 2, "ActionNames must contain 2 names for create, delete in that order");
 
-	    var _actionNames = _slicedToArray(actionNames, 3);
+	    var _actionNames = _slicedToArray(actionNames, 2);
 
 	    var CREATE_ACTION = _actionNames[0];
-	    var UPDATE_ACTION = _actionNames[1];
-	    var DELETE_ACTION = _actionNames[2];
+	    var DELETE_ACTION = _actionNames[1];
 
 	    console.assert(CREATE_ACTION.includes("ADD") || CREATE_ACTION.includes("CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
-	    console.assert(UPDATE_ACTION.includes("UPDATE"), "The update action name should probably contain UPDATE, but is: " + UPDATE_ACTION);
 	    console.assert(DELETE_ACTION.includes("DELETE") || DELETE_ACTION.includes("REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
 
 	    return function crudReducer(state, action) {
@@ -1866,20 +1831,228 @@ webpackJsonp([0],[
 	                var newState = _objectWithoutProperties(state, [id]);
 
 	                return newState;
-	            case UPDATE_ACTION:
-	                //if(id === undefined) return state;
-	                var elementState = state[id];
-	                console.assert(elementState, "Can not find element with id: " + id);
-	                return _extends({}, state, _defineProperty({}, id, elementReducer(elementState, action)));
 	            default:
-	                return state;
+	                // Update if we have an id property
+	                if (id === undefined) return state;
+	                var elementState = state[id];
+	                if (elementState == undefined) {
+	                    // Do not update what we don't have.
+	                    console.log("No element with id ", id, "in state ", state);
+	                    return state;
+	                }
+	                var updatedElement = elementReducer(elementState, action);
+	                if (updatedElement == undefined) {
+	                    console.error("ElementReducer has some problem: ", elementReducer, " with action: ", action);
+	                    throw new Error("Reducer must return the original state if they not implement the action. Check action " + action.type + ".");
+	                }
+
+	                return _extends({}, state, _defineProperty({}, id, updatedElement));
 	        }
 	    };
 	}
 
 /***/ },
-/* 243 */,
-/* 244 */,
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(2);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _widgetConfig = __webpack_require__(233);
+
+	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
+
+	var _widgetPlugins = __webpack_require__(234);
+
+	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
+
+	var _datasourcePlugins = __webpack_require__(244);
+
+	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Prop = React.PropTypes;
+
+	/**
+	 * The Dragable Frame of a Widget.
+	 * Contains generic UI controls, shared by all Widgets
+	 */
+	var WidgetFrame = function WidgetFrame(props) {
+	    var widgetState = props.widget;
+
+	    var widget = _widgetPlugins2.default.getPlugin(widgetState.type);
+	    console.assert(widget, "No registered widget with type: " + widgetState.type);
+
+	    var datasourceResolver = function datasourceResolver(id) {
+	        var ds = props.datasources[id];
+	        if (!ds) {
+	            console.warn("Can not find Datasource with id " + id + "for widget: ", widgetState);
+	        }
+	        return ds;
+	    };
+
+	    return React.createElement(
+	        'div',
+	        { className: 'ui raised segments',
+	            style: { margin: 0 },
+	            key: widgetState.id,
+	            _grid: { x: widgetState.col, y: widgetState.row, w: widgetState.width, h: widgetState.height } },
+	        React.createElement(
+	            'div',
+	            { className: 'ui inverted segment' },
+	            React.createElement(
+	                'div',
+	                { className: 'ui tiny horizontal right floated inverted list' },
+	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
+	                    visible: widget.settings ? true : false, icon: 'configure' }),
+	                React.createElement(
+	                    'a',
+	                    { className: 'right item drag' },
+	                    React.createElement('i', { className: 'move icon drag' })
+	                ),
+	                React.createElement(DeleteWidgetButton, { className: 'right floated item', widgetState: widgetState, icon: 'remove' })
+	            ),
+	            React.createElement(
+	                'div',
+	                { className: 'ui item top attached' },
+	                widgetState.props.name || ' '
+	            )
+	        ),
+	        React.createElement(
+	            'div',
+	            { className: 'ui segment' },
+	            React.createElement(widget.widget, _extends({}, widgetState.props, {
+	                _state: widgetState,
+	                getDatasource: datasourceResolver
+	            }))
+	        )
+	    );
+	};
+
+	exports.default = WidgetFrame;
+
+	var WidgetButton = function (_React$Component) {
+	    _inherits(WidgetButton, _React$Component);
+
+	    function WidgetButton() {
+	        _classCallCheck(this, WidgetButton);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(WidgetButton).apply(this, arguments));
+	    }
+
+	    _createClass(WidgetButton, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var data = this.props.widgetState;
+	            return React.createElement(
+	                'a',
+	                { className: this.props.className + (this.props.visible !== false ? "" : " hidden transition"),
+	                    onClick: function onClick() {
+	                        return _this2.props.onClick(data);
+	                    } },
+	                React.createElement('i', { className: this.props.icon + " icon" })
+	            );
+	        }
+	    }]);
+
+	    return WidgetButton;
+	}(React.Component);
+
+	var DeleteWidgetButton = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, function (dispatch) {
+	    return {
+	        onClick: function onClick(widgetState) {
+	            dispatch(deleteWidget(widgetState.id));
+	        }
+	    };
+	})(WidgetButton);
+
+	var ConfigWidgetButton = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, function (dispatch) {
+	    return {
+	        onClick: function onClick(widgetState) {
+	            dispatch(WidgetConfig.openWidgetConfigDialog(widgetState.id));
+	        }
+	    };
+	})(WidgetButton);
+
+/***/ },
+/* 244 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var PluginRegistry = exports.PluginRegistry = function () {
+	    function PluginRegistry() {
+	        _classCallCheck(this, PluginRegistry);
+
+	        this.datasources = {};
+	    }
+
+	    _createClass(PluginRegistry, [{
+	        key: "register",
+	        value: function register(module) {
+	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
+	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
+	                datasource: module.Datasource,
+	                configDialog: module.ConfigDialog ? module.ConfigDialog : null
+	            });
+	        }
+	    }, {
+	        key: "getPlugin",
+	        value: function getPlugin(type) {
+	            return this.datasources[type];
+	        }
+	    }, {
+	        key: "getPlugins",
+	        value: function getPlugins() {
+	            return _extends({}, this.datasources);
+	        }
+	    }]);
+
+	    return PluginRegistry;
+	}();
+
+	var DatasourcePlugins = new PluginRegistry();
+	exports.default = DatasourcePlugins;
+
+/***/ },
 /* 245 */,
 /* 246 */,
 /* 247 */,
@@ -1899,7 +2072,9 @@ webpackJsonp([0],[
 /* 261 */,
 /* 262 */,
 /* 263 */,
-/* 264 */
+/* 264 */,
+/* 265 */,
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1936,7 +2111,7 @@ webpackJsonp([0],[
 	})(_elements.LinkItem);
 
 /***/ },
-/* 265 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1958,7 +2133,7 @@ webpackJsonp([0],[
 
 	var _collection = __webpack_require__(239);
 
-	var _layouts = __webpack_require__(266);
+	var _layouts = __webpack_require__(268);
 
 	var Layouts = _interopRequireWildcard(_layouts);
 
@@ -2159,7 +2334,7 @@ webpackJsonp([0],[
 	})(ui.LinkItem);
 
 /***/ },
-/* 266 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2258,7 +2433,7 @@ webpackJsonp([0],[
 	    };
 	}
 
-	var layoutCrudReducer = (0, _reducer.genCrudReducer)([_actionNames.ADD_LAYOUT, _actionNames.UPDATE_LAYOUT, _actionNames.DELETE_LAYOUT], layout);
+	var layoutCrudReducer = (0, _reducer.genCrudReducer)([_actionNames.ADD_LAYOUT, _actionNames.DELETE_LAYOUT], layout);
 	function layouts() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialLayouts : arguments[0];
 	    var action = arguments[1];
@@ -2306,7 +2481,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 267 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2324,7 +2499,7 @@ webpackJsonp([0],[
 
 	var _reactRedux = __webpack_require__(173);
 
-	var _import = __webpack_require__(268);
+	var _import = __webpack_require__(270);
 
 	var Import = _interopRequireWildcard(_import);
 
@@ -2468,7 +2643,7 @@ webpackJsonp([0],[
 	exports.Modal = ModalContainer;
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2489,7 +2664,7 @@ webpackJsonp([0],[
 
 	var _actionNames = __webpack_require__(235);
 
-	var _layouts = __webpack_require__(266);
+	var _layouts = __webpack_require__(268);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2523,7 +2698,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2546,11 +2721,11 @@ webpackJsonp([0],[
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _datasource = __webpack_require__(270);
+	var _datasource = __webpack_require__(272);
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
-	var _datasourcePlugins = __webpack_require__(311);
+	var _datasourcePlugins = __webpack_require__(244);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
@@ -2647,7 +2822,7 @@ webpackJsonp([0],[
 	            var datasources = _datasourcePlugins2.default.getPlugins();
 	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: [] };
 
-	            var settings = [].concat(_toConsumableArray(selectedSource.settings));
+	            var settings = [].concat(_toConsumableArray(selectedSource.settings || []));
 	            settings.unshift({
 	                id: 'name',
 	                name: 'Name',
@@ -2747,7 +2922,7 @@ webpackJsonp([0],[
 	})(DatasourceConfigModal);
 
 /***/ },
-/* 270 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2755,15 +2930,19 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	exports.addDatasource = addDatasource;
 	exports.deleteDatasource = deleteDatasource;
+	exports.setDatasourceData = setDatasourceData;
 	exports.datasources = datasources;
 
-	var _chai = __webpack_require__(271);
+	var _chai = __webpack_require__(273);
 
-	var _datasourcePlugins = __webpack_require__(311);
+	var _datasourceWorker = __webpack_require__(313);
 
-	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
+	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
 
 	var _reducer = __webpack_require__(242);
 
@@ -2776,8 +2955,6 @@ webpackJsonp([0],[
 	var Uuid = _interopRequireWildcard(_uuid);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var initialDatasources = {
 	    "my-random": {
@@ -2796,11 +2973,15 @@ webpackJsonp([0],[
 	        throw new Error("Can not add Datasource without Type");
 	    }
 
-	    return {
-	        type: Action.ADD_DATASOURCE,
-	        id: Uuid.generate(),
-	        dsType: dsType,
-	        props: props
+	    return function (dispatch, getState) {
+	        dispatch({
+	            type: Action.ADD_DATASOURCE,
+	            id: Uuid.generate(),
+	            dsType: dsType,
+	            props: props
+	        });
+	        var state = getState();
+	        DatasourceWorker.updateWorkers(state.datasources, dispatch);
 	    };
 	}
 
@@ -2811,7 +2992,15 @@ webpackJsonp([0],[
 	    };
 	}
 
-	var datasourceCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_DATASOURCE, Action.UPDATE_DATASOURCE, Action.DELETE_DATASOURCE], datasource);
+	function setDatasourceData(id, data) {
+	    return {
+	        type: Action.SET_DATASOURCE_DATA,
+	        id: id,
+	        data: data
+	    };
+	}
+
+	var datasourceCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_DATASOURCE, Action.DELETE_DATASOURCE], datasource);
 	function datasources() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialDatasources : arguments[0];
 	    var action = arguments[1];
@@ -2831,21 +3020,25 @@ webpackJsonp([0],[
 	                type: action.dsType,
 	                props: action.props
 	            };
-	        case Action.UPDATE_DATASOURCE:
+	        case Action.SET_DATASOURCE_DATA:
+	            console.log("Setting data to: ", action.data);
+	            return _extends({}, state, {
+	                data: action.data
+	            });
 	        default:
 	            return state;
 	    }
 	}
 
 /***/ },
-/* 271 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(272);
+	module.exports = __webpack_require__(274);
 
 
 /***/ },
-/* 272 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -2867,13 +3060,13 @@ webpackJsonp([0],[
 	 * Assertion Error
 	 */
 
-	exports.AssertionError = __webpack_require__(273);
+	exports.AssertionError = __webpack_require__(275);
 
 	/*!
 	 * Utils for plugins (not exported)
 	 */
 
-	var util = __webpack_require__(274);
+	var util = __webpack_require__(276);
 
 	/**
 	 * # .use(function)
@@ -2904,47 +3097,47 @@ webpackJsonp([0],[
 	 * Configuration
 	 */
 
-	var config = __webpack_require__(287);
+	var config = __webpack_require__(289);
 	exports.config = config;
 
 	/*!
 	 * Primary `Assertion` prototype
 	 */
 
-	var assertion = __webpack_require__(306);
+	var assertion = __webpack_require__(308);
 	exports.use(assertion);
 
 	/*!
 	 * Core Assertions
 	 */
 
-	var core = __webpack_require__(307);
+	var core = __webpack_require__(309);
 	exports.use(core);
 
 	/*!
 	 * Expect interface
 	 */
 
-	var expect = __webpack_require__(308);
+	var expect = __webpack_require__(310);
 	exports.use(expect);
 
 	/*!
 	 * Should interface
 	 */
 
-	var should = __webpack_require__(309);
+	var should = __webpack_require__(311);
 	exports.use(should);
 
 	/*!
 	 * Assert interface
 	 */
 
-	var assert = __webpack_require__(310);
+	var assert = __webpack_require__(312);
 	exports.use(assert);
 
 
 /***/ },
-/* 273 */
+/* 275 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3062,7 +3255,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 274 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3081,124 +3274,124 @@ webpackJsonp([0],[
 	 * test utility
 	 */
 
-	exports.test = __webpack_require__(275);
+	exports.test = __webpack_require__(277);
 
 	/*!
 	 * type utility
 	 */
 
-	exports.type = __webpack_require__(277);
+	exports.type = __webpack_require__(279);
 
 	/*!
 	 * expectTypes utility
 	 */
-	exports.expectTypes = __webpack_require__(279);
+	exports.expectTypes = __webpack_require__(281);
 
 	/*!
 	 * message utility
 	 */
 
-	exports.getMessage = __webpack_require__(280);
+	exports.getMessage = __webpack_require__(282);
 
 	/*!
 	 * actual utility
 	 */
 
-	exports.getActual = __webpack_require__(281);
+	exports.getActual = __webpack_require__(283);
 
 	/*!
 	 * Inspect util
 	 */
 
-	exports.inspect = __webpack_require__(282);
+	exports.inspect = __webpack_require__(284);
 
 	/*!
 	 * Object Display util
 	 */
 
-	exports.objDisplay = __webpack_require__(286);
+	exports.objDisplay = __webpack_require__(288);
 
 	/*!
 	 * Flag utility
 	 */
 
-	exports.flag = __webpack_require__(276);
+	exports.flag = __webpack_require__(278);
 
 	/*!
 	 * Flag transferring utility
 	 */
 
-	exports.transferFlags = __webpack_require__(288);
+	exports.transferFlags = __webpack_require__(290);
 
 	/*!
 	 * Deep equal utility
 	 */
 
-	exports.eql = __webpack_require__(289);
+	exports.eql = __webpack_require__(291);
 
 	/*!
 	 * Deep path value
 	 */
 
-	exports.getPathValue = __webpack_require__(297);
+	exports.getPathValue = __webpack_require__(299);
 
 	/*!
 	 * Deep path info
 	 */
 
-	exports.getPathInfo = __webpack_require__(298);
+	exports.getPathInfo = __webpack_require__(300);
 
 	/*!
 	 * Check if a property exists
 	 */
 
-	exports.hasProperty = __webpack_require__(299);
+	exports.hasProperty = __webpack_require__(301);
 
 	/*!
 	 * Function name
 	 */
 
-	exports.getName = __webpack_require__(283);
+	exports.getName = __webpack_require__(285);
 
 	/*!
 	 * add Property
 	 */
 
-	exports.addProperty = __webpack_require__(300);
+	exports.addProperty = __webpack_require__(302);
 
 	/*!
 	 * add Method
 	 */
 
-	exports.addMethod = __webpack_require__(301);
+	exports.addMethod = __webpack_require__(303);
 
 	/*!
 	 * overwrite Property
 	 */
 
-	exports.overwriteProperty = __webpack_require__(302);
+	exports.overwriteProperty = __webpack_require__(304);
 
 	/*!
 	 * overwrite Method
 	 */
 
-	exports.overwriteMethod = __webpack_require__(303);
+	exports.overwriteMethod = __webpack_require__(305);
 
 	/*!
 	 * Add a chainable method
 	 */
 
-	exports.addChainableMethod = __webpack_require__(304);
+	exports.addChainableMethod = __webpack_require__(306);
 
 	/*!
 	 * Overwrite chainable method
 	 */
 
-	exports.overwriteChainableMethod = __webpack_require__(305);
+	exports.overwriteChainableMethod = __webpack_require__(307);
 
 
 /***/ },
-/* 275 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3211,7 +3404,7 @@ webpackJsonp([0],[
 	 * Module dependancies
 	 */
 
-	var flag = __webpack_require__(276);
+	var flag = __webpack_require__(278);
 
 	/**
 	 * # test(object, expression)
@@ -3232,7 +3425,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 276 */
+/* 278 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3271,14 +3464,14 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 277 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(278);
+	module.exports = __webpack_require__(280);
 
 
 /***/ },
-/* 278 */
+/* 280 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3418,7 +3611,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 279 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3441,9 +3634,9 @@ webpackJsonp([0],[
 	 * @api public
 	 */
 
-	var AssertionError = __webpack_require__(273);
-	var flag = __webpack_require__(276);
-	var type = __webpack_require__(277);
+	var AssertionError = __webpack_require__(275);
+	var flag = __webpack_require__(278);
+	var type = __webpack_require__(279);
 
 	module.exports = function (obj, types) {
 	  var obj = flag(obj, 'object');
@@ -3466,7 +3659,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 280 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3479,10 +3672,10 @@ webpackJsonp([0],[
 	 * Module dependancies
 	 */
 
-	var flag = __webpack_require__(276)
-	  , getActual = __webpack_require__(281)
-	  , inspect = __webpack_require__(282)
-	  , objDisplay = __webpack_require__(286);
+	var flag = __webpack_require__(278)
+	  , getActual = __webpack_require__(283)
+	  , inspect = __webpack_require__(284)
+	  , objDisplay = __webpack_require__(288);
 
 	/**
 	 * ### .getMessage(object, message, negateMessage)
@@ -3523,7 +3716,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 281 */
+/* 283 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3549,15 +3742,15 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 282 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// This is (almost) directly from Node.js utils
 	// https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-	var getName = __webpack_require__(283);
-	var getProperties = __webpack_require__(284);
-	var getEnumerableProperties = __webpack_require__(285);
+	var getName = __webpack_require__(285);
+	var getProperties = __webpack_require__(286);
+	var getEnumerableProperties = __webpack_require__(287);
 
 	module.exports = inspect;
 
@@ -3890,7 +4083,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 283 */
+/* 285 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3918,7 +4111,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 284 */
+/* 286 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3960,7 +4153,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 285 */
+/* 287 */
 /***/ function(module, exports) {
 
 	/*!
@@ -3992,7 +4185,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 286 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -4005,8 +4198,8 @@ webpackJsonp([0],[
 	 * Module dependancies
 	 */
 
-	var inspect = __webpack_require__(282);
-	var config = __webpack_require__(287);
+	var inspect = __webpack_require__(284);
+	var config = __webpack_require__(289);
 
 	/**
 	 * ### .objDisplay (object)
@@ -4048,7 +4241,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 287 */
+/* 289 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -4109,7 +4302,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 288 */
+/* 290 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4160,14 +4353,14 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 289 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(290);
+	module.exports = __webpack_require__(292);
 
 
 /***/ },
-/* 290 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -4180,14 +4373,14 @@ webpackJsonp([0],[
 	 * Module dependencies
 	 */
 
-	var type = __webpack_require__(291);
+	var type = __webpack_require__(293);
 
 	/*!
 	 * Buffer.isBuffer browser shim
 	 */
 
 	var Buffer;
-	try { Buffer = __webpack_require__(293).Buffer; }
+	try { Buffer = __webpack_require__(295).Buffer; }
 	catch(ex) {
 	  Buffer = {};
 	  Buffer.isBuffer = function() { return false; }
@@ -4430,14 +4623,14 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 291 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(292);
+	module.exports = __webpack_require__(294);
 
 
 /***/ },
-/* 292 */
+/* 294 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4585,7 +4778,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 293 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -4598,9 +4791,9 @@ webpackJsonp([0],[
 
 	'use strict'
 
-	var base64 = __webpack_require__(294)
-	var ieee754 = __webpack_require__(295)
-	var isArray = __webpack_require__(296)
+	var base64 = __webpack_require__(296)
+	var ieee754 = __webpack_require__(297)
+	var isArray = __webpack_require__(298)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -6137,10 +6330,10 @@ webpackJsonp([0],[
 	  return i
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(293).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(295).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 294 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -6270,7 +6463,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 295 */
+/* 297 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -6360,7 +6553,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 296 */
+/* 298 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -6371,7 +6564,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 297 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6381,7 +6574,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var getPathInfo = __webpack_require__(298);
+	var getPathInfo = __webpack_require__(300);
 
 	/**
 	 * ### .getPathValue(path, object)
@@ -6420,7 +6613,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 298 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6429,7 +6622,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var hasProperty = __webpack_require__(299);
+	var hasProperty = __webpack_require__(301);
 
 	/**
 	 * ### .getPathInfo(path, object)
@@ -6537,7 +6730,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 299 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6546,7 +6739,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var type = __webpack_require__(277);
+	var type = __webpack_require__(279);
 
 	/**
 	 * ### .hasProperty(object, name)
@@ -6607,7 +6800,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 300 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6616,8 +6809,8 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var config = __webpack_require__(287);
-	var flag = __webpack_require__(276);
+	var config = __webpack_require__(289);
+	var flag = __webpack_require__(278);
 
 	/**
 	 * ### addProperty (ctx, name, getter)
@@ -6661,7 +6854,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 301 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6670,7 +6863,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var config = __webpack_require__(287);
+	var config = __webpack_require__(289);
 
 	/**
 	 * ### .addMethod (ctx, name, method)
@@ -6697,7 +6890,7 @@ webpackJsonp([0],[
 	 * @name addMethod
 	 * @api public
 	 */
-	var flag = __webpack_require__(276);
+	var flag = __webpack_require__(278);
 
 	module.exports = function (ctx, name, method) {
 	  ctx[name] = function () {
@@ -6711,7 +6904,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 302 */
+/* 304 */
 /***/ function(module, exports) {
 
 	/*!
@@ -6772,7 +6965,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 303 */
+/* 305 */
 /***/ function(module, exports) {
 
 	/*!
@@ -6830,7 +7023,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 304 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6843,9 +7036,9 @@ webpackJsonp([0],[
 	 * Module dependencies
 	 */
 
-	var transferFlags = __webpack_require__(288);
-	var flag = __webpack_require__(276);
-	var config = __webpack_require__(287);
+	var transferFlags = __webpack_require__(290);
+	var flag = __webpack_require__(278);
+	var config = __webpack_require__(289);
 
 	/*!
 	 * Module variables
@@ -6948,7 +7141,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 305 */
+/* 307 */
 /***/ function(module, exports) {
 
 	/*!
@@ -7008,7 +7201,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 306 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -7018,7 +7211,7 @@ webpackJsonp([0],[
 	 * MIT Licensed
 	 */
 
-	var config = __webpack_require__(287);
+	var config = __webpack_require__(289);
 
 	module.exports = function (_chai, util) {
 	  /*!
@@ -7145,7 +7338,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 307 */
+/* 309 */
 /***/ function(module, exports) {
 
 	/*!
@@ -9011,7 +9204,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 308 */
+/* 310 */
 /***/ function(module, exports) {
 
 	/*!
@@ -9051,7 +9244,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 309 */
+/* 311 */
 /***/ function(module, exports) {
 
 	/*!
@@ -9258,7 +9451,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 310 */
+/* 312 */
 /***/ function(module, exports) {
 
 	/*!
@@ -10909,57 +11102,66 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 311 */
-/***/ function(module, exports) {
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.updateWorkers = updateWorkers;
+
+	var _datasource = __webpack_require__(272);
+
+	var Datasource = _interopRequireWildcard(_datasource);
+
+	var _collection = __webpack_require__(239);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var PluginRegistry = exports.PluginRegistry = function () {
-	    function PluginRegistry() {
-	        _classCallCheck(this, PluginRegistry);
+	var workers = [];
 
-	        this.datasources = {};
+	function updateWorkers(datasources, dispatch) {
+	    workers.forEach(function (worker) {
+	        worker.dispose();
+	    });
+	    workers = [];
+	    (0, _collection.valuesOf)(datasources).forEach(function (ds) {
+	        workers.push(new DatasourceWorker(ds, dispatch));
+	    });
+	}
+
+	var DatasourceWorker = function () {
+	    function DatasourceWorker(dsState, dispatch) {
+	        _classCallCheck(this, DatasourceWorker);
+
+	        this.dispatch = dispatch;
+
+	        this.timer = setInterval(function () {
+	            dispatch(Datasource.setDatasourceData(dsState.id, "cool " + Math.random()));
+	        }, 1000);
 	    }
 
-	    _createClass(PluginRegistry, [{
-	        key: "register",
-	        value: function register(module) {
-	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
-	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                datasource: module.Datasource,
-	                configDialog: module.ConfigDialog ? module.ConfigDialog : null
-	            });
-	        }
-	    }, {
-	        key: "getPlugin",
-	        value: function getPlugin(type) {
-	            return this.datasources[type];
-	        }
-	    }, {
-	        key: "getPlugins",
-	        value: function getPlugins() {
-	            return _extends({}, this.datasources);
+	    _createClass(DatasourceWorker, [{
+	        key: 'dispose',
+	        value: function dispose() {
+	            clearInterval(this.timer);
 	        }
 	    }]);
 
-	    return PluginRegistry;
+	    return DatasourceWorker;
 	}();
 
-	var DatasourcePlugins = new PluginRegistry();
-	exports.default = DatasourcePlugins;
+	exports.default = DatasourceWorker;
 
 /***/ },
-/* 312 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10976,7 +11178,7 @@ webpackJsonp([0],[
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _datasource = __webpack_require__(270);
+	var _datasource = __webpack_require__(272);
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
@@ -10990,7 +11192,7 @@ webpackJsonp([0],[
 
 	var _reduxForm = __webpack_require__(182);
 
-	var _datasourceConfigDialog = __webpack_require__(269);
+	var _datasourceConfigDialog = __webpack_require__(271);
 
 	var DatasourceConfigDialog = _interopRequireWildcard(_datasourceConfigDialog);
 
@@ -11057,7 +11259,7 @@ webpackJsonp([0],[
 	})(TopNavItem);
 
 /***/ },
-/* 313 */
+/* 315 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11106,8 +11308,6 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 314 */,
-/* 315 */,
 /* 316 */,
 /* 317 */,
 /* 318 */,
@@ -11119,7 +11319,9 @@ webpackJsonp([0],[
 /* 324 */,
 /* 325 */,
 /* 326 */,
-/* 327 */
+/* 327 */,
+/* 328 */,
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11268,7 +11470,7 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11301,6 +11503,11 @@ webpackJsonp([0],[
 	        name: 'Text',
 	        type: 'string',
 	        description: "Some text that will be displayed ..."
+	    }, {
+	        id: 'datasource',
+	        name: 'Datasource',
+	        type: 'datasource',
+	        description: "Datasource to get the text"
 	    }]
 	};
 
@@ -11316,10 +11523,23 @@ webpackJsonp([0],[
 	    _createClass(Widget, [{
 	        key: 'render',
 	        value: function render() {
+	            var props = this.props;
+	            var ds = props.getDatasource(this.props.datasource);
+
+	            //console.log("Datasource:", ds);
+	            if (!ds) {
+	                return React.createElement(
+	                    'p',
+	                    null,
+	                    'Missing datasource: ',
+	                    this.props.datasource
+	                );
+	            }
+
 	            return React.createElement(
 	                'p',
 	                null,
-	                this.props.text
+	                JSON.stringify(ds.data)
 	            );
 	        }
 	    }]);
@@ -11328,7 +11548,7 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 329 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11344,11 +11564,11 @@ webpackJsonp([0],[
 
 	var React = _interopRequireWildcard(_react);
 
-	var _d = __webpack_require__(330);
+	var _d = __webpack_require__(332);
 
 	var d3 = _interopRequireWildcard(_d);
 
-	var _c = __webpack_require__(331);
+	var _c = __webpack_require__(333);
 
 	var c3 = _interopRequireWildcard(_c);
 
@@ -11426,9 +11646,9 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 330 */,
-/* 331 */,
-/* 332 */
+/* 332 */,
+/* 333 */,
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11440,7 +11660,7 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _chai = __webpack_require__(271);
+	var _chai = __webpack_require__(273);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -11566,7 +11786,7 @@ webpackJsonp([0],[
 	}();
 
 /***/ },
-/* 333 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11578,7 +11798,7 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _chai = __webpack_require__(271);
+	var _chai = __webpack_require__(273);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
