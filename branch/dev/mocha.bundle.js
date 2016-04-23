@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2a64efc486c33a9119b7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "88ff680726937938fdd4"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -584,7 +584,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(336);
+	module.exports = __webpack_require__(335);
 
 
 /***/ },
@@ -716,14 +716,25 @@
 	        _classCallCheck(this, PluginRegistry);
 
 	        this.datasources = {};
+	        this.instances = {};
 	    }
 
 	    _createClass(PluginRegistry, [{
 	        key: "register",
 	        value: function register(module) {
+	            var _this = this;
+
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
 	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                Datasource: module.Datasource
+	                Datasource: module.Datasource,
+	                getOrCreateInstance: function getOrCreateInstance(id) {
+	                    var instance = _this.instances[id];
+	                    if (!instance) {
+	                        instance = new module.Datasource();
+	                        _this.instances[id] = instance;
+	                    }
+	                    return instance;
+	                }
 	            });
 	        }
 	    }, {
@@ -8857,7 +8868,7 @@
 
 /***/ },
 
-/***/ 334:
+/***/ 333:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8996,18 +9007,18 @@
 
 /***/ },
 
-/***/ 336:
+/***/ 335:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	__webpack_require__(336);
 
 	__webpack_require__(337);
 
 	__webpack_require__(338);
 
 	__webpack_require__(339);
-
-	__webpack_require__(340);
 
 	/* endinject */
 
@@ -9026,7 +9037,7 @@
 
 /***/ },
 
-/***/ 337:
+/***/ 336:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9058,7 +9069,7 @@
 
 /***/ },
 
-/***/ 338:
+/***/ 337:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9103,7 +9114,7 @@
 
 /***/ },
 
-/***/ 339:
+/***/ 338:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9135,14 +9146,14 @@
 
 /***/ },
 
-/***/ 340:
+/***/ 339:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _chai = __webpack_require__(273);
 
-	var _randomDatasource = __webpack_require__(334);
+	var _randomDatasource = __webpack_require__(333);
 
 	var RandomSource = _interopRequireWildcard(_randomDatasource);
 

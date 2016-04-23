@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2a64efc486c33a9119b7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "88ff680726937938fdd4"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -649,9 +649,9 @@
 	__webpack_require__(316);
 	__webpack_require__(238);
 	__webpack_require__(325);
-	__webpack_require__(333);
 	__webpack_require__(332);
-	module.exports = __webpack_require__(351);
+	__webpack_require__(331);
+	module.exports = __webpack_require__(350);
 
 
 /***/ },
@@ -62306,8 +62306,7 @@
 /***/ },
 /* 329 */,
 /* 330 */,
-/* 331 */,
-/* 332 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -71866,7 +71865,7 @@
 	}();
 
 /***/ },
-/* 333 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (window) {
@@ -71917,7 +71916,7 @@
 
 	    function ChartInternal(api) {
 	        var $$ = this;
-	        $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(332) : undefined;
+	        $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(331) : undefined;
 	        $$.api = api;
 	        $$.config = $$.getDefaultConfig();
 	        $$.data = {};
@@ -78910,7 +78909,7 @@
 	    }
 
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(332)], __WEBPACK_AMD_DEFINE_FACTORY__ = (c3), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(331)], __WEBPACK_AMD_DEFINE_FACTORY__ = (c3), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
 	        module.exports = c3;
 	    } else {
@@ -78921,6 +78920,7 @@
 
 
 /***/ },
+/* 333 */,
 /* 334 */,
 /* 335 */,
 /* 336 */,
@@ -78937,8 +78937,7 @@
 /* 347 */,
 /* 348 */,
 /* 349 */,
-/* 350 */,
-/* 351 */
+/* 350 */
 /***/ function(module, exports) {
 
 	// get successful control from form and assemble into object

@@ -71,15 +71,11 @@ webpackJsonp([0],[
 
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 
-	var _timeWidget = __webpack_require__(329);
-
-	var TimeWidget = _interopRequireWildcard(_timeWidget);
-
-	var _textWidget = __webpack_require__(330);
+	var _textWidget = __webpack_require__(329);
 
 	var TextWidget = _interopRequireWildcard(_textWidget);
 
-	var _chartWidget = __webpack_require__(331);
+	var _chartWidget = __webpack_require__(330);
 
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 
@@ -91,11 +87,11 @@ webpackJsonp([0],[
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _randomDatasource = __webpack_require__(334);
+	var _randomDatasource = __webpack_require__(333);
 
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 
-	var _timeDatasource = __webpack_require__(335);
+	var _timeDatasource = __webpack_require__(334);
 
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 
@@ -105,17 +101,16 @@ webpackJsonp([0],[
 
 	// Datasources
 
-	// Widgets
-
-	// Css
-
-
-	_widgetPlugins2.default.register(TimeWidget);
 	// Reducers
 
 	// Redux Middleware
 
+
 	_widgetPlugins2.default.register(TextWidget);
+	// Widgets
+
+	// Css
+
 	_widgetPlugins2.default.register(ChartWidget);
 
 	_datasourcePlugins2.default.register(RandomDatasource);
@@ -147,7 +142,7 @@ webpackJsonp([0],[
 	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware, logger // must be last
 	));
 
-	DatasourceWorker.updateWorkers(store.getState().datasources, store.dispatch);
+	DatasourceWorker.initializeWorkers(store.getState().datasources, store.dispatch);
 
 	var element = document.getElementById('app');
 
@@ -573,6 +568,10 @@ webpackJsonp([0],[
 
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 
+	var _widgetPlugins = __webpack_require__(234);
+
+	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
+
 	var _reactGridLayout = __webpack_require__(245);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -616,9 +615,19 @@ webpackJsonp([0],[
 	            var props = this.props;
 	            var widgetData = this.props.widgets || [];
 	            // WidgetFrame must be loaded as function, else the grid is not working properly.
+	            // TODO: Remove unknown widget from state
+	            console.log("WidgetData: ", widgetData);
 	            var widgets = widgetData.map(function (data) {
+	                var widget = _widgetPlugins2.default.getPlugin(data.type);
+	                if (!widget) {
+	                    console.warn("No WidgetPlugin for type '" + data.type + "'! Skipping rendering of that widget.");
+	                    return null;
+	                }
 	                return (0, _widgetFrame2.default)({ widget: data, datasources: props.datasources });
+	            }).filter(function (frame) {
+	                return frame !== null;
 	            });
+
 	            /* //Does NOT work that way:
 	             let widgets = widgetData.map((data) => <WidgetFrame {...data}
 	             key={data.id}
@@ -830,6 +839,10 @@ webpackJsonp([0],[
 	            });
 	        case _actionNames.UPDATE_WIDGET_LAYOUT:
 	            var layout = layoutById(action.layout, state.id);
+	            if (layout == null) {
+	                console.warn("No layout for widget. Skipping update of position. Id: " + state.id);
+	                return state;
+	            }
 	            return _extends({}, state, {
 	                row: layout.y,
 	                col: layout.x,
@@ -1107,6 +1120,7 @@ webpackJsonp([0],[
 	var DELETE_DATASOURCE = exports.DELETE_DATASOURCE = "DELETE_DATASOURCE";
 
 	var SET_DATASOURCE_DATA = exports.SET_DATASOURCE_DATA = "SET_DATASOURCE_DATA";
+	var APPEND_DATASOURCE_DATA = exports.APPEND_DATASOURCE_DATA = "APPEND_DATASOURCE_DATA";
 
 /***/ },
 /* 236 */
@@ -1908,7 +1922,7 @@ webpackJsonp([0],[
 	    var datasourceResolver = function datasourceResolver(id) {
 	        var ds = props.datasources[id];
 	        if (!ds) {
-	            console.warn("Can not find Datasource with id " + id + "for widget: ", widgetState);
+	            console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState);
 	        }
 	        return ds;
 	    };
@@ -2023,14 +2037,25 @@ webpackJsonp([0],[
 	        _classCallCheck(this, PluginRegistry);
 
 	        this.datasources = {};
+	        this.instances = {};
 	    }
 
 	    _createClass(PluginRegistry, [{
 	        key: "register",
 	        value: function register(module) {
+	            var _this = this;
+
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
 	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                Datasource: module.Datasource
+	                Datasource: module.Datasource,
+	                getOrCreateInstance: function getOrCreateInstance(id) {
+	                    var instance = _this.instances[id];
+	                    if (!instance) {
+	                        instance = new module.Datasource();
+	                        _this.instances[id] = instance;
+	                    }
+	                    return instance;
+	                }
 	            });
 	        }
 	    }, {
@@ -2935,6 +2960,8 @@ webpackJsonp([0],[
 	exports.addDatasource = addDatasource;
 	exports.deleteDatasource = deleteDatasource;
 	exports.setDatasourceData = setDatasourceData;
+	exports.appendDatasourceData = appendDatasourceData;
+	exports.fetchDatasourceData = fetchDatasourceData;
 	exports.datasources = datasources;
 
 	var _chai = __webpack_require__(273);
@@ -2942,6 +2969,10 @@ webpackJsonp([0],[
 	var _datasourceWorker = __webpack_require__(313);
 
 	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
+
+	var _datasourcePlugins = __webpack_require__(244);
+
+	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
 	var _reducer = __webpack_require__(242);
 
@@ -2953,7 +2984,13 @@ webpackJsonp([0],[
 
 	var Uuid = _interopRequireWildcard(_uuid);
 
+	var _collection = __webpack_require__(239);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var initialDatasources = {
 	    "my-random": {
@@ -2980,7 +3017,7 @@ webpackJsonp([0],[
 	            props: props
 	        });
 	        var state = getState();
-	        DatasourceWorker.updateWorkers(state.datasources, dispatch);
+	        DatasourceWorker.initializeWorkers(state.datasources, dispatch);
 	    };
 	}
 
@@ -2996,6 +3033,28 @@ webpackJsonp([0],[
 	        type: Action.SET_DATASOURCE_DATA,
 	        id: id,
 	        data: data
+	    };
+	}
+
+	function appendDatasourceData(id, data) {
+	    return {
+	        type: Action.APPEND_DATASOURCE_DATA,
+	        id: id,
+	        data: data
+	    };
+	}
+
+	function fetchDatasourceData() {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        var dsStates = state.datasources;
+
+	        (0, _collection.valuesOf)(dsStates).forEach(function (dsState) {
+	            var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
+	            var dsInstance = dsPlugin.getOrCreateInstance(dsState.id);
+	            var newData = dsInstance.getNewValues();
+	            dispatch(appendDatasourceData(dsState.id, newData));
+	        });
 	    };
 	}
 
@@ -3020,9 +3079,13 @@ webpackJsonp([0],[
 	                props: action.props
 	            };
 	        case Action.SET_DATASOURCE_DATA:
-	            console.log("Setting data to: ", action.data);
 	            return _extends({}, state, {
 	                data: action.data
+	            });
+	        case Action.APPEND_DATASOURCE_DATA:
+	            var stateData = state.data || [];
+	            return _extends({}, state, {
+	                data: [].concat(_toConsumableArray(stateData), _toConsumableArray(action.data))
 	            });
 	        default:
 	            return state;
@@ -11112,7 +11175,9 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	exports.updateWorkers = updateWorkers;
+	exports.initializeWorkers = initializeWorkers;
+	exports.addWorker = addWorker;
+	exports.removeWorker = removeWorker;
 
 	var _datasource = __webpack_require__(272);
 
@@ -11130,14 +11195,16 @@ webpackJsonp([0],[
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	// TODO: Should we have not serializable workers in the state and just skip on serialization?
 	var workers = [];
 
-	function updateWorkers(datasources, dispatch) {
-	    workers.forEach(function (worker) {
-	        worker.dispose();
-	    });
-	    workers = [];
-	    (0, _collection.valuesOf)(datasources).forEach(function (dsState) {
+	function initializeWorkers(dsStates, dispatch) {
+	    var heartbeat = setInterval(function () {
+	        dispatch(Datasource.fetchDatasourceData());
+	    }, 1000);
+
+	    return;
+	    (0, _collection.valuesOf)(dsStates).forEach(function (dsState) {
 	        var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
 
 	        console.log("plugin", dsPlugin);
@@ -11148,14 +11215,30 @@ webpackJsonp([0],[
 	    });
 	}
 
+	function addWorker(dsState, dispatch) {
+	    var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
+	    console.log("plugin", dsPlugin);
+	    var dsInstance = new dsPlugin.Datasource();
+	    workers.push(new DatasourceWorker(dsState, dsInstance, dispatch));
+	}
+
+	function removeWorker(dsState, dispatch) {
+	    var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
+	    console.log("plugin", dsPlugin);
+	    var dsInstance = new dsPlugin.Datasource();
+	    workers.push(new DatasourceWorker(dsState, dsInstance, dispatch));
+	}
+
 	var DatasourceWorker = function () {
 	    function DatasourceWorker(dsState, dsInstance, dispatch) {
 	        _classCallCheck(this, DatasourceWorker);
 
+	        return;
 	        this.dispatch = dispatch;
 
+	        dispatch(Datasource.setDatasourceData(dsState.id, dsInstance.getPastValues()));
 	        this.timer = setInterval(function () {
-	            dispatch(Datasource.setDatasourceData(dsState.id, dsInstance.getNewValues()));
+	            dispatch(Datasource.appendDatasourceData(dsState.id, dsInstance.getNewValues()));
 	        }, 1000);
 	    }
 
@@ -11348,155 +11431,6 @@ webpackJsonp([0],[
 
 	var React = _interopRequireWildcard(_react);
 
-	var _reactDom = __webpack_require__(159);
-
-	var ReactDOM = _interopRequireWildcard(_reactDom);
-
-	var _redux = __webpack_require__(160);
-
-	var Redux = _interopRequireWildcard(_redux);
-
-	var _reactRedux = __webpack_require__(173);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var TYPE_INFO = exports.TYPE_INFO = {
-	    type: "time",
-	    defaultProps: {
-	        name: "Timer"
-	    }
-	};
-
-	var Widget = exports.Widget = function (_Component) {
-	    _inherits(Widget, _Component);
-
-	    _createClass(Widget, [{
-	        key: 'renderTime',
-	        value: function renderTime() {
-	            var currentTime = new Date();
-	            var diem = 'AM';
-	            var h = currentTime.getHours();
-	            var m = currentTime.getMinutes();
-	            var s = currentTime.getSeconds();
-
-	            if (h === 0) {
-	                h = 12;
-	            } else if (h > 12) {
-	                h = h - 12;
-	                diem = 'PM';
-	            }
-
-	            if (m < 10) {
-	                m = '0' + m;
-	            }
-	            if (s < 10) {
-	                s = '0' + s;
-	            }
-	            return {
-	                hours: h,
-	                minutes: m,
-	                seconds: s,
-	                diem: diem
-	            };
-	        }
-	    }, {
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.intervals = [];
-	        }
-	    }, {
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {
-	            this.intervals.map(clearInterval);
-	        }
-	    }, {
-	        key: 'setInterval',
-	        value: function (_setInterval) {
-	            function setInterval() {
-	                return _setInterval.apply(this, arguments);
-	            }
-
-	            setInterval.toString = function () {
-	                return _setInterval.toString();
-	            };
-
-	            return setInterval;
-	        }(function () {
-	            this.intervals.push(setInterval.apply(null, arguments));
-	        })
-	    }]);
-
-	    function Widget(props) {
-	        _classCallCheck(this, Widget);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Widget).call(this, props));
-
-	        _this.state = _this.renderTime();
-	        return _this;
-	    }
-
-	    _createClass(Widget, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var _this2 = this;
-
-	            this.setInterval(function () {
-	                return _this2.tick();
-	            }, 1000);
-	        }
-	    }, {
-	        key: 'tick',
-	        value: function tick() {
-	            var time = this.renderTime();
-	            this.setState({ hours: time.hours, minutes: time.minutes, seconds: time.seconds, diem: time.diem });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'p',
-	                { className: '' },
-	                this.state.hours,
-	                ':',
-	                this.state.minutes,
-	                ':',
-	                this.state.seconds,
-	                React.createElement(
-	                    'span',
-	                    { className: '' },
-	                    ' ',
-	                    this.state.diem
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Widget;
-	}(_react.Component);
-
-/***/ },
-/* 330 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Widget = exports.TYPE_INFO = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var React = _interopRequireWildcard(_react);
-
 	var _reactRedux = __webpack_require__(173);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -11559,7 +11493,7 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 331 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11575,11 +11509,11 @@ webpackJsonp([0],[
 
 	var React = _interopRequireWildcard(_react);
 
-	var _d = __webpack_require__(332);
+	var _d = __webpack_require__(331);
 
 	var d3 = _interopRequireWildcard(_d);
 
-	var _c = __webpack_require__(333);
+	var _c = __webpack_require__(332);
 
 	var c3 = _interopRequireWildcard(_c);
 
@@ -11657,9 +11591,9 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
+/* 331 */,
 /* 332 */,
-/* 333 */,
-/* 334 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11797,7 +11731,7 @@ webpackJsonp([0],[
 	}();
 
 /***/ },
-/* 335 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11824,6 +11758,35 @@ webpackJsonp([0],[
 	    }
 
 	    _createClass(Datasource, [{
+	        key: "renderTime",
+	        value: function renderTime() {
+	            var currentTime = new Date();
+	            var diem = 'AM';
+	            var h = currentTime.getHours();
+	            var m = currentTime.getMinutes();
+	            var s = currentTime.getSeconds();
+
+	            if (h === 0) {
+	                h = 12;
+	            } else if (h > 12) {
+	                h = h - 12;
+	                diem = 'PM';
+	            }
+
+	            if (m < 10) {
+	                m = '0' + m;
+	            }
+	            if (s < 10) {
+	                s = '0' + s;
+	            }
+	            return {
+	                hours: h,
+	                minutes: m,
+	                seconds: s,
+	                diem: diem
+	            };
+	        }
+	    }, {
 	        key: "getNewValues",
 	        value: function getNewValues() {
 	            return [{ date: new Date() }];
