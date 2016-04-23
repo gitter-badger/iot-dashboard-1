@@ -138,9 +138,18 @@ webpackJsonp([0],[
 	    form: _reduxForm.reducer
 	});
 
-	var logger = (0, _reduxLogger2.default)();
-	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware
-	//logger // must be last
+	var logger = (0, _reduxLogger2.default)({
+	    duration: false, // Print the duration of each action?
+	    timestamp: true, // Print the timestamp with each action?
+	    logErrors: true, // Should the logger catch, log, and re-throw errors?
+	    predicate: function predicate(getState, action) {
+	        if (action.doNotLog) {
+	            return false;
+	        }
+	        return true;
+	    }
+	});
+	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware, logger // must be last
 	));
 
 	DatasourceWorker.initializeWorkers(store.getState().datasources, store.dispatch);
@@ -1552,7 +1561,8 @@ webpackJsonp([0],[
 
 	    return React.createElement(
 	        "a",
-	        { className: "item", href: "#", onClick: function onClick() {
+	        { className: "item" + (props.disabled ? " disabled" : ""), href: "#",
+	            onClick: function onClick() {
 	                return props.onClick(props);
 	            } },
 	        icon,
@@ -1566,7 +1576,8 @@ webpackJsonp([0],[
 	LinkItem.propTypes = {
 	    onClick: Prop.func.isRequired,
 	    text: Prop.string,
-	    icon: Prop.string
+	    icon: Prop.string,
+	    disabled: Prop.bool
 	};
 
 	var Icon = exports.Icon = function Icon(props) {
@@ -2205,6 +2216,7 @@ webpackJsonp([0],[
 	            { className: 'ui menu' },
 	            _react2.default.createElement(SaveLayout, null),
 	            _react2.default.createElement(ResetLayoutButton, { text: 'Reset Current Layout', icon: 'undo' }),
+	            _react2.default.createElement(SaveLayoutButton, { text: 'Save Layout', icon: 'save' }),
 	            _react2.default.createElement('div', { className: 'ui divider' }),
 	            _react2.default.createElement(
 	                'div',
@@ -2222,12 +2234,16 @@ webpackJsonp([0],[
 	TopNavItem.propTypes = {
 	    layouts: Prop.arrayOf(Prop.shape({
 	        name: Prop.string
-	    }))
+	    })),
+	    widgets: Prop.object,
+	    currentLayout: Prop.object
 	};
 
 	var TopNavItemContainer = (0, _reactRedux.connect)(function (state) {
 	    return {
-	        layouts: (0, _collection.valuesOf)(state.layouts)
+	        layouts: (0, _collection.valuesOf)(state.layouts),
+	        currentLayout: state.currentLayout,
+	        widgets: state.widgets
 	    };
 	}, function (dispatch) {
 	    return {};
@@ -2361,12 +2377,27 @@ webpackJsonp([0],[
 
 	var ResetLayoutButton = (0, _reactRedux.connect)(function (state) {
 	    return {
-	        id: state.currentLayout.id
+	        id: state.currentLayout.id,
+	        disabled: !state.currentLayout.id
 	    };
 	}, function (dispatch, props) {
 	    return {
 	        onClick: function onClick(props) {
 	            return dispatch(Layouts.loadLayout(props.id));
+	        }
+	    };
+	})(ui.LinkItem);
+
+	var SaveLayoutButton = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        id: state.currentLayout.id,
+	        widgets: state.widgets,
+	        disabled: !state.currentLayout.id
+	    };
+	}, function (dispatch) {
+	    return {
+	        onClick: function onClick(props) {
+	            return dispatch(Layouts.updateLayout(props.id, props.widgets));
 	        }
 	    };
 	})(ui.LinkItem);
@@ -2384,6 +2415,7 @@ webpackJsonp([0],[
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	exports.addLayout = addLayout;
+	exports.updateLayout = updateLayout;
 	exports.deleteLayout = deleteLayout;
 	exports.setCurrentLayout = setCurrentLayout;
 	exports.loadEmptyLayout = loadEmptyLayout;
@@ -2423,6 +2455,14 @@ webpackJsonp([0],[
 	        });
 
 	        dispatch(setCurrentLayout(addLayout.id));
+	    };
+	}
+
+	function updateLayout(id, widgets) {
+	    return {
+	        type: _actionNames.UPDATE_LAYOUT,
+	        id: id,
+	        widgets: widgets
 	    };
 	}
 
@@ -2491,6 +2531,10 @@ webpackJsonp([0],[
 	                name: action.name,
 	                widgets: action.widgets
 	            };
+	        case _actionNames.UPDATE_LAYOUT:
+	            return _extends({}, state, {
+	                widgets: action.widgets
+	            });
 	        default:
 	            return state;
 	    }
@@ -3153,8 +3197,9 @@ webpackJsonp([0],[
 	                const pastData = dsInstance.getPastValues();
 	                dispatch(setDatasourceData(dsState.id, pastData));
 	            }*/
-
-	            dispatch(setDatasourceData(dsState.id, newData));
+	            var action = setDatasourceData(dsState.id, newData);
+	            action.doNotLog = true;
+	            dispatch(action);
 	        });
 	    };
 	}
