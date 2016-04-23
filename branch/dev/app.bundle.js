@@ -446,6 +446,10 @@ webpackJsonp([0],[
 
 	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 
+	var _persistence = __webpack_require__(315);
+
+	var Persistence = _interopRequireWildcard(_persistence);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -531,7 +535,15 @@ webpackJsonp([0],[
 	                            React.createElement("i", { className: "dropdown icon" })
 	                        ),
 	                        React.createElement(Layouts.TopNavItem, null),
-	                        React.createElement(_datasourceNavItem2.default, null)
+	                        React.createElement(_datasourceNavItem2.default, null),
+	                        React.createElement(
+	                            "a",
+	                            { className: "item", onClick: function onClick() {
+	                                    return Persistence.clearData();
+	                                } },
+	                            React.createElement("i", { className: "red bomb icon" }),
+	                            "Wipe Everything!"
+	                        )
 	                    )
 	                ),
 	                React.createElement(
@@ -11469,6 +11481,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.clearData = clearData;
 	exports.persistenceMiddleware = persistenceMiddleware;
 	exports.saveToLocalStorage = saveToLocalStorage;
 	exports.loadFromLocalStorage = loadFromLocalStorage;
@@ -11476,6 +11489,14 @@ webpackJsonp([0],[
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 	var lastSave = new Date();
+
+	function clearData() {
+	    lastSave = new Date();
+	    if (window.confirm("Wipe app data and reload page?")) {
+	        window.localStorage.setItem("appState", undefined);
+	        location.reload();
+	    }
+	}
 
 	function persistenceMiddleware(_ref) {
 	    var getState = _ref.getState;
