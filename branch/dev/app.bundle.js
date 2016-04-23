@@ -139,7 +139,8 @@ webpackJsonp([0],[
 	});
 
 	var logger = (0, _reduxLogger2.default)();
-	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware, logger // must be last
+	var store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(_reduxThunk2.default, Persist.persistenceMiddleware
+	//logger // must be last
 	));
 
 	DatasourceWorker.initializeWorkers(store.getState().datasources, store.dispatch);
@@ -1388,11 +1389,6 @@ webpackJsonp([0],[
 	            });
 	        }
 	    }, {
-	        key: 'setWidgetProps',
-	        value: function setWidgetProps(props) {
-	            this.widgetProps = props;
-	        }
-	    }, {
 	        key: 'onClick',
 	        value: function onClick(e, action) {
 	            if (action.onClick(e)) {
@@ -2068,7 +2064,7 @@ webpackJsonp([0],[
 	                getOrCreateInstance: function getOrCreateInstance(dsState) {
 	                    var instance = _this.instances[dsState.id];
 	                    if (!instance) {
-	                        instance = new module.Datasource(dsState.props);
+	                        instance = new module.Datasource(dsState.props, dsState.data);
 	                        _this.instances[dsState.id] = instance;
 	                    }
 	                    return instance;
@@ -2602,7 +2598,7 @@ webpackJsonp([0],[
 
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).call(this, props));
 
-	        _this.state = { state: {} };
+	        _this.state = { state: null };
 	        return _this;
 	    }
 
@@ -2610,6 +2606,38 @@ webpackJsonp([0],[
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
 	            //this.refs.data.value = Import.serialize(nextProps.state);
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {}
+	    }, {
+	        key: '_loadData',
+	        value: function _loadData() {
+	            this.refs.data.value = Import.serialize(this.props.state);
+	            this.refs.data.focus();
+	            this.refs.data.select();
+	        }
+	    }, {
+	        key: '_clearData',
+	        value: function _clearData() {
+	            this.refs.data.value = "";
+	            this.refs.data.focus();
+	            this.refs.data.select();
+	        }
+	    }, {
+	        key: '_exportToClipboard',
+	        value: function _exportToClipboard() {
+	            this.refs.data.focus();
+	            this.refs.data.select();
+	            document.execCommand('copy');
+
+	            try {
+	                var successful = document.execCommand('copy');
+	                var msg = successful ? 'successful' : 'unsuccessful';
+	                console.log('Copying text command was ' + msg);
+	            } catch (err) {
+	                console.log('Oops, unable to copy');
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -2622,13 +2650,6 @@ webpackJsonp([0],[
 	                label: "Close",
 	                onClick: function onClick() {
 	                    return true;
-	                }
-	            }, {
-	                className: "ui right black button",
-	                label: "Refresh",
-	                onClick: function onClick() {
-	                    // this.setState({state: this.props.state});
-	                    _this2.refs.data.value = Import.serialize(_this2.props.state);
 	                }
 	            }, {
 	                className: "ui right labeled icon positive button",
@@ -2653,6 +2674,28 @@ webpackJsonp([0],[
 	                        'div',
 	                        { className: 'column' },
 	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'ui compact labeled icon button', onClick: this._loadData.bind(this) },
+	                            _react2.default.createElement('i', { className: 'refresh icon' }),
+	                            'Refresh Data'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'ui compact labeled icon button', onClick: this._exportToClipboard.bind(this) },
+	                            _react2.default.createElement('i', { className: 'upload icon' }),
+	                            'Copy to Clipboard'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'ui compact labeled icon button', onClick: this._clearData.bind(this) },
+	                            _react2.default.createElement('i', { className: 'erase icon' }),
+	                            'Clear Data'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'column' },
+	                        _react2.default.createElement(
 	                            'form',
 	                            { className: 'ui form' },
 	                            _react2.default.createElement(
@@ -2663,7 +2706,10 @@ webpackJsonp([0],[
 	                                    null,
 	                                    'Data'
 	                                ),
-	                                _react2.default.createElement('textarea', { ref: 'data', rows: '10', defaultValue: Import.serialize(this.state.state) })
+	                                _react2.default.createElement('textarea', { ref: 'data', rows: '10', onFocus: function onFocus(e) {
+	                                        return e.target.select();
+	                                    },
+	                                    placeholder: 'Click "Refresh Data" to get data for export or paste your data here ...' })
 	                            )
 	                        )
 	                    )
@@ -11653,14 +11699,17 @@ webpackJsonp([0],[
 	}
 
 	var Datasource = exports.Datasource = function () {
-	    function Datasource(props) {
+	    function Datasource(props, history) {
 	        _classCallCheck(this, Datasource);
 
 	        this.props = props;
 	        // Initialize with non random values to demonstrate loading of historic values
-	        this.history = []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
-	        this.x = 0;
+	        this.history = history || []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
+	        this.x = history[history.length - 1].x + 1 || 0;
 	    }
+
+	    // TODO: We can not edit datasources yet :)
+
 
 	    _createClass(Datasource, [{
 	        key: "updateProps",
@@ -11752,7 +11801,8 @@ webpackJsonp([0],[
 	    }, {
 	        key: "getNewValues",
 	        value: function getNewValues() {
-	            return [{ date: new Date() }];
+	            var now = new Date();
+	            return [{ date: now }];
 	        }
 	    }]);
 

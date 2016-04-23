@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "90ae73f8e67a6f871d2a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "702173535dd9b918f209"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -828,7 +828,7 @@
 	                getOrCreateInstance: function getOrCreateInstance(dsState) {
 	                    var instance = _this.instances[dsState.id];
 	                    if (!instance) {
-	                        instance = new module.Datasource(dsState.props);
+	                        instance = new module.Datasource(dsState.props, dsState.data);
 	                        _this.instances[dsState.id] = instance;
 	                    }
 	                    return instance;
@@ -9009,14 +9009,17 @@
 	}
 
 	var Datasource = exports.Datasource = function () {
-	    function Datasource(props) {
+	    function Datasource(props, history) {
 	        _classCallCheck(this, Datasource);
 
 	        this.props = props;
 	        // Initialize with non random values to demonstrate loading of historic values
-	        this.history = []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
-	        this.x = 0;
+	        this.history = history || []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
+	        this.x = history[history.length - 1].x + 1 || 0;
 	    }
+
+	    // TODO: We can not edit datasources yet :)
+
 
 	    _createClass(Datasource, [{
 	        key: "updateProps",
