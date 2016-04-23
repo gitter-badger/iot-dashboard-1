@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "88ff680726937938fdd4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "90ae73f8e67a6f871d2a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -823,17 +823,18 @@
 	            var _this = this;
 
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
-	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
+	            var dsPlugin = _extends({}, module.TYPE_INFO, {
 	                Datasource: module.Datasource,
-	                getOrCreateInstance: function getOrCreateInstance(id) {
-	                    var instance = _this.instances[id];
+	                getOrCreateInstance: function getOrCreateInstance(dsState) {
+	                    var instance = _this.instances[dsState.id];
 	                    if (!instance) {
-	                        instance = new module.Datasource();
-	                        _this.instances[id] = instance;
+	                        instance = new module.Datasource(dsState.props);
+	                        _this.instances[dsState.id] = instance;
 	                    }
 	                    return instance;
 	                }
 	            });
+	            this.datasources[module.TYPE_INFO.type] = dsPlugin;
 	        }
 	    }, {
 	        key: "getPlugin",
@@ -8980,123 +8981,68 @@
 
 	var _chai = __webpack_require__(273);
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "random",
 	    name: "Random",
 	    settings: [{
-	        id: 'string',
-	        name: 'some String w/o description',
-	        type: 'string',
-	        defaultValue: "Some default value"
+	        id: "maxValues",
+	        name: "Max Values",
+	        description: "Maximum number of values stored",
+	        type: "number"
 	    }, {
-	        id: 'text',
-	        name: 'some Text',
-	        type: 'text',
-	        defaultValue: "Some default value",
-	        description: "This is pretty self explanatory..."
+	        id: "min",
+	        name: "Min Value",
+	        type: "number",
+	        defaultValue: 0
 	    }, {
-	        id: 'bool',
-	        name: 'some Boolean',
-	        type: 'boolean',
-	        defaultValue: true,
-	        description: "This is pretty self explanatory..."
-	    }, {
-	        id: 'multi',
-	        name: 'some Options',
-	        type: 'option',
-	        description: "This is pretty self explanatory...",
-	        defaultValue: "old",
-	        options: [{
-	            "name": "0-50",
-	            "value": "young"
-	        }, {
-	            "name": "51-100",
-	            "value": "old"
-	        }]
-	    }, {
-	        id: 'multi2',
-	        name: 'option w/o default',
-	        type: 'option',
-	        description: "This is pretty self explanatory...",
-	        options: [{
-	            "name": "0-50",
-	            "value": "young"
-	        }, {
-	            "name": "51-100",
-	            "value": "old"
-	        }]
-	    }],
-	    settingsX: {
-	        string: {
-	            name: 'some String w/o description',
-	            type: 'string',
-	            defaultValue: "Some default value"
-	        },
-	        text: {
-	            name: 'some Text',
-	            type: 'text',
-	            defaultValue: "Some default value",
-	            description: "This is pretty self explanatory..."
-	        },
-	        boolean: {
-	            name: 'some Boolean',
-	            type: 'boolean',
-	            defaultValue: true,
-	            description: "This is pretty self explanatory..."
-	        },
-	        multi: {
-	            name: 'some Options',
-	            type: 'option',
-	            description: "This is pretty self explanatory...",
-	            defaultValue: "old",
-	            options: [{
-	                "name": "0-50",
-	                "value": "young"
-	            }, {
-	                "name": "51-100",
-	                "value": "old"
-	            }]
-	        },
-	        multi2: {
-	            name: 'option w/o default',
-	            type: 'option',
-	            description: "This is pretty self explanatory...",
-	            options: [{
-	                "name": "0-50",
-	                "value": "young"
-	            }, {
-	                "name": "51-100",
-	                "value": "old"
-	            }]
-	        }
-	    },
-
-	    defaultProps: {}
+	        id: "max",
+	        name: "Max Value",
+	        type: "number",
+	        defaultValue: 100
+	    }]
 	};
 
+	function getRandomInt(min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	var Datasource = exports.Datasource = function () {
-	    function Datasource() {
+	    function Datasource(props) {
 	        _classCallCheck(this, Datasource);
 
+	        this.props = props;
 	        // Initialize with non random values to demonstrate loading of historic values
-	        this.history = [{ value: 10 }, { value: 20 }, { value: 30 }, { value: 40 }, { value: 50 }];
+	        this.history = []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
+	        this.x = 0;
 	    }
 
 	    _createClass(Datasource, [{
-	        key: "getNewValues",
-	        value: function getNewValues() {
-	            var newValue = { value: Math.ceil(Math.random() * 100) };
-	            this.history.push(newValue);
-	            return [newValue];
+	        key: "updateProps",
+	        value: function updateProps(props) {
+	            this.props = props;
 	        }
 	    }, {
-	        key: "getPastValues",
-	        value: function getPastValues(since) {
-	            return [].concat(_toConsumableArray(this.history));
+	        key: "getValues",
+	        value: function getValues() {
+	            this.history.push(this.fetchValue());
+
+	            var maxValues = Number(this.props.maxValues);
+	            while (this.history.length > maxValues) {
+	                this.history.shift();
+	            }
+
+	            return this.history;
+	        }
+	    }, {
+	        key: "fetchValue",
+	        value: function fetchValue() {
+	            var props = this.props;
+	            var min = Number(props.min);
+	            var max = Number(props.max);
+	            var newValue = { x: this.x++, value: getRandomInt(min, max) };
+	            return newValue;
 	        }
 	    }]);
 

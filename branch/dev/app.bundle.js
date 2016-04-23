@@ -116,25 +116,25 @@ webpackJsonp([0],[
 	_datasourcePlugins2.default.register(RandomDatasource);
 	_datasourcePlugins2.default.register(TimeDatasource);
 
-	function importReducerFactory(baseReducer) {
-	    return importReducer.bind(this, baseReducer);
+	function importReducerFactory(baseReducer, name) {
+	    return importReducer.bind(this, baseReducer, name);
 	}
 
-	function importReducer(baseReducer, state, action) {
+	function importReducer(baseReducer, name, state, action) {
 	    switch (action.type) {
 	        case _actionNames.DASHBOARD_IMPORT:
-	            return action.state.widgets;
+	            return action.state[name];
 	        default:
 	            return baseReducer(state, action);
 	    }
 	}
 
 	var reducer = Redux.combineReducers({
-	    widgets: importReducerFactory(Widgets.widgets),
+	    widgets: importReducerFactory(Widgets.widgets, "widgets"),
 	    widgetConfig: WidgetConfig.widgetConfigDialog,
 	    layouts: Layouts.layouts,
 	    currentLayout: Layouts.currentLayout,
-	    datasources: Datasource.datasources,
+	    datasources: importReducerFactory(Datasource.datasources, "datasources"),
 	    form: _reduxForm.reducer
 	});
 
@@ -616,7 +616,6 @@ webpackJsonp([0],[
 	            var widgetData = this.props.widgets || [];
 	            // WidgetFrame must be loaded as function, else the grid is not working properly.
 	            // TODO: Remove unknown widget from state
-	            console.log("WidgetData: ", widgetData);
 	            var widgets = widgetData.map(function (data) {
 	                var widget = _widgetPlugins2.default.getPlugin(data.type);
 	                if (!widget) {
@@ -718,26 +717,25 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var initialWidgets = exports.initialWidgets = {
-	    "initial_time_widget": {
-	        type: "time",
-	        id: "initial_time_widget",
-	        row: 0,
-	        col: 0,
-	        width: 1,
-	        height: 1,
-	        props: { name: "Time" }
+	    "initial_chart": {
+	        "id": "initial_chart",
+	        "type": "chart",
+	        "name": "chart",
+	        "props": { "name": "Random Values", "datasource": "initial_random_source" },
+	        "row": 0,
+	        "col": 0,
+	        "width": 4,
+	        "height": 1
 	    },
-	    "initial_text_widget": {
-	        type: "text",
-	        id: "initial_text_widget",
-	        row: 0,
-	        col: 1,
-	        width: 3,
-	        height: 1,
-	        props: {
-	            name: "Text",
-	            text: "This is a text widget"
-	        }
+	    "initial_text": {
+	        "id": "initial_text",
+	        "type": "text",
+	        "name": "text",
+	        "props": { "name": "Random data", "datasource": "initial_random_source" },
+	        "row": 0,
+	        "col": 4,
+	        "width": 2,
+	        "height": 2
 	    }
 	};
 
@@ -1137,6 +1135,7 @@ webpackJsonp([0],[
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	exports.showDialog = showDialog;
+	exports.unshiftIfNotExists = unshiftIfNotExists;
 
 	var _react = __webpack_require__(2);
 
@@ -1181,6 +1180,18 @@ webpackJsonp([0],[
 
 	function showDialog() {
 	    _modal2.default.showModal(DIALOG_ID);
+	}
+
+	function unshiftIfNotExists(array, element) {
+	    var isEqual = arguments.length <= 2 || arguments[2] === undefined ? function (a, b) {
+	        return a.id == b.id;
+	    } : arguments[2];
+
+	    if (array.find(function (e) {
+	        return isEqual(e, element);
+	    }) == undefined) {
+	        array.unshift(element);
+	    }
 	}
 
 	var WidgetConfigModal = function (_React$Component) {
@@ -1234,7 +1245,6 @@ webpackJsonp([0],[
 	            }];
 
 	            var props = this.props;
-	            var widgets = _widgetPlugins2.default.getPlugins();
 	            var selectedWidget = _widgetPlugins2.default.getPlugin(this.props.widgetType) || { settings: [] };
 
 	            if (!selectedWidget) {
@@ -1246,10 +1256,10 @@ webpackJsonp([0],[
 	                );
 	            }
 
-	            console.log("selectedWidget", selectedWidget);
 	            // Add additional fields
 	            var settings = [].concat(_toConsumableArray(selectedWidget.settings));
-	            settings.unshift({
+
+	            unshiftIfNotExists(settings, {
 	                id: 'name',
 	                name: 'Name',
 	                type: 'string',
@@ -1260,7 +1270,9 @@ webpackJsonp([0],[
 	                return setting.id;
 	            });
 	            var initialValues = settings.reduce(function (initialValues, setting) {
-	                initialValues[setting.id] = setting.defaultValue;
+	                if (setting.defaultValue !== undefined) {
+	                    initialValues[setting.id] = setting.defaultValue;
+	                }
 	                return initialValues;
 	            }, {});
 	            // Overwrite with current widget props
@@ -1363,7 +1375,6 @@ webpackJsonp([0],[
 	    _createClass(ModalDialog, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            console.log("Mounted Modal: " + this.props.id);
 	            $('.ui.modal.' + this.props.id).modal({
 	                detachable: false,
 	                closable: false,
@@ -1406,7 +1417,6 @@ webpackJsonp([0],[
 	            });
 
 	            var props = this.props;
-	            console.log("Render Modal: " + this.props.id);
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'ui modal ' + this.props.id },
@@ -1430,13 +1440,11 @@ webpackJsonp([0],[
 	    }], [{
 	        key: 'showModal',
 	        value: function showModal(id) {
-	            console.log("Show Modal: " + id);
 	            $('.ui.modal.' + id).modal('show');
 	        }
 	    }, {
 	        key: 'closeModal',
 	        value: function closeModal(id) {
-	            console.log("Close Modal: " + id);
 	            $('.ui.modal.' + id).modal('hide');
 	        }
 	    }]);
@@ -1715,12 +1723,14 @@ webpackJsonp([0],[
 	};
 
 	function SettingsInput(props) {
-
 	    switch (props.type) {
 	        case "text":
 	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
 	        case "string":
 	            return _react2.default.createElement('input', _extends({ placeholder: props.description }, props.field));
+	        case "number":
+	            return _react2.default.createElement('input', _extends({ type: 'number', min: props.min, max: props.max,
+	                placeholder: props.description }, props.field));
 	        case "boolean":
 	            return _react2.default.createElement('input', _extends({ type: 'checkbox' }, props.field));
 	        case "option":
@@ -1751,7 +1761,10 @@ webpackJsonp([0],[
 	Field.propTypes = {
 	    field: Prop.object.isRequired, // redux-form field info
 	    description: Prop.string,
-	    options: Prop.arrayOf(Prop.shape({
+	    min: Prop.number, // for number
+	    max: Prop.number, // for number
+	    options: Prop.arrayOf( // For option
+	    Prop.shape({
 	        value: Prop.string.isRequired
 	    }.isRequired))
 	};
@@ -1851,7 +1864,6 @@ webpackJsonp([0],[
 	                var elementState = state[id];
 	                if (elementState == undefined) {
 	                    // Do not update what we don't have.
-	                    console.log("No element with id ", id, "in state ", state);
 	                    return state;
 	                }
 	                var updatedElement = elementReducer(elementState, action);
@@ -1893,6 +1905,8 @@ webpackJsonp([0],[
 
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 
+	var _widgets = __webpack_require__(231);
+
 	var _datasourcePlugins = __webpack_require__(244);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
@@ -1907,6 +1921,8 @@ webpackJsonp([0],[
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var Prop = React.PropTypes;
 
 	/**
@@ -1919,12 +1935,13 @@ webpackJsonp([0],[
 	    var widget = _widgetPlugins2.default.getPlugin(widgetState.type);
 	    console.assert(widget, "No registered widget with type: " + widgetState.type);
 
-	    var datasourceResolver = function datasourceResolver(id) {
+	    var dataResolver = function dataResolver(id) {
 	        var ds = props.datasources[id];
 	        if (!ds) {
-	            console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState);
+	            console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState, " Returning empty data!");
+	            return [];
 	        }
-	        return ds;
+	        return [].concat(_toConsumableArray(ds.data));
 	    };
 
 	    return React.createElement(
@@ -1959,7 +1976,7 @@ webpackJsonp([0],[
 	            { className: 'ui segment' },
 	            React.createElement(widget.widget, _extends({}, widgetState.props, {
 	                _state: widgetState,
-	                getDatasource: datasourceResolver
+	                getData: dataResolver
 	            }))
 	        )
 	    );
@@ -2001,7 +2018,7 @@ webpackJsonp([0],[
 	}, function (dispatch) {
 	    return {
 	        onClick: function onClick(widgetState) {
-	            dispatch(deleteWidget(widgetState.id));
+	            dispatch((0, _widgets.deleteWidget)(widgetState.id));
 	        }
 	    };
 	})(WidgetButton);
@@ -2046,17 +2063,18 @@ webpackJsonp([0],[
 	            var _this = this;
 
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
-	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
+	            var dsPlugin = _extends({}, module.TYPE_INFO, {
 	                Datasource: module.Datasource,
-	                getOrCreateInstance: function getOrCreateInstance(id) {
-	                    var instance = _this.instances[id];
+	                getOrCreateInstance: function getOrCreateInstance(dsState) {
+	                    var instance = _this.instances[dsState.id];
 	                    if (!instance) {
-	                        instance = new module.Datasource();
-	                        _this.instances[id] = instance;
+	                        instance = new module.Datasource(dsState.props);
+	                        _this.instances[dsState.id] = instance;
 	                    }
 	                    return instance;
 	                }
 	            });
+	            this.datasources[module.TYPE_INFO.type] = dsPlugin;
 	        }
 	    }, {
 	        key: "getPlugin",
@@ -2579,16 +2597,19 @@ webpackJsonp([0],[
 	var Modal = exports.Modal = function (_React$Component) {
 	    _inherits(Modal, _React$Component);
 
-	    function Modal() {
+	    function Modal(props) {
 	        _classCallCheck(this, Modal);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).call(this, props));
+
+	        _this.state = { state: {} };
+	        return _this;
 	    }
 
 	    _createClass(Modal, [{
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
-	            this.refs.data.value = Import.serialize(nextProps.state);
+	            //this.refs.data.value = Import.serialize(nextProps.state);
 	        }
 	    }, {
 	        key: 'render',
@@ -2601,6 +2622,13 @@ webpackJsonp([0],[
 	                label: "Close",
 	                onClick: function onClick() {
 	                    return true;
+	                }
+	            }, {
+	                className: "ui right black button",
+	                label: "Refresh",
+	                onClick: function onClick() {
+	                    // this.setState({state: this.props.state});
+	                    _this2.refs.data.value = Import.serialize(_this2.props.state);
 	                }
 	            }, {
 	                className: "ui right labeled icon positive button",
@@ -2635,7 +2663,7 @@ webpackJsonp([0],[
 	                                    null,
 	                                    'Data'
 	                                ),
-	                                _react2.default.createElement('textarea', { ref: 'data', rows: '10', defaultValue: Import.serialize(props.state) })
+	                                _react2.default.createElement('textarea', { ref: 'data', rows: '10', defaultValue: Import.serialize(this.state.state) })
 	                            )
 	                        )
 	                    )
@@ -2694,7 +2722,8 @@ webpackJsonp([0],[
 
 	function serialize(state) {
 	    return JSON.stringify({
-	        widgets: state.widgets
+	        widgets: state.widgets,
+	        datasources: state.datasources
 	    });
 	}
 
@@ -2736,6 +2765,7 @@ webpackJsonp([0],[
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	exports.showDialog = showDialog;
+	exports.unshiftIfNotExists = unshiftIfNotExists;
 
 	var _react = __webpack_require__(2);
 
@@ -2786,6 +2816,18 @@ webpackJsonp([0],[
 
 	function showDialog() {
 	    _modal2.default.showModal(DIALOG_ID);
+	}
+
+	function unshiftIfNotExists(array, element) {
+	    var isEqual = arguments.length <= 2 || arguments[2] === undefined ? function (a, b) {
+	        return a.id == b.id;
+	    } : arguments[2];
+
+	    if (array.find(function (e) {
+	        return isEqual(e, element);
+	    }) == undefined) {
+	        array.unshift(element);
+	    }
 	}
 
 	var DatasourceConfigModal = function (_React$Component) {
@@ -2846,24 +2888,27 @@ webpackJsonp([0],[
 	            var datasources = _datasourcePlugins2.default.getPlugins();
 	            var selectedSource = _datasourcePlugins2.default.getPlugin(this.state.selectedType) || { settings: [] };
 
-	            var settings = [].concat(_toConsumableArray(selectedSource.settings || []));
-	            settings.unshift({
-	                id: 'name',
-	                name: 'Name',
-	                type: 'string',
-	                defaultValue: ""
-	            }, {
+	            var settings = [].concat(_toConsumableArray(selectedSource.settings));
+	            unshiftIfNotExists(settings, {
 	                id: 'interval',
 	                name: 'Interval',
 	                type: 'string',
 	                defaultValue: "5"
+	            });
+	            unshiftIfNotExists(settings, {
+	                id: 'name',
+	                name: 'Name',
+	                type: 'string',
+	                defaultValue: ""
 	            });
 
 	            var fields = settings.map(function (setting) {
 	                return setting.id;
 	            });
 	            var initialValues = settings.reduce(function (initialValues, setting) {
-	                initialValues[setting.id] = setting.defaultValue;
+	                if (setting.defaultValue !== undefined) {
+	                    initialValues[setting.id] = setting.defaultValue;
+	                }
 	                return initialValues;
 	            }, { interval: 5 });
 
@@ -2993,11 +3038,14 @@ webpackJsonp([0],[
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var initialDatasources = {
-	    "my-random": {
-	        id: "my-random",
+	    "initial_random_source": {
+	        id: "initial_random_source",
 	        type: "random",
 	        props: {
-	            name: "Random Datasource"
+	            name: "Random Datasource",
+	            min: 10,
+	            max: 20,
+	            maxValues: 20
 	        }
 	    }
 	};
@@ -3016,8 +3064,8 @@ webpackJsonp([0],[
 	            dsType: dsType,
 	            props: props
 	        });
-	        var state = getState();
-	        DatasourceWorker.initializeWorkers(state.datasources, dispatch);
+	        //const state = getState();
+	        //DatasourceWorker.initializeWorkers(state.datasources, dispatch);
 	    };
 	}
 
@@ -3051,9 +3099,16 @@ webpackJsonp([0],[
 
 	        (0, _collection.valuesOf)(dsStates).forEach(function (dsState) {
 	            var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
-	            var dsInstance = dsPlugin.getOrCreateInstance(dsState.id);
-	            var newData = dsInstance.getNewValues();
-	            dispatch(appendDatasourceData(dsState.id, newData));
+	            var dsInstance = dsPlugin.getOrCreateInstance(dsState);
+	            var newData = dsInstance.getValues();
+
+	            /*
+	            if (!dsState.data) {
+	                const pastData = dsInstance.getPastValues();
+	                dispatch(setDatasourceData(dsState.id, pastData));
+	            }*/
+
+	            dispatch(setDatasourceData(dsState.id, newData));
 	        });
 	    };
 	}
@@ -11172,12 +11227,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	exports.initializeWorkers = initializeWorkers;
-	exports.addWorker = addWorker;
-	exports.removeWorker = removeWorker;
 
 	var _datasource = __webpack_require__(272);
 
@@ -11193,66 +11243,11 @@ webpackJsonp([0],[
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	// TODO: Should we have not serializable workers in the state and just skip on serialization?
-	var workers = [];
-
 	function initializeWorkers(dsStates, dispatch) {
 	    var heartbeat = setInterval(function () {
 	        dispatch(Datasource.fetchDatasourceData());
 	    }, 1000);
-
-	    return;
-	    (0, _collection.valuesOf)(dsStates).forEach(function (dsState) {
-	        var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
-
-	        console.log("plugin", dsPlugin);
-
-	        var dsInstance = new dsPlugin.Datasource();
-
-	        workers.push(new DatasourceWorker(dsState, dsInstance, dispatch));
-	    });
 	}
-
-	function addWorker(dsState, dispatch) {
-	    var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
-	    console.log("plugin", dsPlugin);
-	    var dsInstance = new dsPlugin.Datasource();
-	    workers.push(new DatasourceWorker(dsState, dsInstance, dispatch));
-	}
-
-	function removeWorker(dsState, dispatch) {
-	    var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
-	    console.log("plugin", dsPlugin);
-	    var dsInstance = new dsPlugin.Datasource();
-	    workers.push(new DatasourceWorker(dsState, dsInstance, dispatch));
-	}
-
-	var DatasourceWorker = function () {
-	    function DatasourceWorker(dsState, dsInstance, dispatch) {
-	        _classCallCheck(this, DatasourceWorker);
-
-	        return;
-	        this.dispatch = dispatch;
-
-	        dispatch(Datasource.setDatasourceData(dsState.id, dsInstance.getPastValues()));
-	        this.timer = setInterval(function () {
-	            dispatch(Datasource.appendDatasourceData(dsState.id, dsInstance.getNewValues()));
-	        }, 1000);
-	    }
-
-	    _createClass(DatasourceWorker, [{
-	        key: 'dispose',
-	        value: function dispose() {
-	            clearInterval(this.timer);
-	        }
-	    }]);
-
-	    return DatasourceWorker;
-	}();
-
-	exports.default = DatasourceWorker;
 
 /***/ },
 /* 314 */
@@ -11367,14 +11362,24 @@ webpackJsonp([0],[
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+	var lastSave = new Date();
+
 	function persistenceMiddleware(_ref) {
 	    var getState = _ref.getState;
 
 	    return function (next) {
 	        return function (action) {
+
 	            var nextState = next(action);
+
+	            var now = new Date();
+	            if (now.getTime() - lastSave.getTime() < 10000) {
+	                return nextState;
+	            }
+
 	            saveToLocalStorage(getState());
 	            console.log('Saved state ...');
+	            lastSave = new Date();
 	            return nextState;
 	        };
 	    };
@@ -11469,14 +11474,13 @@ webpackJsonp([0],[
 	        key: 'render',
 	        value: function render() {
 	            var props = this.props;
-	            var ds = props.getDatasource(this.props.datasource);
+	            var data = props.getData(this.props.datasource);
 
-	            //console.log("Datasource:", ds);
-	            if (!ds) {
+	            if (!data || data.length == 0) {
 	                return React.createElement(
 	                    'p',
 	                    null,
-	                    'Missing datasource: ',
+	                    'No data in datasource: ',
 	                    this.props.datasource
 	                );
 	            }
@@ -11484,7 +11488,7 @@ webpackJsonp([0],[
 	            return React.createElement(
 	                'p',
 	                null,
-	                JSON.stringify(ds.data)
+	                JSON.stringify(data)
 	            );
 	        }
 	    }]);
@@ -11527,63 +11531,77 @@ webpackJsonp([0],[
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "chart",
-	    defaultProps: {
-	        name: "Chart"
-	    }
+	    settings: [{
+	        id: 'datasource',
+	        name: 'Datasource',
+	        type: 'datasource'
+	    }]
 	};
 
 	var Widget = exports.Widget = function (_Component) {
 	    _inherits(Widget, _Component);
 
-	    function Widget(props) {
+	    function Widget() {
 	        _classCallCheck(this, Widget);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Widget).call(this, props));
-
-	        var i = 1;
-	        _this.state = {
-	            data: [{ x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }, { x: i++, "value": Math.random() * 100 }]
-	        };
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Widget).apply(this, arguments));
 	    }
 
 	    _createClass(Widget, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            this._renderChart(this.state.data);
+	            this._createChart();
 	        }
 	    }, {
-	        key: '_renderChart',
-	        value: function _renderChart(data) {
-	            var donutChart = c3.generate({
-	                bindto: '#chart_1',
+	        key: '_createChart',
+	        value: function _createChart() {
+	            this.chart = c3.generate({
+	                bindto: '#chart-' + this.props._state.id,
 	                size: {
 	                    //width: 500,
 	                    height: this.props._state.height * 200 - 77
 	                },
 	                data: {
-	                    json: data,
-	                    keys: {
-	                        value: ["value"]
-	                    },
-	                    labels: false,
-	                    names: {
-	                        value: 'Random Values'
-	                    }
+	                    json: []
 	                },
 	                axis: {
 	                    x: {
 	                        //label: "foo"
 	                    }
 	                },
+	                transition: {
+	                    duration: 0
+	                },
 	                type: 'spline'
+	            });
+	        }
+	    }, {
+	        key: '_renderChart',
+	        value: function _renderChart() {
+	            if (!this.chart) {
+	                return;
+	            }
+	            var props = this.props;
+	            var data = props.getData(this.props.datasource);
+
+	            this.chart.load({
+	                json: data,
+	                //unload: false,
+	                keys: {
+	                    x: "x",
+	                    value: ["value"]
+	                },
+	                labels: false,
+	                names: {
+	                    value: 'Random Values'
+	                }
 	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            this._renderChart(this.state.data);
-	            return React.createElement('div', { className: '', id: 'chart_1' });
+	            this._renderChart();
+	            return React.createElement('div', { className: '', id: 'chart-' + this.props._state.id });
 	        }
 	    }]);
 
@@ -11607,123 +11625,68 @@ webpackJsonp([0],[
 
 	var _chai = __webpack_require__(273);
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "random",
 	    name: "Random",
 	    settings: [{
-	        id: 'string',
-	        name: 'some String w/o description',
-	        type: 'string',
-	        defaultValue: "Some default value"
+	        id: "maxValues",
+	        name: "Max Values",
+	        description: "Maximum number of values stored",
+	        type: "number"
 	    }, {
-	        id: 'text',
-	        name: 'some Text',
-	        type: 'text',
-	        defaultValue: "Some default value",
-	        description: "This is pretty self explanatory..."
+	        id: "min",
+	        name: "Min Value",
+	        type: "number",
+	        defaultValue: 0
 	    }, {
-	        id: 'bool',
-	        name: 'some Boolean',
-	        type: 'boolean',
-	        defaultValue: true,
-	        description: "This is pretty self explanatory..."
-	    }, {
-	        id: 'multi',
-	        name: 'some Options',
-	        type: 'option',
-	        description: "This is pretty self explanatory...",
-	        defaultValue: "old",
-	        options: [{
-	            "name": "0-50",
-	            "value": "young"
-	        }, {
-	            "name": "51-100",
-	            "value": "old"
-	        }]
-	    }, {
-	        id: 'multi2',
-	        name: 'option w/o default',
-	        type: 'option',
-	        description: "This is pretty self explanatory...",
-	        options: [{
-	            "name": "0-50",
-	            "value": "young"
-	        }, {
-	            "name": "51-100",
-	            "value": "old"
-	        }]
-	    }],
-	    settingsX: {
-	        string: {
-	            name: 'some String w/o description',
-	            type: 'string',
-	            defaultValue: "Some default value"
-	        },
-	        text: {
-	            name: 'some Text',
-	            type: 'text',
-	            defaultValue: "Some default value",
-	            description: "This is pretty self explanatory..."
-	        },
-	        boolean: {
-	            name: 'some Boolean',
-	            type: 'boolean',
-	            defaultValue: true,
-	            description: "This is pretty self explanatory..."
-	        },
-	        multi: {
-	            name: 'some Options',
-	            type: 'option',
-	            description: "This is pretty self explanatory...",
-	            defaultValue: "old",
-	            options: [{
-	                "name": "0-50",
-	                "value": "young"
-	            }, {
-	                "name": "51-100",
-	                "value": "old"
-	            }]
-	        },
-	        multi2: {
-	            name: 'option w/o default',
-	            type: 'option',
-	            description: "This is pretty self explanatory...",
-	            options: [{
-	                "name": "0-50",
-	                "value": "young"
-	            }, {
-	                "name": "51-100",
-	                "value": "old"
-	            }]
-	        }
-	    },
-
-	    defaultProps: {}
+	        id: "max",
+	        name: "Max Value",
+	        type: "number",
+	        defaultValue: 100
+	    }]
 	};
 
+	function getRandomInt(min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	var Datasource = exports.Datasource = function () {
-	    function Datasource() {
+	    function Datasource(props) {
 	        _classCallCheck(this, Datasource);
 
+	        this.props = props;
 	        // Initialize with non random values to demonstrate loading of historic values
-	        this.history = [{ value: 10 }, { value: 20 }, { value: 30 }, { value: 40 }, { value: 50 }];
+	        this.history = []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
+	        this.x = 0;
 	    }
 
 	    _createClass(Datasource, [{
-	        key: "getNewValues",
-	        value: function getNewValues() {
-	            var newValue = { value: Math.ceil(Math.random() * 100) };
-	            this.history.push(newValue);
-	            return [newValue];
+	        key: "updateProps",
+	        value: function updateProps(props) {
+	            this.props = props;
 	        }
 	    }, {
-	        key: "getPastValues",
-	        value: function getPastValues(since) {
-	            return [].concat(_toConsumableArray(this.history));
+	        key: "getValues",
+	        value: function getValues() {
+	            this.history.push(this.fetchValue());
+
+	            var maxValues = Number(this.props.maxValues);
+	            while (this.history.length > maxValues) {
+	                this.history.shift();
+	            }
+
+	            return this.history;
+	        }
+	    }, {
+	        key: "fetchValue",
+	        value: function fetchValue() {
+	            var props = this.props;
+	            var min = Number(props.min);
+	            var max = Number(props.max);
+	            var newValue = { x: this.x++, value: getRandomInt(min, max) };
+	            return newValue;
 	        }
 	    }]);
 
