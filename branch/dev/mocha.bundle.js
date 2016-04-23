@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e857a45fe9b6dccdf42a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2a64efc486c33a9119b7"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -723,8 +723,7 @@
 	        value: function register(module) {
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
 	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                datasource: module.Datasource,
-	                configDialog: module.ConfigDialog ? module.ConfigDialog : null
+	                Datasource: module.Datasource
 	            });
 	        }
 	    }, {

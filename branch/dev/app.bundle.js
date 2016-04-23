@@ -2030,8 +2030,7 @@ webpackJsonp([0],[
 	        value: function register(module) {
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on datasource module. Every module must export TYPE_INFO");
 	            this.datasources[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                datasource: module.Datasource,
-	                configDialog: module.ConfigDialog ? module.ConfigDialog : null
+	                Datasource: module.Datasource
 	            });
 	        }
 	    }, {
@@ -11119,7 +11118,13 @@ webpackJsonp([0],[
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
+	var _datasourcePlugins = __webpack_require__(244);
+
+	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
+
 	var _collection = __webpack_require__(239);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -11132,19 +11137,25 @@ webpackJsonp([0],[
 	        worker.dispose();
 	    });
 	    workers = [];
-	    (0, _collection.valuesOf)(datasources).forEach(function (ds) {
-	        workers.push(new DatasourceWorker(ds, dispatch));
+	    (0, _collection.valuesOf)(datasources).forEach(function (dsState) {
+	        var dsPlugin = _datasourcePlugins2.default.getPlugin(dsState.type);
+
+	        console.log("plugin", dsPlugin);
+
+	        var dsInstance = new dsPlugin.Datasource();
+
+	        workers.push(new DatasourceWorker(dsState, dsInstance, dispatch));
 	    });
 	}
 
 	var DatasourceWorker = function () {
-	    function DatasourceWorker(dsState, dispatch) {
+	    function DatasourceWorker(dsState, dsInstance, dispatch) {
 	        _classCallCheck(this, DatasourceWorker);
 
 	        this.dispatch = dispatch;
 
 	        this.timer = setInterval(function () {
-	            dispatch(Datasource.setDatasourceData(dsState.id, "cool " + Math.random()));
+	            dispatch(Datasource.setDatasourceData(dsState.id, dsInstance.getNewValues()));
 	        }, 1000);
 	    }
 
