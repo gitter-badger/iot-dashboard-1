@@ -549,7 +549,7 @@ webpackJsonp([0],[
 	                                    return Persistence.clearData();
 	                                } },
 	                            React.createElement("i", { className: "red bomb icon" }),
-	                            "Wipe Everything!"
+	                            "Reset Everything!"
 	                        )
 	                    )
 	                ),
