@@ -12190,7 +12190,7 @@ webpackJsonp([0],[
 	        value: function getValues() {
 	            this.history.push(this.fetchValue());
 
-	            var maxValues = Number(this.props.maxValues);
+	            var maxValues = Number(this.props.maxValues) || 1000;
 	            while (this.history.length > maxValues) {
 	                this.history.shift();
 	            }

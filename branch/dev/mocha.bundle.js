@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b8b40585e197f5c436ac"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c028a23e8706b4c4957a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -25117,7 +25117,7 @@
 	        value: function getValues() {
 	            this.history.push(this.fetchValue());
 
-	            var maxValues = Number(this.props.maxValues);
+	            var maxValues = Number(this.props.maxValues) || 1000;
 	            while (this.history.length > maxValues) {
 	                this.history.shift();
 	            }
