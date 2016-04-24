@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ef59c6da5787d2527db5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "80e5306c27ee15a8096f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -20762,8 +20762,8 @@
 			if (Symbol.observable) {
 				result = Symbol.observable;
 			} else {
-				if (typeof Symbol.for === 'function') {
-					result = Symbol.for('observable');
+				if (typeof Symbol['for'] === 'function') {
+					result = Symbol['for']('observable');
 				} else {
 					result = Symbol('observable');
 				}
@@ -20931,8 +20931,9 @@
 	  }
 	  /* eslint-enable no-console */
 	  try {
-	    // This error was thrown as a convenience so that you can use this stack
-	    // to find the callsite that caused this warning to fire.
+	    // This error was thrown as a convenience so that if you enable
+	    // "break on all exceptions" in your console,
+	    // it would pause the execution at this line.
 	    throw new Error(message);
 	    /* eslint-disable no-empty */
 	  } catch (e) {}
