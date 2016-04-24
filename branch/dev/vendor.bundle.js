@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ef59c6da5787d2527db5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9642c0a9efd0de671233"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -638,20 +638,20 @@
 
 	__webpack_require__(2);
 	__webpack_require__(159);
-	__webpack_require__(245);
-	__webpack_require__(262);
+	__webpack_require__(247);
+	__webpack_require__(264);
 	__webpack_require__(160);
 	__webpack_require__(173);
-	__webpack_require__(327);
-	__webpack_require__(328);
+	__webpack_require__(329);
+	__webpack_require__(330);
 	__webpack_require__(182);
-	__webpack_require__(324);
-	__webpack_require__(316);
+	__webpack_require__(326);
+	__webpack_require__(318);
 	__webpack_require__(238);
-	__webpack_require__(325);
-	__webpack_require__(332);
-	__webpack_require__(331);
-	module.exports = __webpack_require__(350);
+	__webpack_require__(327);
+	__webpack_require__(334);
+	__webpack_require__(333);
+	module.exports = __webpack_require__(352);
 
 
 /***/ },
@@ -20762,8 +20762,8 @@
 			if (Symbol.observable) {
 				result = Symbol.observable;
 			} else {
-				if (typeof Symbol.for === 'function') {
-					result = Symbol.for('observable');
+				if (typeof Symbol['for'] === 'function') {
+					result = Symbol['for']('observable');
 				} else {
 					result = Symbol('observable');
 				}
@@ -34763,18 +34763,20 @@
 /* 242 */,
 /* 243 */,
 /* 244 */,
-/* 245 */
+/* 245 */,
+/* 246 */,
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(246).default;
-	module.exports.utils = __webpack_require__(252);
-	module.exports.Responsive = __webpack_require__(259).default;
-	module.exports.Responsive.utils = __webpack_require__(260);
-	module.exports.WidthProvider = __webpack_require__(261).default;
+	module.exports = __webpack_require__(248).default;
+	module.exports.utils = __webpack_require__(254);
+	module.exports.Responsive = __webpack_require__(261).default;
+	module.exports.Responsive.utils = __webpack_require__(262);
+	module.exports.WidthProvider = __webpack_require__(263).default;
 
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34787,13 +34789,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(247);
+	var _lodash = __webpack_require__(249);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _utils = __webpack_require__(252);
+	var _utils = __webpack_require__(254);
 
-	var _GridItem = __webpack_require__(253);
+	var _GridItem = __webpack_require__(255);
 
 	var _GridItem2 = _interopRequireDefault(_GridItem);
 
@@ -35283,7 +35285,7 @@
 	exports.default = ReactGridLayout;
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35294,9 +35296,9 @@
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
-	var Stack = __webpack_require__(248),
-	    keys = __webpack_require__(250),
-	    root = __webpack_require__(251);
+	var Stack = __webpack_require__(250),
+	    keys = __webpack_require__(252),
+	    root = __webpack_require__(253);
 
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -36120,7 +36122,7 @@
 
 
 /***/ },
-/* 248 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -36786,10 +36788,10 @@
 
 	module.exports = Stack;
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(249)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(251)(module), (function() { return this; }())))
 
 /***/ },
-/* 249 */
+/* 251 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -36805,7 +36807,7 @@
 
 
 /***/ },
-/* 250 */
+/* 252 */
 /***/ function(module, exports) {
 
 	/**
@@ -37276,7 +37278,7 @@
 
 
 /***/ },
-/* 251 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -37339,10 +37341,10 @@
 
 	module.exports = root;
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(249)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(251)(module), (function() { return this; }())))
 
 /***/ },
-/* 252 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -37798,7 +37800,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 253 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37811,11 +37813,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDraggable = __webpack_require__(254);
+	var _reactDraggable = __webpack_require__(256);
 
-	var _reactResizable = __webpack_require__(255);
+	var _reactResizable = __webpack_require__(257);
 
-	var _utils = __webpack_require__(252);
+	var _utils = __webpack_require__(254);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38285,7 +38287,7 @@
 	exports.default = GridItem;
 
 /***/ },
-/* 254 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -39655,7 +39657,7 @@
 	//# sourceMappingURL=react-draggable.js.map
 
 /***/ },
-/* 255 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39663,12 +39665,12 @@
 	  throw new Error("Don't instantiate Resizable directly! Use require('react-resizable').Resizable");
 	};
 
-	module.exports.Resizable = __webpack_require__(256).default;
-	module.exports.ResizableBox = __webpack_require__(258).default;
+	module.exports.Resizable = __webpack_require__(258).default;
+	module.exports.ResizableBox = __webpack_require__(260).default;
 
 
 /***/ },
-/* 256 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39681,9 +39683,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDraggable = __webpack_require__(254);
+	var _reactDraggable = __webpack_require__(256);
 
-	var _cloneElement = __webpack_require__(257);
+	var _cloneElement = __webpack_require__(259);
 
 	var _cloneElement2 = _interopRequireDefault(_cloneElement);
 
@@ -39918,7 +39920,7 @@
 	exports.default = Resizable;
 
 /***/ },
-/* 257 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39943,7 +39945,7 @@
 	};
 
 /***/ },
-/* 258 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39956,7 +39958,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Resizable = __webpack_require__(256);
+	var _Resizable = __webpack_require__(258);
 
 	var _Resizable2 = _interopRequireDefault(_Resizable);
 
@@ -40053,7 +40055,7 @@
 	exports.default = ResizableBox;
 
 /***/ },
-/* 259 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40066,15 +40068,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(247);
+	var _lodash = __webpack_require__(249);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _utils = __webpack_require__(252);
+	var _utils = __webpack_require__(254);
 
-	var _responsiveUtils = __webpack_require__(260);
+	var _responsiveUtils = __webpack_require__(262);
 
-	var _ReactGridLayout = __webpack_require__(246);
+	var _ReactGridLayout = __webpack_require__(248);
 
 	var _ReactGridLayout2 = _interopRequireDefault(_ReactGridLayout);
 
@@ -40275,7 +40277,7 @@
 	exports.default = ResponsiveReactGridLayout;
 
 /***/ },
-/* 260 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40286,7 +40288,7 @@
 	exports.findOrGenerateResponsiveLayout = findOrGenerateResponsiveLayout;
 	exports.sortBreakpoints = sortBreakpoints;
 
-	var _utils = __webpack_require__(252);
+	var _utils = __webpack_require__(254);
 
 	/**
 	 * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
@@ -40365,7 +40367,7 @@
 	}
 
 /***/ },
-/* 261 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40443,14 +40445,14 @@
 	};
 
 /***/ },
-/* 262 */
+/* 264 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 263 */,
-/* 264 */
+/* 265 */,
+/* 266 */
 /***/ function(module, exports) {
 
 	/*
@@ -40506,8 +40508,6 @@
 
 
 /***/ },
-/* 265 */,
-/* 266 */,
 /* 267 */,
 /* 268 */,
 /* 269 */,
@@ -40557,20 +40557,22 @@
 /* 313 */,
 /* 314 */,
 /* 315 */,
-/* 316 */
+/* 316 */,
+/* 317 */,
+/* 318 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 317 */,
-/* 318 */,
 /* 319 */,
 /* 320 */,
 /* 321 */,
 /* 322 */,
 /* 323 */,
-/* 324 */
+/* 324 */,
+/* 325 */,
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) { /*
@@ -62041,14 +62043,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238)))
 
 /***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 326 */,
-/* 327 */
+/* 328 */,
+/* 329 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62281,7 +62283,7 @@
 	module.exports = createLogger;
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62304,9 +62306,9 @@
 	}
 
 /***/ },
-/* 329 */,
-/* 330 */,
-/* 331 */
+/* 331 */,
+/* 332 */,
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -71865,7 +71867,7 @@
 	}();
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (window) {
@@ -71916,7 +71918,7 @@
 
 	    function ChartInternal(api) {
 	        var $$ = this;
-	        $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(331) : undefined;
+	        $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(333) : undefined;
 	        $$.api = api;
 	        $$.config = $$.getDefaultConfig();
 	        $$.data = {};
@@ -78909,7 +78911,7 @@
 	    }
 
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(331)], __WEBPACK_AMD_DEFINE_FACTORY__ = (c3), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(333)], __WEBPACK_AMD_DEFINE_FACTORY__ = (c3), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
 	        module.exports = c3;
 	    } else {
@@ -78920,8 +78922,6 @@
 
 
 /***/ },
-/* 333 */,
-/* 334 */,
 /* 335 */,
 /* 336 */,
 /* 337 */,
@@ -78937,7 +78937,9 @@
 /* 347 */,
 /* 348 */,
 /* 349 */,
-/* 350 */
+/* 350 */,
+/* 351 */,
+/* 352 */
 /***/ function(module, exports) {
 
 	// get successful control from form and assemble into object
