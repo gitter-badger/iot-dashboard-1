@@ -89,7 +89,7 @@ webpackJsonp([0],[
 
 	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
 
-	var _datasourcePlugins = __webpack_require__(246);
+	var _datasourcePlugins = __webpack_require__(248);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
@@ -144,6 +144,7 @@ webpackJsonp([0],[
 
 	var state = store.getState();
 
+	_widgetPlugins2.default.store = store;
 	_widgetPlugins2.default.register(TextWidget);
 	_widgetPlugins2.default.register(ChartWidget);
 
@@ -593,7 +594,7 @@ webpackJsonp([0],[
 
 	var Widgets = _interopRequireWildcard(_widgets);
 
-	var _widgetFrame = __webpack_require__(245);
+	var _widgetFrame = __webpack_require__(247);
 
 	var _widgetFrame2 = _interopRequireDefault(_widgetFrame);
 
@@ -743,7 +744,7 @@ webpackJsonp([0],[
 
 	var _collection = __webpack_require__(239);
 
-	var _reducer = __webpack_require__(244);
+	var _reducer = __webpack_require__(246);
 
 	var _actionNames = __webpack_require__(235);
 
@@ -977,7 +978,7 @@ webpackJsonp([0],[
 
 	var Modal = _interopRequireWildcard(_modalDialog);
 
-	var _modalDialogIds = __webpack_require__(243);
+	var _modalDialogIds = __webpack_require__(245);
 
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 
@@ -1077,9 +1078,9 @@ webpackJsonp([0],[
 
 /***/ },
 /* 234 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -1089,36 +1090,92 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _reactRedux = __webpack_require__(173);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var PluginRegistry = exports.PluginRegistry = function () {
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	// state is bound, widgets will only have to provide the dsId which the user configures
+	function dataResolver(store, dsId) {
+	    var state = store.getState ? store.getState() : store; // little hack for testng
+	    var ds = state.datasources[dsId];
+	    if (!ds) {
+	        //console.warn("Can not find Datasource with id " + id + " for widget: ", widgetState, " Returning empty data!");
+	        return [];
+	    }
+
+	    return ds.data ? [].concat(_toConsumableArray(ds.data)) : [];
+	}
+
+	var PluginRegistry = function () {
 	    function PluginRegistry() {
 	        _classCallCheck(this, PluginRegistry);
 
 	        this.widgets = {};
+	        this.instances = {};
 	    }
 
 	    _createClass(PluginRegistry, [{
-	        key: "register",
+	        key: 'getOrCreateWidget',
+	        value: function getOrCreateWidget(module, id) {
+	            var _this = this;
+
+	            if (this.instances[id]) {
+	                return this.instances[id];
+	            }
+
+	            var widget = (0, _reactRedux.connect)(function (state) {
+	                var widgetState = state.widgets[id];
+
+	                return {
+	                    config: widgetState.props,
+	                    _state: widgetState,
+	                    // It is important that the dataResolver does not change, else the component gets updates all the time
+	                    //getData: this.dataResolver
+	                    getData: dataResolver.bind(_this, state)
+	                };
+	            })(module.Widget);
+
+	            this.instances[id] = _react2.default.createElement(widget);
+	            // Should we create here or always outside?
+	            return this.instances[id];
+	        }
+	    }, {
+	        key: 'register',
 	        value: function register(module) {
 	            console.assert(module.TYPE_INFO, "Missing TYPE_INFO on widget module. Every module must export TYPE_INFO");
+
 	            this.widgets[module.TYPE_INFO.type] = _extends({}, module.TYPE_INFO, {
-	                widget: module.Widget
+	                getOrCreateWidget: this.getOrCreateWidget.bind(this, module)
+	                //Widget: moduleWidget
 	            });
 	        }
 	    }, {
-	        key: "getPlugin",
+	        key: 'getPlugin',
 	        value: function getPlugin(type) {
 	            return this.widgets[type];
 	        }
 	    }, {
-	        key: "getPlugins",
+	        key: 'getPlugins',
 	        value: function getPlugins() {
-	            var _this = this;
+	            var _this2 = this;
 
 	            return Object.keys(this.widgets).map(function (key) {
-	                return _this.widgets[key];
+	                return _this2.widgets[key];
 	            });
+	        }
+	    }, {
+	        key: 'store',
+	        set: function set(store) {
+	            this._store = store;
+	            this.dataResolver = dataResolver.bind(this, store);
 	        }
 	    }]);
 
@@ -1209,7 +1266,7 @@ webpackJsonp([0],[
 
 	var _reduxForm = __webpack_require__(182);
 
-	var _modalDialogIds = __webpack_require__(243);
+	var _modalDialogIds = __webpack_require__(245);
 
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 
@@ -1805,6 +1862,10 @@ webpackJsonp([0],[
 
 	var _collection = __webpack_require__(239);
 
+	var _lodash = __webpack_require__(243);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1908,7 +1969,11 @@ webpackJsonp([0],[
 	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
 	        case "string":
 	            return _react2.default.createElement('input', _extends({ placeholder: props.description }, props.field));
+	        case "json":
+	            // TODO: Offer better editor + validation
+	            return _react2.default.createElement('textarea', _extends({ rows: '3', placeholder: props.description }, props.field));
 	        case "number":
+	            // TODO: Validate numbers, distinct between integers and decimals?
 	            return _react2.default.createElement('input', _extends({ type: 'number', min: props.min, max: props.max,
 	                placeholder: props.description }, props.field));
 	        case "boolean":
@@ -1923,17 +1988,19 @@ webpackJsonp([0],[
 	                    "Select " + props.name + " ..."
 	                ),
 	                props.options.map(function (option) {
+	                    var optionValue = _lodash2.default.isObject(option) ? option.value : option;
+	                    var optionName = _lodash2.default.isObject(option) ? option.name : option;
 	                    return _react2.default.createElement(
 	                        'option',
-	                        { key: option.value, value: option.value },
-	                        option.name
+	                        { key: optionValue, value: optionValue },
+	                        optionName
 	                    );
 	                })
 	            );
 	        case "datasource":
 	            return _react2.default.createElement(DatasourceInputContainer, props);
 	        default:
-	            console.error("Unknown type for settings field: " + props.type);
+	            console.error("Unknown type for settings field with id '" + props.id + "': " + props.type);
 	            return _react2.default.createElement('input', { placeholder: props.description, readonly: true, value: "Unknown field type: " + props.type });
 	    }
 	}
@@ -1943,10 +2010,11 @@ webpackJsonp([0],[
 	    description: Prop.string,
 	    min: Prop.number, // for number
 	    max: Prop.number, // for number
-	    options: Prop.arrayOf( // For option
+	    options: Prop.oneOfType([Prop.arrayOf( // For option
 	    Prop.shape({
+	        name: Prop.string,
 	        value: Prop.string.isRequired
-	    }.isRequired))
+	    }.isRequired)).isRequired, Prop.arrayOf(Prop.string).isRequired])
 	};
 
 	function DatasourceInput(props) {
@@ -1982,7 +2050,9 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238)))
 
 /***/ },
-/* 243 */
+/* 243 */,
+/* 244 */,
+/* 245 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1994,7 +2064,7 @@ webpackJsonp([0],[
 	var WIDGET_CONFIG = exports.WIDGET_CONFIG = "widget-config-dialog";
 
 /***/ },
-/* 244 */
+/* 246 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2070,7 +2140,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 245 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2080,8 +2150,6 @@ webpackJsonp([0],[
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _react = __webpack_require__(2);
 
@@ -2099,7 +2167,7 @@ webpackJsonp([0],[
 
 	var _widgets = __webpack_require__(231);
 
-	var _datasourcePlugins = __webpack_require__(246);
+	var _datasourcePlugins = __webpack_require__(248);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
@@ -2124,8 +2192,8 @@ webpackJsonp([0],[
 	var WidgetFrame = function WidgetFrame(props) {
 	    var widgetState = props.widget;
 
-	    var widget = _widgetPlugins2.default.getPlugin(widgetState.type);
-	    console.assert(widget, "No registered widget with type: " + widgetState.type);
+	    var widgetPlugin = _widgetPlugins2.default.getPlugin(widgetState.type);
+	    console.assert(widgetPlugin, "No registered widget with type: " + widgetState.type);
 
 	    var dataResolver = function dataResolver(id) {
 	        var ds = props.datasources[id];
@@ -2150,7 +2218,7 @@ webpackJsonp([0],[
 	                'div',
 	                { className: 'ui tiny horizontal right floated inverted list' },
 	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
-	                    visible: widget.settings ? true : false, icon: 'configure' }),
+	                    visible: widgetPlugin.settings ? true : false, icon: 'configure' }),
 	                React.createElement(
 	                    'a',
 	                    { className: 'right item drag' },
@@ -2167,10 +2235,7 @@ webpackJsonp([0],[
 	        React.createElement(
 	            'div',
 	            { className: 'ui segment' },
-	            React.createElement(widget.widget, _extends({}, widgetState.props, {
-	                _state: widgetState,
-	                getData: dataResolver
-	            }))
+	            widgetPlugin.getOrCreateWidget(widgetState.id)
 	        )
 	    );
 	};
@@ -2227,7 +2292,7 @@ webpackJsonp([0],[
 	})(WidgetButton);
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2241,7 +2306,7 @@ webpackJsonp([0],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _datasourcePlugin = __webpack_require__(247);
+	var _datasourcePlugin = __webpack_require__(249);
 
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 
@@ -2290,7 +2355,7 @@ webpackJsonp([0],[
 	exports.default = DatasourcePlugins;
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2304,7 +2369,7 @@ webpackJsonp([0],[
 
 	var _collection = __webpack_require__(239);
 
-	var _lodash = __webpack_require__(248);
+	var _lodash = __webpack_require__(243);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -2348,7 +2413,7 @@ webpackJsonp([0],[
 	            var instance = this.instances[id];
 	            if (!instance) {
 	                var dsState = this.getDatasourceState(id);
-	                instance = new this.Datasource(dsState.props);
+	                instance = new this.Datasource(dsState.props, dsState.data);
 	                instance.props = dsState.props;
 	                this.instances[id] = instance;
 	            }
@@ -2415,8 +2480,6 @@ webpackJsonp([0],[
 	}();
 
 /***/ },
-/* 248 */,
-/* 249 */,
 /* 250 */,
 /* 251 */,
 /* 252 */,
@@ -2744,7 +2807,7 @@ webpackJsonp([0],[
 
 	var _uuid = __webpack_require__(232);
 
-	var _reducer = __webpack_require__(244);
+	var _reducer = __webpack_require__(246);
 
 	var _actionNames = __webpack_require__(235);
 
@@ -3183,7 +3246,7 @@ webpackJsonp([0],[
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
-	var _datasourcePlugins = __webpack_require__(246);
+	var _datasourcePlugins = __webpack_require__(248);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
@@ -3201,7 +3264,7 @@ webpackJsonp([0],[
 
 	var _reduxForm = __webpack_require__(182);
 
-	var _modalDialogIds = __webpack_require__(243);
+	var _modalDialogIds = __webpack_require__(245);
 
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 
@@ -3455,11 +3518,11 @@ webpackJsonp([0],[
 
 	var _chai = __webpack_require__(277);
 
-	var _datasourcePlugins = __webpack_require__(246);
+	var _datasourcePlugins = __webpack_require__(248);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _reducer = __webpack_require__(244);
+	var _reducer = __webpack_require__(246);
 
 	var _actionNames = __webpack_require__(235);
 
@@ -3471,7 +3534,7 @@ webpackJsonp([0],[
 
 	var _collection = __webpack_require__(239);
 
-	var _modalDialogIds = __webpack_require__(243);
+	var _modalDialogIds = __webpack_require__(245);
 
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 
@@ -11954,7 +12017,7 @@ webpackJsonp([0],[
 	        key: 'render',
 	        value: function render() {
 	            var props = this.props;
-	            var data = props.getData(this.props.datasource);
+	            var data = props.getData(this.props.config.datasource);
 
 	            if (!data || data.length == 0) {
 	                return React.createElement(
@@ -12010,13 +12073,68 @@ webpackJsonp([0],[
 
 	var TYPE_INFO = exports.TYPE_INFO = {
 	    type: "chart",
-	    description: "Renders a line chart. Will be way more flexible in future.",
+	    description: "Renders a chart. Will be way more flexible in future.",
 	    settings: [{
 	        id: 'datasource',
 	        name: 'Datasource',
 	        type: 'datasource'
-	    }]
+	    }, {
+	        id: 'chartType',
+	        name: 'Chart Type',
+	        type: 'option',
+	        defaultValue: 'spline',
+	        options: ['line', 'spline', 'step', 'area', 'area-spline', 'area-step', 'bar', 'scatter', 'pie', 'donut', 'gauge']
+	    }, {
+	        id: 'dataKeys',
+	        type: "json",
+	        name: "Data Keys",
+	        description: "An array of Keys of an data object that define the data sets",
+	        defaultValue: '["value"]'
+	    }, {
+	        id: 'xKey',
+	        type: "string",
+	        name: "X Key",
+	        description: "Key of an data object that defines the X value",
+	        defaultValue: "x"
+	    }, {
+	        id: 'names',
+	        type: "json",
+	        name: "Data Names",
+	        description: "Json object that maps Data Keys to displayed names",
+	        defaultValue: '{"value": "My Value"}'
+	    }, {
+	        id: 'gaugeData',
+	        type: "json",
+	        name: "Gauge Data",
+	        description: "Json object that is passed as configuration for gauge chats",
+	        defaultValue: JSON.stringify({ "min": 0, "max": 100, units: ' %' })
+	    } /*,
+	      {
+	      id: 'donutData',
+	      type: "json",
+	      name: "Gauge Data",
+	      description: "Json object that maps Data Keys to displayed names",
+	      defaultValue: JSON.stringify({title: 'Title'})
+	      }*/
+	    ]
 	};
+
+	function safeParseJsonObject(string) {
+	    try {
+	        return JSON.parse(string);
+	    } catch (e) {
+	        console.error("Was not able to parse JSON: " + string);
+	        return {};
+	    }
+	}
+	function safeParseJsonArray(string) {
+	    try {
+	        return JSON.parse(string);
+	    } catch (e) {
+	        console.error("Was not able to parse JSON: " + string);
+	        return {};
+	    }
+	}
 
 	var Widget = exports.Widget = function (_Component) {
 	    _inherits(Widget, _Component);
@@ -12030,29 +12148,51 @@ webpackJsonp([0],[
 	    _createClass(Widget, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            this._createChart();
+	            this._createChart(this.props);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (nextProps.config !== this.props.config || nextProps._state.height !== this.props._state.height) {
+	                this._createChart(nextProps);
+	            }
 	        }
 	    }, {
 	        key: '_createChart',
-	        value: function _createChart() {
+	        value: function _createChart(props) {
+	            var config = props.config;
+	            var data = props.getData(config.datasource);
 	            this.chart = c3.generate({
-	                bindto: '#chart-' + this.props._state.id,
+	                bindto: '#chart-' + props._state.id,
 	                size: {
-	                    //width: 500,
-	                    height: this.props._state.height * 200 - 77
+	                    height: props._state.height * 200 - 77
 	                },
 	                data: {
-	                    json: []
+	                    json: data,
+	                    type: config.chartType,
+	                    // Seems not to work with chart.load, so on update props we have to recreate the chart to update
+	                    names: safeParseJsonObject(config.names),
+	                    keys: {
+	                        //x: config.xKey || undefined,
+	                        value: safeParseJsonArray(config.dataKeys)
+	                    }
 	                },
 	                axis: {
 	                    x: {
-	                        //label: "foo"
+	                        tick: {
+	                            culling: false
+	                        }
+	                    }
+	                },
+	                gauge: safeParseJsonObject(config.gaugeData),
+	                donut: {
+	                    label: {
+	                        show: false
 	                    }
 	                },
 	                transition: {
 	                    duration: 0
-	                },
-	                type: 'spline'
+	                }
 	            });
 	        }
 	    }, {
@@ -12062,19 +12202,33 @@ webpackJsonp([0],[
 	                return;
 	            }
 	            var props = this.props;
-	            var data = props.getData(this.props.datasource);
+	            var config = props.config;
+	            var data = props.getData(config.datasource);
 
-	            this.chart.load({
-	                json: data,
-	                //unload: false,
+	            // TODO: Do not take last element, but all new elements ;)
+	            var lastElement = data.length > 0 ? data[data.length - 1] : {};
+
+	            //return;
+	            // TODO: utilize char.flow to add new values
+
+	            this.chart.flow({
+	                json: [lastElement],
 	                keys: {
-	                    x: "x",
-	                    value: ["value"]
+	                    //x: "x",//config.xKey || undefined,
+	                    value: safeParseJsonObject(config.dataKeys)
 	                },
 	                labels: false,
-	                names: {
-	                    value: 'Random Values'
-	                }
+	                //to: firstElement[config.xKey],
+	                duration: 500
+	            });
+	            return;
+	            this.chart.load({
+	                json: data,
+	                keys: {
+	                    x: config.xKey || undefined,
+	                    value: safeParseJsonObject(config.dataKeys)
+	                },
+	                labels: false
 	            });
 	        }
 	    }, {
@@ -12105,7 +12259,7 @@ webpackJsonp([0],[
 
 	var Datasource = _interopRequireWildcard(_datasource);
 
-	var _datasourcePlugins = __webpack_require__(246);
+	var _datasourcePlugins = __webpack_require__(248);
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
@@ -12203,7 +12357,7 @@ webpackJsonp([0],[
 	            var props = this.props;
 	            var min = Number(props.min);
 	            var max = Number(props.max);
-	            var newValue = { x: this.x++, value: getRandomInt(min, max) };
+	            var newValue = { x: this.x++, value: getRandomInt(min, max), value2: getRandomInt(min, max) };
 	            return newValue;
 	        }
 	    }]);
