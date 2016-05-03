@@ -3219,7 +3219,7 @@ webpackJsonp([0],[
 	                                _react2.default.createElement('textarea', { ref: 'data', rows: '10', onFocus: function onFocus(e) {
 	                                        return e.target.select();
 	                                    },
-	                                    placeholder: 'Click "Refresh Data" to get data for export or paste your data here ...' })
+	                                    placeholder: 'Click "Load Data" to get data for export or paste your data here ...' })
 	                            )
 	                        )
 	                    )
