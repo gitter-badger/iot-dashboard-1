@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f6c7d389b1f522b9ed80"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "55d373e3b85fa6b472a7"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -583,7 +583,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(344);
+	module.exports = __webpack_require__(348);
 
 
 /***/ },
@@ -38438,6 +38438,10 @@
 	var SET_DATASOURCE_DATA = exports.SET_DATASOURCE_DATA = "SET_DATASOURCE_DATA";
 	var APPEND_DATASOURCE_DATA = exports.APPEND_DATASOURCE_DATA = "APPEND_DATASOURCE_DATA";
 
+	// Plugins
+	var ADD_PLUGIN = exports.ADD_PLUGIN = "ADD_PLUGIN";
+	var DELETE_PLUGIN = exports.DELETE_PLUGIN = "DELETE_PLUGIN";
+
 	// Modal
 	var SHOW_MODAL = exports.SHOW_MODAL = "SHOW_MODAL";
 	var HIDE_MODAL = exports.HIDE_MODAL = "HIDE_MODAL";
@@ -52279,6 +52283,7 @@
 	var DASHBOARD_IMPORT_EXPORT = exports.DASHBOARD_IMPORT_EXPORT = "dashboard-import-export-dialog";
 	var DATASOURCE_CONFIG = exports.DATASOURCE_CONFIG = "datasource-config-dialog";
 	var WIDGET_CONFIG = exports.WIDGET_CONFIG = "widget-config-dialog";
+	var PLUGINS = exports.PLUGINS = "plugins-dialog";
 
 /***/ },
 /* 246 */
@@ -52394,6 +52399,7 @@
 	                throw new Error("PluginRegistry has no store. Set the store property before registering modules!");
 	            }
 
+	            console.log("registering plugin: ", module);
 	            var dsPlugin = new DsPlugin.DataSourcePlugin(module, this._store);
 	            this.datasources[dsPlugin.type] = dsPlugin;
 	        }
@@ -61018,7 +61024,13 @@
 
 /***/ },
 /* 318 */,
-/* 319 */
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -61097,12 +61109,6 @@
 	}
 
 /***/ },
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
 /* 326 */,
 /* 327 */,
 /* 328 */,
@@ -61113,7 +61119,13 @@
 /* 333 */,
 /* 334 */,
 /* 335 */,
-/* 336 */
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61127,11 +61139,11 @@
 
 	var Redux = _interopRequireWildcard(_redux);
 
-	var _reduxThunk = __webpack_require__(337);
+	var _reduxThunk = __webpack_require__(343);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxLogger = __webpack_require__(338);
+	var _reduxLogger = __webpack_require__(344);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
@@ -61155,7 +61167,7 @@
 
 	var Modal = _interopRequireWildcard(_modalDialog);
 
-	var _persistence = __webpack_require__(319);
+	var _persistence = __webpack_require__(325);
 
 	var Persist = _interopRequireWildcard(_persistence);
 
@@ -61215,6 +61227,11 @@
 	    timestamp: true, // Print the timestamp with each action?
 	    logErrors: true, // Should the logger catch, log, and re-throw errors?
 	    predicate: function predicate(getState, action) {
+	        var foo = "";
+	        if (action.type.startsWith("redux-form")) {
+	            return false;
+	        }
+
 	        return !action.doNotLog;
 	    }
 	});
@@ -61234,7 +61251,7 @@
 	exports.default = store;
 
 /***/ },
-/* 337 */
+/* 343 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -61257,7 +61274,7 @@
 	}
 
 /***/ },
-/* 338 */
+/* 344 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -61490,19 +61507,16 @@
 	module.exports = createLogger;
 
 /***/ },
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
+/* 345 */
+/***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.Datasource = exports.TYPE_INFO = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _chai = __webpack_require__(278);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -61586,22 +61600,20 @@
 	}();
 
 /***/ },
-/* 340 */,
-/* 341 */,
-/* 342 */,
-/* 343 */,
-/* 344 */
+/* 346 */,
+/* 347 */,
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	__webpack_require__(345);
+	__webpack_require__(349);
 
-	__webpack_require__(346);
+	__webpack_require__(350);
 
-	__webpack_require__(347);
+	__webpack_require__(351);
 
-	__webpack_require__(348);
+	__webpack_require__(352);
 
 	/* endinject */
 
@@ -61619,7 +61631,7 @@
 	});
 
 /***/ },
-/* 345 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61630,7 +61642,7 @@
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _store = __webpack_require__(336);
+	var _store = __webpack_require__(342);
 
 	var _store2 = _interopRequireDefault(_store);
 
@@ -61655,7 +61667,7 @@
 	});
 
 /***/ },
-/* 346 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61699,7 +61711,7 @@
 	});
 
 /***/ },
-/* 347 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61730,14 +61742,14 @@
 	});
 
 /***/ },
-/* 348 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _chai = __webpack_require__(278);
 
-	var _randomDatasource = __webpack_require__(339);
+	var _randomDatasource = __webpack_require__(345);
 
 	var RandomSource = _interopRequireWildcard(_randomDatasource);
 

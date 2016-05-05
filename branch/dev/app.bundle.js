@@ -29,11 +29,11 @@ webpackJsonp([0],[
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	__webpack_require__(320);
+	__webpack_require__(326);
 
-	__webpack_require__(328);
+	__webpack_require__(334);
 
-	__webpack_require__(329);
+	__webpack_require__(335);
 
 	var _widgets = __webpack_require__(186);
 
@@ -47,33 +47,35 @@ webpackJsonp([0],[
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _textWidget = __webpack_require__(331);
+	var _textWidget = __webpack_require__(337);
 
 	var TextWidget = _interopRequireWildcard(_textWidget);
 
-	var _chartWidget = __webpack_require__(332);
+	var _chartWidget = __webpack_require__(338);
 
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 
-	var _datasourceWorker = __webpack_require__(335);
+	var _datasourceWorker = __webpack_require__(341);
 
 	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
 
-	var _randomDatasource = __webpack_require__(339);
+	var _randomDatasource = __webpack_require__(345);
 
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 
-	var _timeDatasource = __webpack_require__(340);
+	var _timeDatasource = __webpack_require__(346);
 
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 
-	var _store = __webpack_require__(336);
+	var _store = __webpack_require__(342);
 
 	var Store = _interopRequireWildcard(_store);
 
-	__webpack_require__(341);
+	__webpack_require__(321);
 
-	var _scriptjs = __webpack_require__(343);
+	__webpack_require__(347);
+
+	var _scriptjs = __webpack_require__(323);
 
 	var _scriptjs2 = _interopRequireDefault(_scriptjs);
 
@@ -109,6 +111,7 @@ webpackJsonp([0],[
 	        renderDashboard(element, Store.default);
 	    } catch (e) {
 	        console.warn("Failed to load dashboard. Asking user to wipe data and retry. The error is printed below...");
+	        // TODO: Rendering of error message sux
 	        console.error(e);
 	        if (confirm("Failed to load dashboard. Reset all Data?\n\nPress cancel and check the browser console for more details.")) {
 	            Store.default.dispatch(Store.clearState());
@@ -361,7 +364,15 @@ webpackJsonp([0],[
 
 	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 
-	var _persistence = __webpack_require__(319);
+	var _pluginNavItem = __webpack_require__(319);
+
+	var _pluginNavItem2 = _interopRequireDefault(_pluginNavItem);
+
+	var _pluginsDialog = __webpack_require__(320);
+
+	var _pluginsDialog2 = _interopRequireDefault(_pluginsDialog);
+
+	var _persistence = __webpack_require__(325);
 
 	var Persistence = _interopRequireWildcard(_persistence);
 
@@ -408,6 +419,7 @@ webpackJsonp([0],[
 	                React.createElement(_widgetConfigDialog2.default, null),
 	                React.createElement(_importExportDialogUi2.default, null),
 	                React.createElement(_datasourceConfigDialog2.default, null),
+	                React.createElement(_pluginsDialog2.default, null),
 	                React.createElement(
 	                    "div",
 	                    { className: "ui flowing basic widgets-menu menu popup" },
@@ -449,8 +461,9 @@ webpackJsonp([0],[
 	                            "New Widget ",
 	                            React.createElement("i", { className: "dropdown icon" })
 	                        ),
-	                        React.createElement(Layouts.TopNavItem, null),
 	                        React.createElement(_datasourceNavItem2.default, null),
+	                        React.createElement(_pluginNavItem2.default, null),
+	                        React.createElement(Layouts.TopNavItem, null),
 	                        React.createElement(
 	                            "a",
 	                            { className: "item", onClick: function onClick() {
@@ -1152,6 +1165,10 @@ webpackJsonp([0],[
 
 	var SET_DATASOURCE_DATA = exports.SET_DATASOURCE_DATA = "SET_DATASOURCE_DATA";
 	var APPEND_DATASOURCE_DATA = exports.APPEND_DATASOURCE_DATA = "APPEND_DATASOURCE_DATA";
+
+	// Plugins
+	var ADD_PLUGIN = exports.ADD_PLUGIN = "ADD_PLUGIN";
+	var DELETE_PLUGIN = exports.DELETE_PLUGIN = "DELETE_PLUGIN";
 
 	// Modal
 	var SHOW_MODAL = exports.SHOW_MODAL = "SHOW_MODAL";
@@ -2030,6 +2047,7 @@ webpackJsonp([0],[
 	var DASHBOARD_IMPORT_EXPORT = exports.DASHBOARD_IMPORT_EXPORT = "dashboard-import-export-dialog";
 	var DATASOURCE_CONFIG = exports.DATASOURCE_CONFIG = "datasource-config-dialog";
 	var WIDGET_CONFIG = exports.WIDGET_CONFIG = "widget-config-dialog";
+	var PLUGINS = exports.PLUGINS = "plugins-dialog";
 
 /***/ },
 /* 246 */
@@ -2296,6 +2314,7 @@ webpackJsonp([0],[
 	                throw new Error("PluginRegistry has no store. Set the store property before registering modules!");
 	            }
 
+	            console.log("registering plugin: ", module);
 	            var dsPlugin = new DsPlugin.DataSourcePlugin(module, this._store);
 	            this.datasources[dsPlugin.type] = dsPlugin;
 	        }
@@ -3403,7 +3422,7 @@ webpackJsonp([0],[
 	            }
 
 	            var settings = [];
-	            if (selectedSource.settings) {
+	            if (selectedSource && selectedSource.settings) {
 	                settings = [].concat(_toConsumableArray(selectedSource.settings));
 	            }
 	            unshiftIfNotExists(settings, {
@@ -11915,6 +11934,432 @@ webpackJsonp([0],[
 
 /***/ },
 /* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(184);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _elements = __webpack_require__(195);
+
+	var ui = _interopRequireWildcard(_elements);
+
+	var _reactRedux = __webpack_require__(160);
+
+	var _reduxForm = __webpack_require__(197);
+
+	var _modalDialogIds = __webpack_require__(245);
+
+	var ModalIds = _interopRequireWildcard(_modalDialogIds);
+
+	var _modalDialog = __webpack_require__(194);
+
+	var Modal = _interopRequireWildcard(_modalDialog);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Prop = _react2.default.PropTypes;
+
+	var TopNavItem = function TopNavItem(props) {
+	    return _react2.default.createElement(
+	        "a",
+	        { className: "item", onClick: function onClick() {
+	                return props.showPluginsDialog();
+	            } },
+	        "Plugins"
+	    );
+	};
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, function (dispatch) {
+	    return {
+	        showPluginsDialog: function showPluginsDialog() {
+	            dispatch(Modal.showModal(ModalIds.PLUGINS));
+	        }
+	    };
+	})(TopNavItem);
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _modalDialogUi = __webpack_require__(192);
+
+	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
+
+	var _reactRedux = __webpack_require__(160);
+
+	var _lodash = __webpack_require__(184);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _reduxForm = __webpack_require__(197);
+
+	var _modalDialogIds = __webpack_require__(245);
+
+	var ModalIds = _interopRequireWildcard(_modalDialogIds);
+
+	var _modalDialog = __webpack_require__(194);
+
+	var Modal = _interopRequireWildcard(_modalDialog);
+
+	var _freeboardPluginApi = __webpack_require__(321);
+
+	var _freeboardPluginApi2 = _interopRequireDefault(_freeboardPluginApi);
+
+	var _plugins = __webpack_require__(324);
+
+	var Plugins = _interopRequireWildcard(_plugins);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Prop = _react2.default.PropTypes;
+
+	var PluginsModal = function (_React$Component) {
+	    _inherits(PluginsModal, _React$Component);
+
+	    function PluginsModal() {
+	        _classCallCheck(this, PluginsModal);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(PluginsModal).apply(this, arguments));
+	    }
+
+	    _createClass(PluginsModal, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var props = this.props;
+
+	            var actions = [{
+	                className: "ui right labeled icon positive button",
+	                iconClass: "save icon",
+	                label: "Close",
+	                onClick: function onClick() {
+	                    props.closeDialog();
+	                }
+	            }];
+
+	            return _react2.default.createElement(
+	                _modalDialogUi2.default,
+	                { id: ModalIds.PLUGINS,
+	                    title: 'Plugins',
+	                    actions: actions
+	                },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'ui one column grid' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'column' },
+	                        _react2.default.createElement(
+	                            'form',
+	                            { className: 'ui form' },
+	                            _react2.default.createElement(
+	                                'h4',
+	                                { className: 'ui dividing header' },
+	                                'Load Plugin'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'field' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    null,
+	                                    'From URL'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'field' },
+	                                    _react2.default.createElement('input', { ref: 'pluginUrl', type: 'text', name: 'plugin-url',
+	                                        placeholder: 'http://my-page.com/myPlugin.js',
+	                                        defaultValue: 'http://localhost:8080/plugins/TestDatasourcePlugin.js'
+	                                    })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'ui button', onClick: function onClick() {
+	                                        return props.loadPlugin(_this2.refs.pluginUrl.value);
+	                                    }, tabIndex: '0' },
+	                                'Load Plugin'
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return PluginsModal;
+	}(_react2.default.Component);
+	// http://localhost:8080/plugins/TestDatasourcePlugin.js
+	// http://localhost:8080/plugins/coap/lobaro.coap.plugin.js
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, function (dispatch) {
+	    return {
+	        closeDialog: function closeDialog() {
+	            dispatch(Modal.closeModal());
+	        },
+	        loadPlugin: function loadPlugin(url) {
+	            dispatch(Plugins.loadPlugin(url));
+	        }
+	    };
+	})(PluginsModal);
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _datasourcePlugins = __webpack_require__(248);
+
+	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
+
+	var _freeboardDatasource = __webpack_require__(322);
+
+	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function mapSettings(settings) {
+	    return settings.map(function (setting) {
+	        return {
+	            id: setting["name"],
+	            name: setting["display_name"],
+	            description: setting["description"],
+	            type: setting["type"],
+	            defaultValue: setting["default_value"],
+	            required: setting["required"]
+	        };
+	    });
+	}
+
+	var freeboardPluginApi = {
+	    loadDatasourcePlugin: function loadDatasourcePlugin(plugin) {
+	        console.log("Loading freeboard Plugin: ", plugin);
+
+	        var typeName = plugin["type_name"];
+	        var displayName = plugin["display_name"];
+	        var description = plugin["description"];
+	        var externalScripts = plugin["external_scripts"];
+	        var settings = plugin["settings"];
+	        var newInstance = plugin["newInstance"];
+
+	        var TYPE_INFO = {
+	            type: typeName,
+	            name: displayName,
+	            description: description,
+	            dependencies: externalScripts,
+	            settings: mapSettings(settings)
+	        };
+
+	        var dsPlugin = {
+	            TYPE_INFO: TYPE_INFO,
+	            Datasource: FreeboardDatasource.create(newInstance, TYPE_INFO)
+	        };
+
+	        _datasourcePlugins2.default.register(dsPlugin);
+	    }
+	};
+
+	window.freeboard = freeboardPluginApi;
+
+	exports.default = freeboardPluginApi;
+
+/***/ },
+/* 322 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.create = create;
+
+	var _scriptjs = __webpack_require__(323);
+
+	var _scriptjs2 = _interopRequireDefault(_scriptjs);
+
+	var _lodash = __webpack_require__(184);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	// **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
+	// * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
+	// * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
+	// * **updateCallback** : A callback function that you'll call if and when your datasource has an update for freeboard to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
+
+	function create(newInstance, TYPE_INFO) {
+
+	    return function FreeboardDatasource(newInstance) {
+	        var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        var history = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+	        this.instance = null;
+	        this.data = history;
+	        this.getValues = function () {
+	            if (_lodash2.default.isArray(this.data)) {
+	                return this.data;
+	            }
+	            return [this.data];
+	        }.bind(this);
+
+	        this.updateProps = function (newProps) {
+	            console.log("Updating Datasource props");
+	            this.instance.onSettingsChanged(newProps);
+	        }.bind(this);
+
+	        var newInstanceCallback = function (instance) {
+	            this.instance = instance;
+	            instance.updateNow();
+	        }.bind(this);
+
+	        var updateCallback = function (newData) {
+	            this.data = newData;
+	        }.bind(this);
+
+	        if (TYPE_INFO.dependencies) {
+	            (0, _scriptjs2.default)([].concat(_toConsumableArray(TYPE_INFO.dependencies)), createNewInstance);
+	        } else {
+	            createNewInstance();
+	        }
+
+	        function createNewInstance() {
+	            newInstance(props, newInstanceCallback, updateCallback);
+	        }
+	    }.bind(this, newInstance);
+	}
+
+/***/ },
+/* 323 */,
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.loadPlugin = loadPlugin;
+	exports.addPlugin = addPlugin;
+	exports.plugins = plugins;
+
+	var _actionNames = __webpack_require__(190);
+
+	var Action = _interopRequireWildcard(_actionNames);
+
+	var _reducer = __webpack_require__(246);
+
+	var _uuid = __webpack_require__(187);
+
+	var Uuid = _interopRequireWildcard(_uuid);
+
+	var _datasourcePlugins = __webpack_require__(248);
+
+	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
+
+	var _scriptjs = __webpack_require__(323);
+
+	var _scriptjs2 = _interopRequireDefault(_scriptjs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function loadPlugin(url) {
+	    return function (dispatch) {
+	        // works with redux thunk plugin
+	        // TODO: Handle cases where a plugin with that type was already registered
+	        (0, _scriptjs2.default)([url], function () {
+	            // We assume that the plugin has registered it self here.
+	            _datasourcePlugins2.default.getPlugin();
+
+	            /*how to get the type oO*/console.log("Loaded plugin from " + url);
+	            //dispatch(addPlugin(url));
+	        });
+	    };
+	}
+
+	function addPlugin(url) {
+	    return {
+	        type: Action.ADD_PLUGIN,
+	        id: Uuid.generate(),
+	        url: url
+	    };
+	}
+
+	var pluginsCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_PLUGIN, Action.DELETE_PLUGIN], plugin);
+	function plugins(state, action) {
+	    state = pluginsCrudReducer(state, action);
+	    switch (action.type) {
+	        default:
+	            return state;
+	    }
+	}
+
+	function plugin(state, action) {
+	    switch (action.type) {
+	        case Action.ADD_PLUGIN:
+	            return {
+	                id: action.id, // Type as id?
+	                url: action.url
+	                // TODO: reference to datasource or widget plugin type?
+	            };
+	        default:
+	            return state;
+	    }
+	}
+
+/***/ },
+/* 325 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11993,18 +12438,18 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
 /* 326 */,
 /* 327 */,
 /* 328 */,
 /* 329 */,
 /* 330 */,
-/* 331 */
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12076,7 +12521,7 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 332 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12092,11 +12537,11 @@ webpackJsonp([0],[
 
 	var React = _interopRequireWildcard(_react);
 
-	var _d = __webpack_require__(333);
+	var _d = __webpack_require__(339);
 
 	var d3 = _interopRequireWildcard(_d);
 
-	var _c = __webpack_require__(334);
+	var _c = __webpack_require__(340);
 
 	var c3 = _interopRequireWildcard(_c);
 
@@ -12164,6 +12609,7 @@ webpackJsonp([0],[
 	        return {};
 	    }
 	}
+
 	function safeParseJsonArray(string) {
 	    try {
 	        return JSON.parse(string);
@@ -12210,7 +12656,7 @@ webpackJsonp([0],[
 	                    // Seems not to work with chart.load, so on update props we have to recreate the chart to update
 	                    names: safeParseJsonObject(config.names),
 	                    keys: {
-	                        x: config.xKey || undefined,
+	                        x: config.xKey ? config.xKey : undefined,
 	                        value: safeParseJsonArray(config.dataKeys)
 	                    }
 	                },
@@ -12246,16 +12692,16 @@ webpackJsonp([0],[
 	            var lastElement = data.length > 0 ? data[data.length - 1] : {};
 
 	            /* chart.flow does not work with x axis categories and messes up the x values.
-	            this.chart.flow({
-	                json: [lastElement],
-	                keys: {
-	                    //x: "x",//config.xKey || undefined,
-	                    value: safeParseJsonObject(config.dataKeys)
-	                },
-	                labels: false,
-	                //to: firstElement[config.xKey],
-	                duration: 500
-	            });     */
+	             this.chart.flow({
+	             json: [lastElement],
+	             keys: {
+	             //x: "x",//config.xKey || undefined,
+	             value: safeParseJsonObject(config.dataKeys)
+	             },
+	             labels: false,
+	             //to: firstElement[config.xKey],
+	             duration: 500
+	             });     */
 
 	            this.chart.load({
 	                json: data,
@@ -12278,9 +12724,9 @@ webpackJsonp([0],[
 	}(_react.Component);
 
 /***/ },
-/* 333 */,
-/* 334 */,
-/* 335 */
+/* 339 */,
+/* 340 */,
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12299,7 +12745,7 @@ webpackJsonp([0],[
 
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
-	var _store = __webpack_require__(336);
+	var _store = __webpack_require__(342);
 
 	var _store2 = _interopRequireDefault(_store);
 
@@ -12326,7 +12772,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 336 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12340,11 +12786,11 @@ webpackJsonp([0],[
 
 	var Redux = _interopRequireWildcard(_redux);
 
-	var _reduxThunk = __webpack_require__(337);
+	var _reduxThunk = __webpack_require__(343);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxLogger = __webpack_require__(338);
+	var _reduxLogger = __webpack_require__(344);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
@@ -12368,7 +12814,7 @@ webpackJsonp([0],[
 
 	var Modal = _interopRequireWildcard(_modalDialog);
 
-	var _persistence = __webpack_require__(319);
+	var _persistence = __webpack_require__(325);
 
 	var Persist = _interopRequireWildcard(_persistence);
 
@@ -12428,6 +12874,11 @@ webpackJsonp([0],[
 	    timestamp: true, // Print the timestamp with each action?
 	    logErrors: true, // Should the logger catch, log, and re-throw errors?
 	    predicate: function predicate(getState, action) {
+	        var foo = "";
+	        if (action.type.startsWith("redux-form")) {
+	            return false;
+	        }
+
 	        return !action.doNotLog;
 	    }
 	});
@@ -12447,21 +12898,18 @@ webpackJsonp([0],[
 	exports.default = store;
 
 /***/ },
-/* 337 */,
-/* 338 */,
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
+/* 343 */,
+/* 344 */,
+/* 345 */
+/***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.Datasource = exports.TYPE_INFO = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _chai = __webpack_require__(278);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -12545,7 +12993,7 @@ webpackJsonp([0],[
 	}();
 
 /***/ },
-/* 340 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12612,68 +13060,7 @@ webpackJsonp([0],[
 	}();
 
 /***/ },
-/* 341 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _datasourcePlugins = __webpack_require__(248);
-
-	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
-
-	var _freeboardDatasource = __webpack_require__(342);
-
-	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function mapSettings(settings) {
-	    return settings.map(function (setting) {
-	        return {
-	            id: setting["name"],
-	            name: setting["display_name"],
-	            description: setting["description"],
-	            type: setting["type"],
-	            defaultValue: setting["default_value"],
-	            required: setting["required"]
-	        };
-	    });
-	}
-
-	var freeboardPluginApi = {
-	    loadDatasourcePlugin: function loadDatasourcePlugin(plugin) {
-	        console.log("Loading freeboard Plugin: ", plugin);
-
-	        var typeName = plugin["type_name"];
-	        var displayName = plugin["display_name"];
-	        var description = plugin["description"];
-	        var externalScripts = plugin["external_scripts"];
-	        var settings = plugin["settings"];
-	        var newInstance = plugin["newInstance"];
-
-	        var TYPE_INFO = {
-	            type: typeName,
-	            name: displayName,
-	            description: description,
-	            dependencies: externalScripts,
-	            settings: mapSettings(settings)
-	        };
-
-	        var dsPlugin = {
-	            TYPE_INFO: TYPE_INFO,
-	            Datasource: FreeboardDatasource.create(newInstance, TYPE_INFO)
-	        };
-
-	        _datasourcePlugins2.default.register(dsPlugin);
-	    }
-	};
-
-	window.freeboard = freeboardPluginApi;
-
-/***/ },
-/* 342 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12681,65 +13068,24 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.create = create;
+	exports.registerDatasourcePlugin = registerDatasourcePlugin;
 
-	var _scriptjs = __webpack_require__(343);
+	var _datasourcePlugins = __webpack_require__(248);
 
-	var _scriptjs2 = _interopRequireDefault(_scriptjs);
-
-	var _lodash = __webpack_require__(184);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	// **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
-	// * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
-	// * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
-	// * **updateCallback** : A callback function that you'll call if and when your datasource has an update for freeboard to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
-
-	function create(newInstance, TYPE_INFO) {
-
-	    return function FreeboardDatasource(newInstance) {
-	        var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	        var history = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
-
-	        this.instance = null;
-	        this.data = history;
-	        this.getValues = function () {
-	            if (_lodash2.default.isArray(this.data)) {
-	                return this.data;
-	            }
-	            return [this.data];
-	        }.bind(this);
-
-	        this.updateProps = function (newProps) {
-	            console.log("Updating Datasource props");
-	            this.instance.onSettingsChanged(newProps);
-	        }.bind(this);
-
-	        var newInstanceCallback = function (instance) {
-	            this.instance = instance;
-	            instance.updateNow();
-	        }.bind(this);
-
-	        var updateCallback = function (newData) {
-	            this.data = newData;
-	        }.bind(this);
-
-	        if (TYPE_INFO.dependencies) {
-	            (0, _scriptjs2.default)([].concat(_toConsumableArray(TYPE_INFO.dependencies)), createNewInstance);
-	        } else {
-	            createNewInstance();
-	        }
-
-	        function createNewInstance() {
-	            newInstance(props, newInstanceCallback, updateCallback);
-	        }
-	    }.bind(this, newInstance);
+	function registerDatasourcePlugin(typeInfo, Datasource) {
+	    _datasourcePlugins2.default.register({
+	        TYPE_INFO: typeInfo,
+	        Datasource: Datasource
+	    });
 	}
+
+	window.iotDashboardApi = {
+	    registerDatasourcePlugin: registerDatasourcePlugin
+	};
 
 /***/ }
 ]);
