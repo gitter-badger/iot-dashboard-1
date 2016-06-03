@@ -31,11 +31,11 @@ webpackJsonp([0],{
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	__webpack_require__(282);
+	__webpack_require__(285);
 	
-	__webpack_require__(290);
+	__webpack_require__(293);
 	
-	__webpack_require__(291);
+	__webpack_require__(294);
 	
 	var _widgets = __webpack_require__(187);
 	
@@ -45,27 +45,27 @@ webpackJsonp([0],{
 	
 	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
 	
-	var _textWidget = __webpack_require__(293);
+	var _textWidget = __webpack_require__(296);
 	
 	var TextWidget = _interopRequireWildcard(_textWidget);
 	
-	var _chartWidget = __webpack_require__(294);
+	var _chartWidget = __webpack_require__(297);
 	
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 	
-	var _datasourceWorker = __webpack_require__(297);
+	var _datasourceWorker = __webpack_require__(300);
 	
 	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
 	
-	var _randomDatasource = __webpack_require__(301);
+	var _randomDatasource = __webpack_require__(304);
 	
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 	
-	var _timeDatasource = __webpack_require__(302);
+	var _timeDatasource = __webpack_require__(305);
 	
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 	
-	var _store = __webpack_require__(298);
+	var _store = __webpack_require__(301);
 	
 	var Store = _interopRequireWildcard(_store);
 	
@@ -73,7 +73,7 @@ webpackJsonp([0],{
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	__webpack_require__(303);
+	__webpack_require__(306);
 	
 	__webpack_require__(279);
 	
@@ -194,7 +194,7 @@ webpackJsonp([0],{
 	
 	var _pluginsDialog2 = _interopRequireDefault(_pluginsDialog);
 	
-	var _persistence = __webpack_require__(281);
+	var _persistence = __webpack_require__(284);
 	
 	var Persistence = _interopRequireWildcard(_persistence);
 	
@@ -1881,7 +1881,7 @@ webpackJsonp([0],{
 	                                    { className: 'field' },
 	                                    _react2.default.createElement('input', { ref: 'pluginUrl', type: 'text', name: 'plugin-url',
 	                                        placeholder: 'http://my-page.com/myPlugin.js',
-	                                        defaultValue: 'http://localhost:8080/plugins/TestDatasourcePlugin.js'
+	                                        defaultValue: 'http://localhost:8080/plugins/TestWidgetPlugin.js'
 	                                    })
 	                                )
 	                            ),
@@ -2054,7 +2054,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 293:
+/***/ 296:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2128,7 +2128,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 294:
+/***/ 297:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2144,11 +2144,11 @@ webpackJsonp([0],{
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _d = __webpack_require__(295);
+	var _d = __webpack_require__(298);
 	
 	var d3 = _interopRequireWildcard(_d);
 	
-	var _c = __webpack_require__(296);
+	var _c = __webpack_require__(299);
 	
 	var c3 = _interopRequireWildcard(_c);
 	
@@ -2333,7 +2333,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 297:
+/***/ 300:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2352,7 +2352,7 @@ webpackJsonp([0],{
 	
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 	
-	var _store = __webpack_require__(298);
+	var _store = __webpack_require__(301);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -2380,7 +2380,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 302:
+/***/ 305:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2448,7 +2448,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 303:
+/***/ 306:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2457,7 +2457,7 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _freeboardDatasource = __webpack_require__(304);
+	var _freeboardDatasource = __webpack_require__(307);
 	
 	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
 	
@@ -2469,7 +2469,7 @@ webpackJsonp([0],{
 	
 	var PluginApi = _interopRequireWildcard(_pluginApi);
 	
-	var _store = __webpack_require__(298);
+	var _store = __webpack_require__(301);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -2532,7 +2532,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 304:
+/***/ 307:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2542,9 +2542,9 @@ webpackJsonp([0],{
 	});
 	exports.create = create;
 	
-	var _scriptjs = __webpack_require__(278);
+	var _loadjs = __webpack_require__(278);
 	
-	var _scriptjs2 = _interopRequireDefault(_scriptjs);
+	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
 	var _lodash = __webpack_require__(185);
 	
@@ -2590,7 +2590,7 @@ webpackJsonp([0],{
 	
 	        // TODO: Maybe no needed anymore when we take care of dependencies elsewhere
 	        if (TYPE_INFO.dependencies) {
-	            (0, _scriptjs2.default)([].concat(_toConsumableArray(TYPE_INFO.dependencies)), createNewInstance);
+	            (0, _loadjs2.default)([].concat(_toConsumableArray(TYPE_INFO.dependencies)), createNewInstance);
 	        } else {
 	            createNewInstance();
 	        }
