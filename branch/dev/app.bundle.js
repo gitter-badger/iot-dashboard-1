@@ -69,13 +69,13 @@ webpackJsonp([0],{
 	
 	var Store = _interopRequireWildcard(_store);
 	
-	var _plugins = __webpack_require__(277);
+	var _plugins = __webpack_require__(230);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
 	__webpack_require__(306);
 	
-	__webpack_require__(279);
+	__webpack_require__(232);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -170,27 +170,27 @@ webpackJsonp([0],{
 	
 	var _dashboardMenuEntry2 = _interopRequireDefault(_dashboardMenuEntry);
 	
-	var _importExportDialog = __webpack_require__(230);
+	var _importExportDialog = __webpack_require__(237);
 	
 	var _importExportDialog2 = _interopRequireDefault(_importExportDialog);
 	
-	var _datasourceConfigDialog = __webpack_require__(231);
+	var _datasourceConfigDialog = __webpack_require__(238);
 	
 	var _datasourceConfigDialog2 = _interopRequireDefault(_datasourceConfigDialog);
 	
-	var _datasourceNavItem = __webpack_require__(273);
+	var _datasourceNavItem = __webpack_require__(280);
 	
 	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 	
-	var _widgetsNavItem = __webpack_require__(274);
+	var _widgetsNavItem = __webpack_require__(281);
 	
 	var _widgetsNavItem2 = _interopRequireDefault(_widgetsNavItem);
 	
-	var _pluginNavItem = __webpack_require__(275);
+	var _pluginNavItem = __webpack_require__(282);
 	
 	var _pluginNavItem2 = _interopRequireDefault(_pluginNavItem);
 	
-	var _pluginsDialog = __webpack_require__(276);
+	var _pluginsDialog = __webpack_require__(283);
 	
 	var _pluginsDialog2 = _interopRequireDefault(_pluginsDialog);
 	
@@ -990,64 +990,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 229:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
-	exports.serialize = serialize;
-	exports.deserialize = deserialize;
-	exports.doImport = doImport;
-	
-	var _modalDialogUi = __webpack_require__(193);
-	
-	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
-	
-	var _actionNames = __webpack_require__(191);
-	
-	var _layouts = __webpack_require__(227);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function serialize(state) {
-	    return JSON.stringify({
-	        widgets: state.widgets,
-	        datasources: state.datasources
-	    });
-	}
-	
-	function deserialize(data) {
-	    var state = void 0;
-	    if (typeof data === "string") {
-	        return JSON.parse(data);
-	    } else {
-	        throw new Error("Dashboard data for import must be of type string but is " + (typeof data === 'undefined' ? 'undefined' : _typeof(data)));
-	    }
-	}
-	
-	function doImport(data) {
-	    var state = deserialize(data);
-	    return function (dispatch) {
-	        // Bad hack to force the grid layout to update correctly
-	        dispatch((0, _layouts.loadEmptyLayout)());
-	        setTimeout(function () {
-	            return dispatch({
-	                type: _actionNames.DASHBOARD_IMPORT,
-	                state: state
-	            });
-	        }, 0);
-	    };
-	}
-
-/***/ },
-
-/***/ 230:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1237,7 +1180,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 231:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1260,7 +1203,7 @@ webpackJsonp([0],{
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _datasource = __webpack_require__(232);
+	var _datasource = __webpack_require__(239);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
@@ -1517,7 +1460,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 273:
+/***/ 280:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1530,7 +1473,7 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _datasource = __webpack_require__(232);
+	var _datasource = __webpack_require__(239);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
@@ -1620,7 +1563,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 274:
+/***/ 281:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1698,7 +1641,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 275:
+/***/ 282:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1759,7 +1702,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 276:
+/***/ 283:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1800,7 +1743,7 @@ webpackJsonp([0],{
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _plugins = __webpack_require__(277);
+	var _plugins = __webpack_require__(230);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
@@ -1931,6 +1874,7 @@ webpackJsonp([0],{
 	        closeDialog: function closeDialog() {
 	            return dispatch(Modal.closeModal());
 	        },
+	        // TODO: Render loading indicator while Plugin loads
 	        loadPlugin: function loadPlugin(url) {
 	            return dispatch(Plugins.loadPluginFromUrl(url));
 	        },
@@ -2344,7 +2288,7 @@ webpackJsonp([0],{
 	exports.start = start;
 	exports.stop = stop;
 	
-	var _datasource = __webpack_require__(232);
+	var _datasource = __webpack_require__(239);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
@@ -2392,7 +2336,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _chai = __webpack_require__(233);
+	var _chai = __webpack_require__(240);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -2461,11 +2405,11 @@ webpackJsonp([0],{
 	
 	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
 	
-	var _plugins = __webpack_require__(277);
+	var _plugins = __webpack_require__(230);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _pluginApi = __webpack_require__(279);
+	var _pluginApi = __webpack_require__(232);
 	
 	var PluginApi = _interopRequireWildcard(_pluginApi);
 	
@@ -2542,7 +2486,7 @@ webpackJsonp([0],{
 	});
 	exports.create = create;
 	
-	var _loadjs = __webpack_require__(278);
+	var _loadjs = __webpack_require__(231);
 	
 	var _loadjs2 = _interopRequireDefault(_loadjs);
 	

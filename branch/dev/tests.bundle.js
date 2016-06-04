@@ -345,7 +345,7 @@ webpackJsonp([1],{
 	/* inject:tests */
 	
 	
-	var assert = __webpack_require__(233).assert;
+	var assert = __webpack_require__(240).assert;
 	describe('Example Array', function () {
 	    describe('#indexOf()', function () {
 	        it('should return -1 when the value is not present', function () {
@@ -362,7 +362,7 @@ webpackJsonp([1],{
 
 	'use strict';
 	
-	var _chai = __webpack_require__(233);
+	var _chai = __webpack_require__(240);
 	
 	var _datasourcePlugins = __webpack_require__(203);
 	
@@ -399,9 +399,9 @@ webpackJsonp([1],{
 
 	'use strict';
 	
-	var _chai = __webpack_require__(233);
+	var _chai = __webpack_require__(240);
 	
-	var _urijs = __webpack_require__(280);
+	var _urijs = __webpack_require__(233);
 	
 	var _urijs2 = _interopRequireDefault(_urijs);
 	
@@ -448,7 +448,7 @@ webpackJsonp([1],{
 	
 	var c = _interopRequireWildcard(_collection);
 	
-	var _chai = __webpack_require__(233);
+	var _chai = __webpack_require__(240);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -489,7 +489,7 @@ webpackJsonp([1],{
 
 	'use strict';
 	
-	var _chai = __webpack_require__(233);
+	var _chai = __webpack_require__(240);
 	
 	var _widgetPlugins = __webpack_require__(190);
 	
@@ -521,7 +521,7 @@ webpackJsonp([1],{
 
 	'use strict';
 	
-	var _chai = __webpack_require__(233);
+	var _chai = __webpack_require__(240);
 	
 	var _randomDatasource = __webpack_require__(304);
 	
