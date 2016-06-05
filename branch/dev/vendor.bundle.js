@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "35f94c70543988849bc5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "55c5df3403c34bed31df"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -62588,7 +62588,7 @@
 /* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -62596,14 +62596,12 @@
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	exports.importReducerFactory = importReducerFactory;
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	exports.serialize = serialize;
+	exports.importReducer = importReducer;
 	exports.deserialize = deserialize;
 	exports.doImport = doImport;
-	
-	var _modalDialogUi = __webpack_require__(193);
-	
-	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
 	var _actionNames = __webpack_require__(191);
 	
@@ -62615,44 +62613,15 @@
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _lodash = __webpack_require__(185);
-	
-	var _ = _interopRequireWildcard(_lodash);
-	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
 	/**
-	 * When using the importReducerFactory the action for loading the state will be implemented.
-	 * Additionally:
-	 * - You have to make sure that the property is saved on export
-	 * - Plus any action that is needed after the import has to be called
-	 * See: serialize() and doImport()
-	 * - And add the importReducerFactory to all state reducers of imported state
-	 * See: ../store.js
+	 * To extend the import/export by another property you just need to add the property to the exported data
+	 * See: serialize()
+	 *
+	 * If there are any action needed after a property got imported, call them after the import.
+	 * See: afterImport()
 	 */
-	function importReducerFactory(baseReducer, name) {
-	    console.assert(name, "Name parameter of importReducerFactory must not be empty");
-	    return importReducer.bind(this, baseReducer, name);
-	}
-	
-	function importReducer(baseReducer, name, state, action) {
-	    switch (action.type) {
-	        case Action.DASHBOARD_IMPORT:
-	            // TODO: Refactor import to work on root state and provide a list of all properties to be updated
-	            // Than we do not need the factory for every substate, but just once on root level
-	
-	            var importState = action.state[name];
-	            if (importState) {
-	                return action.state[name];
-	            } else {
-	                return baseReducer(state, action);
-	            }
-	        default:
-	            return baseReducer(state, action);
-	    }
-	}
 	
 	function serialize(state) {
 	    return JSON.stringify({
@@ -62662,17 +62631,32 @@
 	    });
 	}
 	
+	function afterImport(dispatch, getState) {
+	    dispatch(Plugins.initializeExternalPlugins());
+	}
+	
+	function importReducer(state, action) {
+	    switch (action.type) {
+	        case Action.DASHBOARD_IMPORT:
+	            var newState = _extends({}, state, action.state);
+	            console.log("new State:", state, action.state, newState);
+	            return newState;
+	        default:
+	            return state;
+	    }
+	}
+	
 	function deserialize(data) {
 	    if (typeof data === "string") {
 	        return JSON.parse(data);
 	    } else {
-	        throw new Error("Dashboard data for import must be of type string but is " + (typeof data === 'undefined' ? 'undefined' : _typeof(data)));
+	        throw new Error("Dashboard data for import must be of type string but is " + (typeof data === "undefined" ? "undefined" : _typeof(data)));
 	    }
 	}
 	
 	function doImport(data) {
 	    var state = deserialize(data);
-	    return function (dispatch) {
+	    return function (dispatch, getState) {
 	        // Bad hack to force the grid layout to update correctly
 	        dispatch((0, _layouts.loadEmptyLayout)());
 	        setTimeout(function () {
@@ -62680,7 +62664,7 @@
 	                type: _actionNames.DASHBOARD_IMPORT,
 	                state: state
 	            });
-	            dispatch(Plugins.initializeExternalPlugins());
+	            afterImport(dispatch, getState);
 	        }, 0);
 	    };
 	}
@@ -112871,6 +112855,8 @@
 	
 	var _import = __webpack_require__(229);
 	
+	var Import = _interopRequireWildcard(_import);
+	
 	var _modalDialog = __webpack_require__(195);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
@@ -112904,20 +112890,22 @@
 	var store = void 0;
 	
 	var appReducer = Redux.combineReducers({
-	    widgets: (0, _import.importReducerFactory)(Widgets.widgets, "widgets"),
+	    widgets: Widgets.widgets,
 	    widgetConfig: WidgetConfig.widgetConfigDialog,
 	    layouts: Layouts.layouts,
 	    currentLayout: Layouts.currentLayout,
-	    datasources: (0, _import.importReducerFactory)(Datasource.datasources, "datasources"),
+	    datasources: Datasource.datasources,
 	    form: _reduxForm.reducer,
 	    modalDialog: Modal.modalDialog,
-	    plugins: (0, _import.importReducerFactory)(Plugins.plugins, "plugins")
+	    plugins: Plugins.plugins
 	});
 	
 	var reducer = function reducer(state, action) {
 	    if (action.type === Action.CLEAR_STATE) {
 	        state = undefined;
 	    }
+	
+	    state = Import.importReducer(state, action);
 	
 	    return appReducer(state, action);
 	};
