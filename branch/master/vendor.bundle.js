@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f6c7d389b1f522b9ed80"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "282005c00f7bc9951025"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -822,6 +822,9 @@
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -21731,13 +21734,15 @@
 	};
 
 	module.exports = function hoistNonReactStatics(targetComponent, sourceComponent) {
-	    var keys = Object.getOwnPropertyNames(sourceComponent);
-	    for (var i=0; i<keys.length; ++i) {
-	        if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]]) {
-	            try {
-	                targetComponent[keys[i]] = sourceComponent[keys[i]];
-	            } catch (error) {
+	    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+	        var keys = Object.getOwnPropertyNames(sourceComponent);
+	        for (var i=0; i<keys.length; ++i) {
+	            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]]) {
+	                try {
+	                    targetComponent[keys[i]] = sourceComponent[keys[i]];
+	                } catch (error) {
 
+	                }
 	            }
 	        }
 	    }
@@ -21812,8 +21817,7 @@
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global, _) {/**
 	 * @license
-	 * lodash 4.11.2 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash -d -o ./foo/lodash.js`
+	 * lodash <https://lodash.com/>
 	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
 	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -21825,7 +21829,7 @@
 	  var undefined;
 
 	  /** Used as the semantic version number. */
-	  var VERSION = '4.11.2';
+	  var VERSION = '4.13.1';
 
 	  /** Used as the size to enable large array optimizations. */
 	  var LARGE_ARRAY_SIZE = 200;
@@ -21929,7 +21933,7 @@
 	  /** Used to match property names within property paths. */
 	  var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
 	      reIsPlainProp = /^\w*$/,
-	      rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]/g;
+	      rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
 
 	  /**
 	   * Used to match `RegExp`
@@ -22062,7 +22066,7 @@
 	    'Function', 'Int8Array', 'Int16Array', 'Int32Array', 'Map', 'Math', 'Object',
 	    'Promise', 'Reflect', 'RegExp', 'Set', 'String', 'Symbol', 'TypeError',
 	    'Uint8Array', 'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap',
-	    '_', 'clearTimeout', 'isFinite', 'parseInt', 'setTimeout'
+	    '_', 'isFinite', 'parseInt', 'setTimeout'
 	  ];
 
 	  /** Used to make template sourceURLs easier to identify. */
@@ -22141,12 +22145,6 @@
 	    '&#96;': '`'
 	  };
 
-	  /** Used to determine if values are of the language type `Object`. */
-	  var objectTypes = {
-	    'function': true,
-	    'object': true
-	  };
-
 	  /** Used to escape characters for inclusion in compiled string literals. */
 	  var stringEscapes = {
 	    '\\': '\\',
@@ -22162,41 +22160,25 @@
 	      freeParseInt = parseInt;
 
 	  /** Detect free variable `exports`. */
-	  var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
-	    ? exports
-	    : undefined;
+	  var freeExports = typeof exports == 'object' && exports;
 
 	  /** Detect free variable `module`. */
-	  var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
-	    ? module
-	    : undefined;
+	  var freeModule = freeExports && typeof module == 'object' && module;
 
 	  /** Detect the popular CommonJS extension `module.exports`. */
-	  var moduleExports = (freeModule && freeModule.exports === freeExports)
-	    ? freeExports
-	    : undefined;
+	  var moduleExports = freeModule && freeModule.exports === freeExports;
 
 	  /** Detect free variable `global` from Node.js. */
-	  var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+	  var freeGlobal = checkGlobal(typeof global == 'object' && global);
 
 	  /** Detect free variable `self`. */
-	  var freeSelf = checkGlobal(objectTypes[typeof self] && self);
-
-	  /** Detect free variable `window`. */
-	  var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+	  var freeSelf = checkGlobal(typeof self == 'object' && self);
 
 	  /** Detect `this` as the global object. */
-	  var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+	  var thisGlobal = checkGlobal(typeof this == 'object' && this);
 
-	  /**
-	   * Used as a reference to the global object.
-	   *
-	   * The `this` value is used if it's the global object to avoid Greasemonkey's
-	   * restricted `window` object, otherwise the `window` object is used.
-	   */
-	  var root = freeGlobal ||
-	    ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
-	      freeSelf || thisGlobal || Function('return this')();
+	  /** Used as a reference to the global object. */
+	  var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
 
 	  /*--------------------------------------------------------------------------*/
 
@@ -22252,7 +22234,7 @@
 	   * A specialized version of `baseAggregator` for arrays.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} setter The function to set `accumulator` values.
 	   * @param {Function} iteratee The iteratee to transform keys.
 	   * @param {Object} accumulator The initial aggregated object.
@@ -22260,7 +22242,7 @@
 	   */
 	  function arrayAggregator(array, setter, iteratee, accumulator) {
 	    var index = -1,
-	        length = array.length;
+	        length = array ? array.length : 0;
 
 	    while (++index < length) {
 	      var value = array[index];
@@ -22270,41 +22252,17 @@
 	  }
 
 	  /**
-	   * Creates a new array concatenating `array` with `other`.
-	   *
-	   * @private
-	   * @param {Array} array The first array to concatenate.
-	   * @param {Array} other The second array to concatenate.
-	   * @returns {Array} Returns the new concatenated array.
-	   */
-	  function arrayConcat(array, other) {
-	    var index = -1,
-	        length = array.length,
-	        othIndex = -1,
-	        othLength = other.length,
-	        result = Array(length + othLength);
-
-	    while (++index < length) {
-	      result[index] = array[index];
-	    }
-	    while (++othIndex < othLength) {
-	      result[index++] = other[othIndex];
-	    }
-	    return result;
-	  }
-
-	  /**
 	   * A specialized version of `_.forEach` for arrays without support for
 	   * iteratee shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @returns {Array} Returns `array`.
 	   */
 	  function arrayEach(array, iteratee) {
 	    var index = -1,
-	        length = array.length;
+	        length = array ? array.length : 0;
 
 	    while (++index < length) {
 	      if (iteratee(array[index], index, array) === false) {
@@ -22319,12 +22277,12 @@
 	   * iteratee shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @returns {Array} Returns `array`.
 	   */
 	  function arrayEachRight(array, iteratee) {
-	    var length = array.length;
+	    var length = array ? array.length : 0;
 
 	    while (length--) {
 	      if (iteratee(array[length], length, array) === false) {
@@ -22339,14 +22297,14 @@
 	   * iteratee shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} predicate The function invoked per iteration.
 	   * @returns {boolean} Returns `true` if all elements pass the predicate check,
 	   *  else `false`.
 	   */
 	  function arrayEvery(array, predicate) {
 	    var index = -1,
-	        length = array.length;
+	        length = array ? array.length : 0;
 
 	    while (++index < length) {
 	      if (!predicate(array[index], index, array)) {
@@ -22361,13 +22319,13 @@
 	   * iteratee shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} predicate The function invoked per iteration.
 	   * @returns {Array} Returns the new filtered array.
 	   */
 	  function arrayFilter(array, predicate) {
 	    var index = -1,
-	        length = array.length,
+	        length = array ? array.length : 0,
 	        resIndex = 0,
 	        result = [];
 
@@ -22385,26 +22343,27 @@
 	   * specifying an index to search from.
 	   *
 	   * @private
-	   * @param {Array} array The array to search.
+	   * @param {Array} [array] The array to search.
 	   * @param {*} target The value to search for.
 	   * @returns {boolean} Returns `true` if `target` is found, else `false`.
 	   */
 	  function arrayIncludes(array, value) {
-	    return !!array.length && baseIndexOf(array, value, 0) > -1;
+	    var length = array ? array.length : 0;
+	    return !!length && baseIndexOf(array, value, 0) > -1;
 	  }
 
 	  /**
 	   * This function is like `arrayIncludes` except that it accepts a comparator.
 	   *
 	   * @private
-	   * @param {Array} array The array to search.
+	   * @param {Array} [array] The array to search.
 	   * @param {*} target The value to search for.
 	   * @param {Function} comparator The comparator invoked per element.
 	   * @returns {boolean} Returns `true` if `target` is found, else `false`.
 	   */
 	  function arrayIncludesWith(array, value, comparator) {
 	    var index = -1,
-	        length = array.length;
+	        length = array ? array.length : 0;
 
 	    while (++index < length) {
 	      if (comparator(value, array[index])) {
@@ -22419,13 +22378,13 @@
 	   * shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @returns {Array} Returns the new mapped array.
 	   */
 	  function arrayMap(array, iteratee) {
 	    var index = -1,
-	        length = array.length,
+	        length = array ? array.length : 0,
 	        result = Array(length);
 
 	    while (++index < length) {
@@ -22458,7 +22417,7 @@
 	   * iteratee shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @param {*} [accumulator] The initial value.
 	   * @param {boolean} [initAccum] Specify using the first element of `array` as
@@ -22467,7 +22426,7 @@
 	   */
 	  function arrayReduce(array, iteratee, accumulator, initAccum) {
 	    var index = -1,
-	        length = array.length;
+	        length = array ? array.length : 0;
 
 	    if (initAccum && length) {
 	      accumulator = array[++index];
@@ -22483,7 +22442,7 @@
 	   * iteratee shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} iteratee The function invoked per iteration.
 	   * @param {*} [accumulator] The initial value.
 	   * @param {boolean} [initAccum] Specify using the last element of `array` as
@@ -22491,7 +22450,7 @@
 	   * @returns {*} Returns the accumulated value.
 	   */
 	  function arrayReduceRight(array, iteratee, accumulator, initAccum) {
-	    var length = array.length;
+	    var length = array ? array.length : 0;
 	    if (initAccum && length) {
 	      accumulator = array[--length];
 	    }
@@ -22506,14 +22465,14 @@
 	   * shorthands.
 	   *
 	   * @private
-	   * @param {Array} array The array to iterate over.
+	   * @param {Array} [array] The array to iterate over.
 	   * @param {Function} predicate The function invoked per iteration.
 	   * @returns {boolean} Returns `true` if any element passes the predicate check,
 	   *  else `false`.
 	   */
 	  function arraySome(array, predicate) {
 	    var index = -1,
-	        length = array.length;
+	        length = array ? array.length : 0;
 
 	    while (++index < length) {
 	      if (predicate(array[index], index, array)) {
@@ -22524,23 +22483,21 @@
 	  }
 
 	  /**
-	   * The base implementation of methods like `_.find` and `_.findKey`, without
-	   * support for iteratee shorthands, which iterates over `collection` using
-	   * `eachFunc`.
+	   * The base implementation of methods like `_.findKey` and `_.findLastKey`,
+	   * without support for iteratee shorthands, which iterates over `collection`
+	   * using `eachFunc`.
 	   *
 	   * @private
 	   * @param {Array|Object} collection The collection to search.
 	   * @param {Function} predicate The function invoked per iteration.
 	   * @param {Function} eachFunc The function to iterate over `collection`.
-	   * @param {boolean} [retKey] Specify returning the key of the found element
-	   *  instead of the element itself.
 	   * @returns {*} Returns the found element or its key, else `undefined`.
 	   */
-	  function baseFind(collection, predicate, eachFunc, retKey) {
+	  function baseFindKey(collection, predicate, eachFunc) {
 	    var result;
 	    eachFunc(collection, function(value, key, collection) {
 	      if (predicate(value, key, collection)) {
-	        result = retKey ? key : value;
+	        result = key;
 	        return false;
 	      }
 	    });
@@ -22554,12 +22511,13 @@
 	   * @private
 	   * @param {Array} array The array to search.
 	   * @param {Function} predicate The function invoked per iteration.
+	   * @param {number} fromIndex The index to search from.
 	   * @param {boolean} [fromRight] Specify iterating from right to left.
 	   * @returns {number} Returns the index of the matched value, else `-1`.
 	   */
-	  function baseFindIndex(array, predicate, fromRight) {
+	  function baseFindIndex(array, predicate, fromIndex, fromRight) {
 	    var length = array.length,
-	        index = fromRight ? length : -1;
+	        index = fromIndex + (fromRight ? 1 : -1);
 
 	    while ((fromRight ? index-- : ++index < length)) {
 	      if (predicate(array[index], index, array)) {
@@ -22720,7 +22678,7 @@
 	   * @private
 	   * @param {Object} object The object to query.
 	   * @param {Array} props The property names to get values for.
-	   * @returns {Object} Returns the new array of key-value pairs.
+	   * @returns {Object} Returns the key-value pairs.
 	   */
 	  function baseToPairs(object, props) {
 	    return arrayMap(props, function(key) {
@@ -22733,7 +22691,7 @@
 	   *
 	   * @private
 	   * @param {Function} func The function to cap arguments for.
-	   * @returns {Function} Returns the new function.
+	   * @returns {Function} Returns the new capped function.
 	   */
 	  function baseUnary(func) {
 	    return function(value) {
@@ -22755,6 +22713,18 @@
 	    return arrayMap(props, function(key) {
 	      return object[key];
 	    });
+	  }
+
+	  /**
+	   * Checks if a cache value for `key` exists.
+	   *
+	   * @private
+	   * @param {Object} cache The cache to query.
+	   * @param {string} key The key of the entry to check.
+	   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	   */
+	  function cacheHas(cache, key) {
+	    return cache.has(key);
 	  }
 
 	  /**
@@ -22855,6 +22825,18 @@
 	  }
 
 	  /**
+	   * Gets the value at `key` of `object`.
+	   *
+	   * @private
+	   * @param {Object} [object] The object to query.
+	   * @param {string} key The key of the property to get.
+	   * @returns {*} Returns the property value.
+	   */
+	  function getValue(object, key) {
+	    return object == null ? undefined : object[key];
+	  }
+
+	  /**
 	   * Gets the index at which the first occurrence of `NaN` is found in `array`.
 	   *
 	   * @private
@@ -22865,7 +22847,7 @@
 	   */
 	  function indexOfNaN(array, fromIndex, fromRight) {
 	    var length = array.length,
-	        index = fromIndex + (fromRight ? 0 : -1);
+	        index = fromIndex + (fromRight ? 1 : -1);
 
 	    while ((fromRight ? index-- : ++index < length)) {
 	      var other = array[index];
@@ -22913,11 +22895,11 @@
 	  }
 
 	  /**
-	   * Converts `map` to an array.
+	   * Converts `map` to its key-value pairs.
 	   *
 	   * @private
 	   * @param {Object} map The map to convert.
-	   * @returns {Array} Returns the converted array.
+	   * @returns {Array} Returns the key-value pairs.
 	   */
 	  function mapToArray(map) {
 	    var index = -1,
@@ -22955,11 +22937,11 @@
 	  }
 
 	  /**
-	   * Converts `set` to an array.
+	   * Converts `set` to an array of its values.
 	   *
 	   * @private
 	   * @param {Object} set The set to convert.
-	   * @returns {Array} Returns the converted array.
+	   * @returns {Array} Returns the values.
 	   */
 	  function setToArray(set) {
 	    var index = -1,
@@ -22967,6 +22949,23 @@
 
 	    set.forEach(function(value) {
 	      result[++index] = value;
+	    });
+	    return result;
+	  }
+
+	  /**
+	   * Converts `set` to its value-value pairs.
+	   *
+	   * @private
+	   * @param {Object} set The set to convert.
+	   * @returns {Array} Returns the value-value pairs.
+	   */
+	  function setToPairs(set) {
+	    var index = -1,
+	        result = Array(set.size);
+
+	    set.forEach(function(value) {
+	      result[++index] = [value, value];
 	    });
 	    return result;
 	  }
@@ -23039,10 +23038,10 @@
 	   * lodash.isFunction(lodash.bar);
 	   * // => true
 	   *
-	   * // Use `context` to mock `Date#getTime` use in `_.now`.
-	   * var mock = _.runInContext({
+	   * // Use `context` to stub `Date#getTime` use in `_.now`.
+	   * var stubbed = _.runInContext({
 	   *   'Date': function() {
-	   *     return { 'getTime': getTimeMock };
+	   *     return { 'getTime': stubGetTime };
 	   *   }
 	   * });
 	   *
@@ -23063,6 +23062,15 @@
 	    var arrayProto = context.Array.prototype,
 	        objectProto = context.Object.prototype,
 	        stringProto = context.String.prototype;
+
+	    /** Used to detect overreaching core-js shims. */
+	    var coreJsData = context['__core-js_shared__'];
+
+	    /** Used to detect methods masquerading as native. */
+	    var maskSrcKey = (function() {
+	      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+	      return uid ? ('Symbol(src)_1.' + uid) : '';
+	    }());
 
 	    /** Used to resolve the decompiled source of functions. */
 	    var funcToString = context.Function.prototype.toString;
@@ -23097,14 +23105,15 @@
 	        Reflect = context.Reflect,
 	        Symbol = context.Symbol,
 	        Uint8Array = context.Uint8Array,
-	        clearTimeout = context.clearTimeout,
 	        enumerate = Reflect ? Reflect.enumerate : undefined,
 	        getOwnPropertySymbols = Object.getOwnPropertySymbols,
 	        iteratorSymbol = typeof (iteratorSymbol = Symbol && Symbol.iterator) == 'symbol' ? iteratorSymbol : undefined,
 	        objectCreate = Object.create,
 	        propertyIsEnumerable = objectProto.propertyIsEnumerable,
-	        setTimeout = context.setTimeout,
 	        splice = arrayProto.splice;
+
+	    /** Built-in method references that are mockable. */
+	    var setTimeout = function(func, wait) { return context.setTimeout.call(root, func, wait); };
 
 	    /* Built-in method references for those with the same name as other `lodash` methods. */
 	    var nativeCeil = Math.ceil,
@@ -23224,22 +23233,24 @@
 	     * `floor`, `forEach`, `forEachRight`, `forIn`, `forInRight`, `forOwn`,
 	     * `forOwnRight`, `get`, `gt`, `gte`, `has`, `hasIn`, `head`, `identity`,
 	     * `includes`, `indexOf`, `inRange`, `invoke`, `isArguments`, `isArray`,
-	     * `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`, `isBoolean`, `isBuffer`,
-	     * `isDate`, `isElement`, `isEmpty`, `isEqual`, `isEqualWith`, `isError`,
-	     * `isFinite`, `isFunction`, `isInteger`, `isLength`, `isMap`, `isMatch`,
-	     * `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`,
-	     * `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`, `isSafeInteger`,
-	     * `isSet`, `isString`, `isUndefined`, `isTypedArray`, `isWeakMap`, `isWeakSet`,
-	     * `join`, `kebabCase`, `last`, `lastIndexOf`, `lowerCase`, `lowerFirst`,
-	     * `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`, `min`, `minBy`, `multiply`,
-	     * `noConflict`, `noop`, `now`, `nth`, `pad`, `padEnd`, `padStart`, `parseInt`,
-	     * `pop`, `random`, `reduce`, `reduceRight`, `repeat`, `result`, `round`,
-	     * `runInContext`, `sample`, `shift`, `size`, `snakeCase`, `some`, `sortedIndex`,
-	     * `sortedIndexBy`, `sortedLastIndex`, `sortedLastIndexBy`, `startCase`,
-	     * `startsWith`, `subtract`, `sum`, `sumBy`, `template`, `times`, `toInteger`,
-	     * `toJSON`, `toLength`, `toLower`, `toNumber`, `toSafeInteger`, `toString`,
-	     * `toUpper`, `trim`, `trimEnd`, `trimStart`, `truncate`, `unescape`,
-	     * `uniqueId`, `upperCase`, `upperFirst`, `value`, and `words`
+	     * `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`, `isBoolean`,
+	     * `isBuffer`, `isDate`, `isElement`, `isEmpty`, `isEqual`, `isEqualWith`,
+	     * `isError`, `isFinite`, `isFunction`, `isInteger`, `isLength`, `isMap`,
+	     * `isMatch`, `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`,
+	     * `isNumber`, `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`,
+	     * `isSafeInteger`, `isSet`, `isString`, `isUndefined`, `isTypedArray`,
+	     * `isWeakMap`, `isWeakSet`, `join`, `kebabCase`, `last`, `lastIndexOf`,
+	     * `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`,
+	     * `min`, `minBy`, `multiply`, `noConflict`, `noop`, `now`, `nth`, `pad`,
+	     * `padEnd`, `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`,
+	     * `repeat`, `result`, `round`, `runInContext`, `sample`, `shift`, `size`,
+	     * `snakeCase`, `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`,
+	     * `sortedLastIndexBy`, `startCase`, `startsWith`, `stubArray`, `stubFalse`,
+	     * `stubObject`, `stubString`, `stubTrue`, `subtract`, `sum`, `sumBy`,
+	     * `template`, `times`, `toFinite`, `toInteger`, `toJSON`, `toLength`,
+	     * `toLower`, `toNumber`, `toSafeInteger`, `toString`, `toUpper`, `trim`,
+	     * `trimEnd`, `trimStart`, `truncate`, `unescape`, `uniqueId`, `upperCase`,
+	     * `upperFirst`, `value`, and `words`
 	     *
 	     * @name _
 	     * @constructor
@@ -23498,64 +23509,212 @@
 	     *
 	     * @private
 	     * @constructor
-	     * @returns {Object} Returns the new hash object.
+	     * @param {Array} [entries] The key-value pairs to cache.
 	     */
-	    function Hash() {}
+	    function Hash(entries) {
+	      var index = -1,
+	          length = entries ? entries.length : 0;
+
+	      this.clear();
+	      while (++index < length) {
+	        var entry = entries[index];
+	        this.set(entry[0], entry[1]);
+	      }
+	    }
+
+	    /**
+	     * Removes all key-value entries from the hash.
+	     *
+	     * @private
+	     * @name clear
+	     * @memberOf Hash
+	     */
+	    function hashClear() {
+	      this.__data__ = nativeCreate ? nativeCreate(null) : {};
+	    }
 
 	    /**
 	     * Removes `key` and its value from the hash.
 	     *
 	     * @private
+	     * @name delete
+	     * @memberOf Hash
 	     * @param {Object} hash The hash to modify.
 	     * @param {string} key The key of the value to remove.
 	     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
 	     */
-	    function hashDelete(hash, key) {
-	      return hashHas(hash, key) && delete hash[key];
+	    function hashDelete(key) {
+	      return this.has(key) && delete this.__data__[key];
 	    }
 
 	    /**
 	     * Gets the hash value for `key`.
 	     *
 	     * @private
-	     * @param {Object} hash The hash to query.
+	     * @name get
+	     * @memberOf Hash
 	     * @param {string} key The key of the value to get.
 	     * @returns {*} Returns the entry value.
 	     */
-	    function hashGet(hash, key) {
+	    function hashGet(key) {
+	      var data = this.__data__;
 	      if (nativeCreate) {
-	        var result = hash[key];
+	        var result = data[key];
 	        return result === HASH_UNDEFINED ? undefined : result;
 	      }
-	      return hasOwnProperty.call(hash, key) ? hash[key] : undefined;
+	      return hasOwnProperty.call(data, key) ? data[key] : undefined;
 	    }
 
 	    /**
 	     * Checks if a hash value for `key` exists.
 	     *
 	     * @private
-	     * @param {Object} hash The hash to query.
+	     * @name has
+	     * @memberOf Hash
 	     * @param {string} key The key of the entry to check.
 	     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
 	     */
-	    function hashHas(hash, key) {
-	      return nativeCreate ? hash[key] !== undefined : hasOwnProperty.call(hash, key);
+	    function hashHas(key) {
+	      var data = this.__data__;
+	      return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
 	    }
 
 	    /**
 	     * Sets the hash `key` to `value`.
 	     *
 	     * @private
-	     * @param {Object} hash The hash to modify.
+	     * @name set
+	     * @memberOf Hash
 	     * @param {string} key The key of the value to set.
 	     * @param {*} value The value to set.
+	     * @returns {Object} Returns the hash instance.
 	     */
-	    function hashSet(hash, key, value) {
-	      hash[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+	    function hashSet(key, value) {
+	      var data = this.__data__;
+	      data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+	      return this;
 	    }
 
-	    // Avoid inheriting from `Object.prototype` when possible.
-	    Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
+	    // Add methods to `Hash`.
+	    Hash.prototype.clear = hashClear;
+	    Hash.prototype['delete'] = hashDelete;
+	    Hash.prototype.get = hashGet;
+	    Hash.prototype.has = hashHas;
+	    Hash.prototype.set = hashSet;
+
+	    /*------------------------------------------------------------------------*/
+
+	    /**
+	     * Creates an list cache object.
+	     *
+	     * @private
+	     * @constructor
+	     * @param {Array} [entries] The key-value pairs to cache.
+	     */
+	    function ListCache(entries) {
+	      var index = -1,
+	          length = entries ? entries.length : 0;
+
+	      this.clear();
+	      while (++index < length) {
+	        var entry = entries[index];
+	        this.set(entry[0], entry[1]);
+	      }
+	    }
+
+	    /**
+	     * Removes all key-value entries from the list cache.
+	     *
+	     * @private
+	     * @name clear
+	     * @memberOf ListCache
+	     */
+	    function listCacheClear() {
+	      this.__data__ = [];
+	    }
+
+	    /**
+	     * Removes `key` and its value from the list cache.
+	     *
+	     * @private
+	     * @name delete
+	     * @memberOf ListCache
+	     * @param {string} key The key of the value to remove.
+	     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	     */
+	    function listCacheDelete(key) {
+	      var data = this.__data__,
+	          index = assocIndexOf(data, key);
+
+	      if (index < 0) {
+	        return false;
+	      }
+	      var lastIndex = data.length - 1;
+	      if (index == lastIndex) {
+	        data.pop();
+	      } else {
+	        splice.call(data, index, 1);
+	      }
+	      return true;
+	    }
+
+	    /**
+	     * Gets the list cache value for `key`.
+	     *
+	     * @private
+	     * @name get
+	     * @memberOf ListCache
+	     * @param {string} key The key of the value to get.
+	     * @returns {*} Returns the entry value.
+	     */
+	    function listCacheGet(key) {
+	      var data = this.__data__,
+	          index = assocIndexOf(data, key);
+
+	      return index < 0 ? undefined : data[index][1];
+	    }
+
+	    /**
+	     * Checks if a list cache value for `key` exists.
+	     *
+	     * @private
+	     * @name has
+	     * @memberOf ListCache
+	     * @param {string} key The key of the entry to check.
+	     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	     */
+	    function listCacheHas(key) {
+	      return assocIndexOf(this.__data__, key) > -1;
+	    }
+
+	    /**
+	     * Sets the list cache `key` to `value`.
+	     *
+	     * @private
+	     * @name set
+	     * @memberOf ListCache
+	     * @param {string} key The key of the value to set.
+	     * @param {*} value The value to set.
+	     * @returns {Object} Returns the list cache instance.
+	     */
+	    function listCacheSet(key, value) {
+	      var data = this.__data__,
+	          index = assocIndexOf(data, key);
+
+	      if (index < 0) {
+	        data.push([key, value]);
+	      } else {
+	        data[index][1] = value;
+	      }
+	      return this;
+	    }
+
+	    // Add methods to `ListCache`.
+	    ListCache.prototype.clear = listCacheClear;
+	    ListCache.prototype['delete'] = listCacheDelete;
+	    ListCache.prototype.get = listCacheGet;
+	    ListCache.prototype.has = listCacheHas;
+	    ListCache.prototype.set = listCacheSet;
 
 	    /*------------------------------------------------------------------------*/
 
@@ -23564,15 +23723,15 @@
 	     *
 	     * @private
 	     * @constructor
-	     * @param {Array} [values] The values to cache.
+	     * @param {Array} [entries] The key-value pairs to cache.
 	     */
-	    function MapCache(values) {
+	    function MapCache(entries) {
 	      var index = -1,
-	          length = values ? values.length : 0;
+	          length = entries ? entries.length : 0;
 
 	      this.clear();
 	      while (++index < length) {
-	        var entry = values[index];
+	        var entry = entries[index];
 	        this.set(entry[0], entry[1]);
 	      }
 	    }
@@ -23584,10 +23743,10 @@
 	     * @name clear
 	     * @memberOf MapCache
 	     */
-	    function mapClear() {
+	    function mapCacheClear() {
 	      this.__data__ = {
 	        'hash': new Hash,
-	        'map': Map ? new Map : [],
+	        'map': new (Map || ListCache),
 	        'string': new Hash
 	      };
 	    }
@@ -23601,12 +23760,8 @@
 	     * @param {string} key The key of the value to remove.
 	     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
 	     */
-	    function mapDelete(key) {
-	      var data = this.__data__;
-	      if (isKeyable(key)) {
-	        return hashDelete(typeof key == 'string' ? data.string : data.hash, key);
-	      }
-	      return Map ? data.map['delete'](key) : assocDelete(data.map, key);
+	    function mapCacheDelete(key) {
+	      return getMapData(this, key)['delete'](key);
 	    }
 
 	    /**
@@ -23618,12 +23773,8 @@
 	     * @param {string} key The key of the value to get.
 	     * @returns {*} Returns the entry value.
 	     */
-	    function mapGet(key) {
-	      var data = this.__data__;
-	      if (isKeyable(key)) {
-	        return hashGet(typeof key == 'string' ? data.string : data.hash, key);
-	      }
-	      return Map ? data.map.get(key) : assocGet(data.map, key);
+	    function mapCacheGet(key) {
+	      return getMapData(this, key).get(key);
 	    }
 
 	    /**
@@ -23635,12 +23786,8 @@
 	     * @param {string} key The key of the entry to check.
 	     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
 	     */
-	    function mapHas(key) {
-	      var data = this.__data__;
-	      if (isKeyable(key)) {
-	        return hashHas(typeof key == 'string' ? data.string : data.hash, key);
-	      }
-	      return Map ? data.map.has(key) : assocHas(data.map, key);
+	    function mapCacheHas(key) {
+	      return getMapData(this, key).has(key);
 	    }
 
 	    /**
@@ -23653,30 +23800,23 @@
 	     * @param {*} value The value to set.
 	     * @returns {Object} Returns the map cache instance.
 	     */
-	    function mapSet(key, value) {
-	      var data = this.__data__;
-	      if (isKeyable(key)) {
-	        hashSet(typeof key == 'string' ? data.string : data.hash, key, value);
-	      } else if (Map) {
-	        data.map.set(key, value);
-	      } else {
-	        assocSet(data.map, key, value);
-	      }
+	    function mapCacheSet(key, value) {
+	      getMapData(this, key).set(key, value);
 	      return this;
 	    }
 
 	    // Add methods to `MapCache`.
-	    MapCache.prototype.clear = mapClear;
-	    MapCache.prototype['delete'] = mapDelete;
-	    MapCache.prototype.get = mapGet;
-	    MapCache.prototype.has = mapHas;
-	    MapCache.prototype.set = mapSet;
+	    MapCache.prototype.clear = mapCacheClear;
+	    MapCache.prototype['delete'] = mapCacheDelete;
+	    MapCache.prototype.get = mapCacheGet;
+	    MapCache.prototype.has = mapCacheHas;
+	    MapCache.prototype.set = mapCacheSet;
 
 	    /*------------------------------------------------------------------------*/
 
 	    /**
 	     *
-	     * Creates a set cache object to store unique values.
+	     * Creates an array cache object to store unique values.
 	     *
 	     * @private
 	     * @constructor
@@ -23688,52 +23828,41 @@
 
 	      this.__data__ = new MapCache;
 	      while (++index < length) {
-	        this.push(values[index]);
+	        this.add(values[index]);
 	      }
 	    }
 
 	    /**
-	     * Checks if `value` is in `cache`.
+	     * Adds `value` to the array cache.
 	     *
 	     * @private
-	     * @param {Object} cache The set cache to search.
+	     * @name add
+	     * @memberOf SetCache
+	     * @alias push
+	     * @param {*} value The value to cache.
+	     * @returns {Object} Returns the cache instance.
+	     */
+	    function setCacheAdd(value) {
+	      this.__data__.set(value, HASH_UNDEFINED);
+	      return this;
+	    }
+
+	    /**
+	     * Checks if `value` is in the array cache.
+	     *
+	     * @private
+	     * @name has
+	     * @memberOf SetCache
 	     * @param {*} value The value to search for.
 	     * @returns {number} Returns `true` if `value` is found, else `false`.
 	     */
-	    function cacheHas(cache, value) {
-	      var map = cache.__data__;
-	      if (isKeyable(value)) {
-	        var data = map.__data__,
-	            hash = typeof value == 'string' ? data.string : data.hash;
-
-	        return hash[value] === HASH_UNDEFINED;
-	      }
-	      return map.has(value);
-	    }
-
-	    /**
-	     * Adds `value` to the set cache.
-	     *
-	     * @private
-	     * @name push
-	     * @memberOf SetCache
-	     * @param {*} value The value to cache.
-	     */
-	    function cachePush(value) {
-	      var map = this.__data__;
-	      if (isKeyable(value)) {
-	        var data = map.__data__,
-	            hash = typeof value == 'string' ? data.string : data.hash;
-
-	        hash[value] = HASH_UNDEFINED;
-	      }
-	      else {
-	        map.set(value, HASH_UNDEFINED);
-	      }
+	    function setCacheHas(value) {
+	      return this.__data__.has(value);
 	    }
 
 	    // Add methods to `SetCache`.
-	    SetCache.prototype.push = cachePush;
+	    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+	    SetCache.prototype.has = setCacheHas;
 
 	    /*------------------------------------------------------------------------*/
 
@@ -23742,17 +23871,10 @@
 	     *
 	     * @private
 	     * @constructor
-	     * @param {Array} [values] The values to cache.
+	     * @param {Array} [entries] The key-value pairs to cache.
 	     */
-	    function Stack(values) {
-	      var index = -1,
-	          length = values ? values.length : 0;
-
-	      this.clear();
-	      while (++index < length) {
-	        var entry = values[index];
-	        this.set(entry[0], entry[1]);
-	      }
+	    function Stack(entries) {
+	      this.__data__ = new ListCache(entries);
 	    }
 
 	    /**
@@ -23763,7 +23885,7 @@
 	     * @memberOf Stack
 	     */
 	    function stackClear() {
-	      this.__data__ = { 'array': [], 'map': null };
+	      this.__data__ = new ListCache;
 	    }
 
 	    /**
@@ -23776,10 +23898,7 @@
 	     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
 	     */
 	    function stackDelete(key) {
-	      var data = this.__data__,
-	          array = data.array;
-
-	      return array ? assocDelete(array, key) : data.map['delete'](key);
+	      return this.__data__['delete'](key);
 	    }
 
 	    /**
@@ -23792,10 +23911,7 @@
 	     * @returns {*} Returns the entry value.
 	     */
 	    function stackGet(key) {
-	      var data = this.__data__,
-	          array = data.array;
-
-	      return array ? assocGet(array, key) : data.map.get(key);
+	      return this.__data__.get(key);
 	    }
 
 	    /**
@@ -23808,10 +23924,7 @@
 	     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
 	     */
 	    function stackHas(key) {
-	      var data = this.__data__,
-	          array = data.array;
-
-	      return array ? assocHas(array, key) : data.map.has(key);
+	      return this.__data__.has(key);
 	    }
 
 	    /**
@@ -23825,21 +23938,11 @@
 	     * @returns {Object} Returns the stack cache instance.
 	     */
 	    function stackSet(key, value) {
-	      var data = this.__data__,
-	          array = data.array;
-
-	      if (array) {
-	        if (array.length < (LARGE_ARRAY_SIZE - 1)) {
-	          assocSet(array, key, value);
-	        } else {
-	          data.array = null;
-	          data.map = new MapCache(array);
-	        }
+	      var cache = this.__data__;
+	      if (cache instanceof ListCache && cache.__data__.length == LARGE_ARRAY_SIZE) {
+	        cache = this.__data__ = new MapCache(cache.__data__);
 	      }
-	      var map = data.map;
-	      if (map) {
-	        map.set(key, value);
-	      }
+	      cache.set(key, value);
 	      return this;
 	    }
 
@@ -23849,90 +23952,6 @@
 	    Stack.prototype.get = stackGet;
 	    Stack.prototype.has = stackHas;
 	    Stack.prototype.set = stackSet;
-
-	    /*------------------------------------------------------------------------*/
-
-	    /**
-	     * Removes `key` and its value from the associative array.
-	     *
-	     * @private
-	     * @param {Array} array The array to modify.
-	     * @param {string} key The key of the value to remove.
-	     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	     */
-	    function assocDelete(array, key) {
-	      var index = assocIndexOf(array, key);
-	      if (index < 0) {
-	        return false;
-	      }
-	      var lastIndex = array.length - 1;
-	      if (index == lastIndex) {
-	        array.pop();
-	      } else {
-	        splice.call(array, index, 1);
-	      }
-	      return true;
-	    }
-
-	    /**
-	     * Gets the associative array value for `key`.
-	     *
-	     * @private
-	     * @param {Array} array The array to query.
-	     * @param {string} key The key of the value to get.
-	     * @returns {*} Returns the entry value.
-	     */
-	    function assocGet(array, key) {
-	      var index = assocIndexOf(array, key);
-	      return index < 0 ? undefined : array[index][1];
-	    }
-
-	    /**
-	     * Checks if an associative array value for `key` exists.
-	     *
-	     * @private
-	     * @param {Array} array The array to query.
-	     * @param {string} key The key of the entry to check.
-	     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	     */
-	    function assocHas(array, key) {
-	      return assocIndexOf(array, key) > -1;
-	    }
-
-	    /**
-	     * Gets the index at which the `key` is found in `array` of key-value pairs.
-	     *
-	     * @private
-	     * @param {Array} array The array to search.
-	     * @param {*} key The key to search for.
-	     * @returns {number} Returns the index of the matched value, else `-1`.
-	     */
-	    function assocIndexOf(array, key) {
-	      var length = array.length;
-	      while (length--) {
-	        if (eq(array[length][0], key)) {
-	          return length;
-	        }
-	      }
-	      return -1;
-	    }
-
-	    /**
-	     * Sets the associative array `key` to `value`.
-	     *
-	     * @private
-	     * @param {Array} array The array to modify.
-	     * @param {string} key The key of the value to set.
-	     * @param {*} value The value to set.
-	     */
-	    function assocSet(array, key, value) {
-	      var index = assocIndexOf(array, key);
-	      if (index < 0) {
-	        array.push([key, value]);
-	      } else {
-	        array[index][1] = value;
-	      }
-	    }
 
 	    /*------------------------------------------------------------------------*/
 
@@ -23989,6 +24008,24 @@
 	    }
 
 	    /**
+	     * Gets the index at which the `key` is found in `array` of key-value pairs.
+	     *
+	     * @private
+	     * @param {Array} array The array to search.
+	     * @param {*} key The key to search for.
+	     * @returns {number} Returns the index of the matched value, else `-1`.
+	     */
+	    function assocIndexOf(array, key) {
+	      var length = array.length;
+	      while (length--) {
+	        if (eq(array[length][0], key)) {
+	          return length;
+	        }
+	      }
+	      return -1;
+	    }
+
+	    /**
 	     * Aggregates elements of `collection` on `accumulator` with keys transformed
 	     * by `iteratee` and values set by `setter`.
 	     *
@@ -24025,7 +24062,7 @@
 	     * @private
 	     * @param {Object} object The object to iterate over.
 	     * @param {string[]} paths The property paths of elements to pick.
-	     * @returns {Array} Returns the new array of picked elements.
+	     * @returns {Array} Returns the picked elements.
 	     */
 	    function baseAt(object, paths) {
 	      var index = -1,
@@ -24140,7 +24177,7 @@
 	     *
 	     * @private
 	     * @param {Object} source The object of property predicates to conform to.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     */
 	    function baseConforms(source) {
 	      var props = keys(source),
@@ -24453,7 +24490,7 @@
 	     * @private
 	     * @param {Object} object The object to inspect.
 	     * @param {Array} props The property names to filter.
-	     * @returns {Array} Returns the new array of filtered property names.
+	     * @returns {Array} Returns the function names.
 	     */
 	    function baseFunctions(object, props) {
 	      return arrayFilter(props, function(key) {
@@ -24494,9 +24531,7 @@
 	     */
 	    function baseGetAllKeys(object, keysFunc, symbolsFunc) {
 	      var result = keysFunc(object);
-	      return isArray(object)
-	        ? result
-	        : arrayPush(result, symbolsFunc(object));
+	      return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
 	    }
 
 	    /**
@@ -24516,7 +24551,7 @@
 	     * The base implementation of `_.has` without support for deep paths.
 	     *
 	     * @private
-	     * @param {Object} object The object to query.
+	     * @param {Object} [object] The object to query.
 	     * @param {Array|string} key The key to check.
 	     * @returns {boolean} Returns `true` if `key` exists, else `false`.
 	     */
@@ -24524,20 +24559,21 @@
 	      // Avoid a bug in IE 10-11 where objects with a [[Prototype]] of `null`,
 	      // that are composed entirely of index properties, return `false` for
 	      // `hasOwnProperty` checks of them.
-	      return hasOwnProperty.call(object, key) ||
-	        (typeof object == 'object' && key in object && getPrototype(object) === null);
+	      return object != null &&
+	        (hasOwnProperty.call(object, key) ||
+	          (typeof object == 'object' && key in object && getPrototype(object) === null));
 	    }
 
 	    /**
 	     * The base implementation of `_.hasIn` without support for deep paths.
 	     *
 	     * @private
-	     * @param {Object} object The object to query.
+	     * @param {Object} [object] The object to query.
 	     * @param {Array|string} key The key to check.
 	     * @returns {boolean} Returns `true` if `key` exists, else `false`.
 	     */
 	    function baseHasIn(object, key) {
-	      return key in Object(object);
+	      return object != null && key in Object(object);
 	    }
 
 	    /**
@@ -24792,6 +24828,22 @@
 	    }
 
 	    /**
+	     * The base implementation of `_.isNative` without bad shim checks.
+	     *
+	     * @private
+	     * @param {*} value The value to check.
+	     * @returns {boolean} Returns `true` if `value` is a native function,
+	     *  else `false`.
+	     */
+	    function baseIsNative(value) {
+	      if (!isObject(value) || isMasked(value)) {
+	        return false;
+	      }
+	      var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+	      return pattern.test(toSource(value));
+	    }
+
+	    /**
 	     * The base implementation of `_.iteratee`.
 	     *
 	     * @private
@@ -24888,7 +24940,7 @@
 	     *
 	     * @private
 	     * @param {Object} source The object of property values to match.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     */
 	    function baseMatches(source) {
 	      var matchData = getMatchData(source);
@@ -24906,7 +24958,7 @@
 	     * @private
 	     * @param {string} path The path of the property to get.
 	     * @param {*} srcValue The value to match.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     */
 	    function baseMatchesProperty(path, srcValue) {
 	      if (isKey(path) && isStrictComparable(srcValue)) {
@@ -25121,7 +25173,7 @@
 	     *
 	     * @private
 	     * @param {string} key The key of the property to get.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new accessor function.
 	     */
 	    function baseProperty(key) {
 	      return function(object) {
@@ -25134,7 +25186,7 @@
 	     *
 	     * @private
 	     * @param {Array|string} path The path of the property to get.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new accessor function.
 	     */
 	    function basePropertyDeep(path) {
 	      return function(object) {
@@ -25159,6 +25211,9 @@
 	          length = values.length,
 	          seen = array;
 
+	      if (array === values) {
+	        values = copyArray(values);
+	      }
 	      if (iteratee) {
 	        seen = arrayMap(array, baseUnary(iteratee));
 	      }
@@ -25235,7 +25290,7 @@
 	     * @param {number} end The end of the range.
 	     * @param {number} step The value to increment or decrement by.
 	     * @param {boolean} [fromRight] Specify iterating from right to left.
-	     * @returns {Array} Returns the new array of numbers.
+	     * @returns {Array} Returns the range of numbers.
 	     */
 	    function baseRange(start, end, step, fromRight) {
 	      var index = -1,
@@ -25949,7 +26004,7 @@
 	     * placeholders, and provided arguments into a single array of arguments.
 	     *
 	     * @private
-	     * @param {Array|Object} args The provided arguments.
+	     * @param {Array} args The provided arguments.
 	     * @param {Array} partials The arguments to prepend to those provided.
 	     * @param {Array} holders The `partials` placeholder indexes.
 	     * @params {boolean} [isCurried] Specify composing for a curried function.
@@ -25984,7 +26039,7 @@
 	     * is tailored for `_.partialRight`.
 	     *
 	     * @private
-	     * @param {Array|Object} args The provided arguments.
+	     * @param {Array} args The provided arguments.
 	     * @param {Array} partials The arguments to append to those provided.
 	     * @param {Array} holders The `partials` placeholder indexes.
 	     * @params {boolean} [isCurried] Specify composing for a curried function.
@@ -26106,7 +26161,7 @@
 	            customizer = length > 1 ? sources[length - 1] : undefined,
 	            guard = length > 2 ? sources[2] : undefined;
 
-	        customizer = typeof customizer == 'function'
+	        customizer = (assigner.length > 3 && typeof customizer == 'function')
 	          ? (length--, customizer)
 	          : undefined;
 
@@ -26205,7 +26260,7 @@
 	     *
 	     * @private
 	     * @param {string} methodName The name of the `String` case method to use.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new case function.
 	     */
 	    function createCaseFirst(methodName) {
 	      return function(string) {
@@ -26290,7 +26345,7 @@
 	        var length = arguments.length,
 	            args = Array(length),
 	            index = length,
-	            placeholder = getPlaceholder(wrapper);
+	            placeholder = getHolder(wrapper);
 
 	        while (index--) {
 	          args[index] = arguments[index];
@@ -26309,6 +26364,31 @@
 	        return apply(fn, this, args);
 	      }
 	      return wrapper;
+	    }
+
+	    /**
+	     * Creates a `_.find` or `_.findLast` function.
+	     *
+	     * @private
+	     * @param {Function} findIndexFunc The function to find the collection index.
+	     * @returns {Function} Returns the new find function.
+	     */
+	    function createFind(findIndexFunc) {
+	      return function(collection, predicate, fromIndex) {
+	        var iterable = Object(collection);
+	        predicate = getIteratee(predicate, 3);
+	        if (!isArrayLike(collection)) {
+	          var props = keys(collection);
+	        }
+	        var index = findIndexFunc(props || collection, function(value, key) {
+	          if (props) {
+	            key = value;
+	            value = iterable[key];
+	          }
+	          return predicate(value, key, iterable);
+	        }, fromIndex);
+	        return index > -1 ? collection[props ? props[index] : index] : undefined;
+	      };
 	    }
 
 	    /**
@@ -26405,14 +26485,14 @@
 
 	      function wrapper() {
 	        var length = arguments.length,
-	            index = length,
-	            args = Array(length);
+	            args = Array(length),
+	            index = length;
 
 	        while (index--) {
 	          args[index] = arguments[index];
 	        }
 	        if (isCurried) {
-	          var placeholder = getPlaceholder(wrapper),
+	          var placeholder = getHolder(wrapper),
 	              holdersCount = countHolders(args, placeholder);
 	        }
 	        if (partials) {
@@ -26501,7 +26581,7 @@
 	     *
 	     * @private
 	     * @param {Function} arrayFunc The function to iterate over iteratees.
-	     * @returns {Function} Returns the new invoker function.
+	     * @returns {Function} Returns the new over function.
 	     */
 	    function createOver(arrayFunc) {
 	      return rest(function(iteratees) {
@@ -26674,7 +26754,7 @@
 	      var func = Math[methodName];
 	      return function(number, precision) {
 	        number = toNumber(number);
-	        precision = toInteger(precision);
+	        precision = nativeMin(toInteger(precision), 292);
 	        if (precision) {
 	          // Shift with exponential notation to avoid floating-point issues.
 	          // See [MDN](https://mdn.io/round#Examples) for more details.
@@ -26700,6 +26780,26 @@
 	    };
 
 	    /**
+	     * Creates a `_.toPairs` or `_.toPairsIn` function.
+	     *
+	     * @private
+	     * @param {Function} keysFunc The function to get the keys of a given object.
+	     * @returns {Function} Returns the new pairs function.
+	     */
+	    function createToPairs(keysFunc) {
+	      return function(object) {
+	        var tag = getTag(object);
+	        if (tag == mapTag) {
+	          return mapToArray(object);
+	        }
+	        if (tag == setTag) {
+	          return setToPairs(object);
+	        }
+	        return baseToPairs(object, keysFunc(object));
+	      };
+	    }
+
+	    /**
 	     * Creates a function that either curries or invokes `func` with optional
 	     * `this` binding and partially applied arguments.
 	     *
@@ -26716,6 +26816,7 @@
 	     *    64 - `_.partialRight`
 	     *   128 - `_.rearg`
 	     *   256 - `_.ary`
+	     *   512 - `_.flip`
 	     * @param {*} [thisArg] The `this` binding of `func`.
 	     * @param {Array} [partials] The arguments to be partially applied.
 	     * @param {Array} [holders] The `partials` placeholder indexes.
@@ -26794,9 +26895,7 @@
 	     * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
 	     */
 	    function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
-	      var index = -1,
-	          isPartial = bitmask & PARTIAL_COMPARE_FLAG,
-	          isUnordered = bitmask & UNORDERED_COMPARE_FLAG,
+	      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
 	          arrLength = array.length,
 	          othLength = other.length;
 
@@ -26808,7 +26907,10 @@
 	      if (stacked) {
 	        return stacked == other;
 	      }
-	      var result = true;
+	      var index = -1,
+	          result = true,
+	          seen = (bitmask & UNORDERED_COMPARE_FLAG) ? new SetCache : undefined;
+
 	      stack.set(array, other);
 
 	      // Ignore non-index properties.
@@ -26829,10 +26931,12 @@
 	          break;
 	        }
 	        // Recursively compare arrays (susceptible to call stack limits).
-	        if (isUnordered) {
-	          if (!arraySome(other, function(othValue) {
-	                return arrValue === othValue ||
-	                  equalFunc(arrValue, othValue, customizer, bitmask, stack);
+	        if (seen) {
+	          if (!arraySome(other, function(othValue, othIndex) {
+	                if (!seen.has(othIndex) &&
+	                    (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+	                  return seen.add(othIndex);
+	                }
 	              })) {
 	            result = false;
 	            break;
@@ -27067,6 +27171,18 @@
 	    }
 
 	    /**
+	     * Gets the argument placeholder value for `func`.
+	     *
+	     * @private
+	     * @param {Function} func The function to inspect.
+	     * @returns {*} Returns the placeholder value.
+	     */
+	    function getHolder(func) {
+	      var object = hasOwnProperty.call(lodash, 'placeholder') ? lodash : func;
+	      return object.placeholder;
+	    }
+
+	    /**
 	     * Gets the appropriate "iteratee" function. If `_.iteratee` is customized,
 	     * this function returns the custom method, otherwise it returns `baseIteratee`.
 	     * If arguments are provided, the chosen function is invoked with them and
@@ -27097,6 +27213,21 @@
 	    var getLength = baseProperty('length');
 
 	    /**
+	     * Gets the data for `map`.
+	     *
+	     * @private
+	     * @param {Object} map The map to query.
+	     * @param {string} key The reference key.
+	     * @returns {*} Returns the map data.
+	     */
+	    function getMapData(map, key) {
+	      var data = map.__data__;
+	      return isKeyable(key)
+	        ? data[typeof key == 'string' ? 'string' : 'hash']
+	        : data.map;
+	    }
+
+	    /**
 	     * Gets the property names, values, and compare flags of `object`.
 	     *
 	     * @private
@@ -27104,11 +27235,14 @@
 	     * @returns {Array} Returns the match data of `object`.
 	     */
 	    function getMatchData(object) {
-	      var result = toPairs(object),
+	      var result = keys(object),
 	          length = result.length;
 
 	      while (length--) {
-	        result[length][2] = isStrictComparable(result[length][1]);
+	        var key = result[length],
+	            value = object[key];
+
+	        result[length] = [key, value, isStrictComparable(value)];
 	      }
 	      return result;
 	    }
@@ -27122,20 +27256,8 @@
 	     * @returns {*} Returns the function if it's native, else `undefined`.
 	     */
 	    function getNative(object, key) {
-	      var value = object[key];
-	      return isNative(value) ? value : undefined;
-	    }
-
-	    /**
-	     * Gets the argument placeholder value for `func`.
-	     *
-	     * @private
-	     * @param {Function} func The function to inspect.
-	     * @returns {*} Returns the placeholder value.
-	     */
-	    function getPlaceholder(func) {
-	      var object = hasOwnProperty.call(lodash, 'placeholder') ? lodash : func;
-	      return object.placeholder;
+	      var value = getValue(object, key);
+	      return baseIsNative(value) ? value : undefined;
 	    }
 
 	    /**
@@ -27164,9 +27286,7 @@
 
 	    // Fallback for IE < 11.
 	    if (!getOwnPropertySymbols) {
-	      getSymbols = function() {
-	        return [];
-	      };
+	      getSymbols = stubArray;
 	    }
 
 	    /**
@@ -27387,7 +27507,7 @@
 	     * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
 	     */
 	    function isFlattenable(value) {
-	      return isArrayLikeObject(value) && (isArray(value) || isArguments(value));
+	      return isArray(value) || isArguments(value);
 	    }
 
 	    /**
@@ -27499,6 +27619,26 @@
 	    }
 
 	    /**
+	     * Checks if `func` has its source masked.
+	     *
+	     * @private
+	     * @param {Function} func The function to check.
+	     * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+	     */
+	    function isMasked(func) {
+	      return !!maskSrcKey && (maskSrcKey in func);
+	    }
+
+	    /**
+	     * Checks if `func` is capable of being masked.
+	     *
+	     * @private
+	     * @param {*} value The value to check.
+	     * @returns {boolean} Returns `true` if `func` is maskable, else `false`.
+	     */
+	    var isMaskable = coreJsData ? isFunction : stubFalse;
+
+	    /**
 	     * Checks if `value` is likely a prototype object.
 	     *
 	     * @private
@@ -27531,7 +27671,7 @@
 	     * @private
 	     * @param {string} key The key of the property to get.
 	     * @param {*} srcValue The value to match.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     */
 	    function matchesStrictComparable(key, srcValue) {
 	      return function(object) {
@@ -27783,7 +27923,7 @@
 	     * @param {Array} array The array to process.
 	     * @param {number} [size=1] The length of each chunk
 	     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
-	     * @returns {Array} Returns the new array containing chunks.
+	     * @returns {Array} Returns the new array of chunks.
 	     * @example
 	     *
 	     * _.chunk(['a', 'b', 'c', 'd'], 2);
@@ -27866,16 +28006,16 @@
 	     */
 	    function concat() {
 	      var length = arguments.length,
-	          array = castArray(arguments[0]);
+	          args = Array(length ? length - 1 : 0),
+	          array = arguments[0],
+	          index = length;
 
-	      if (length < 2) {
-	        return length ? copyArray(array) : [];
+	      while (index--) {
+	        args[index - 1] = arguments[index];
 	      }
-	      var args = Array(length - 1);
-	      while (length--) {
-	        args[length - 1] = arguments[length];
-	      }
-	      return arrayConcat(array, baseFlatten(args, 1));
+	      return length
+	        ? arrayPush(isArray(array) ? copyArray(array) : [array], baseFlatten(args, 1))
+	        : [];
 	    }
 
 	    /**
@@ -27894,8 +28034,8 @@
 	     * @see _.without, _.xor
 	     * @example
 	     *
-	     * _.difference([3, 2, 1], [4, 2]);
-	     * // => [3, 1]
+	     * _.difference([2, 1], [2, 3]);
+	     * // => [1]
 	     */
 	    var difference = rest(function(array, values) {
 	      return isArrayLikeObject(array)
@@ -27920,8 +28060,8 @@
 	     * @returns {Array} Returns the new array of filtered values.
 	     * @example
 	     *
-	     * _.differenceBy([3.1, 2.2, 1.3], [4.4, 2.5], Math.floor);
-	     * // => [3.1, 1.3]
+	     * _.differenceBy([2.1, 1.2], [2.3, 3.4], Math.floor);
+	     * // => [1.2]
 	     *
 	     * // The `_.property` iteratee shorthand.
 	     * _.differenceBy([{ 'x': 2 }, { 'x': 1 }], [{ 'x': 1 }], 'x');
@@ -28173,6 +28313,7 @@
 	     * @param {Array} array The array to search.
 	     * @param {Array|Function|Object|string} [predicate=_.identity]
 	     *  The function invoked per iteration.
+	     * @param {number} [fromIndex=0] The index to search from.
 	     * @returns {number} Returns the index of the found element, else `-1`.
 	     * @example
 	     *
@@ -28197,10 +28338,16 @@
 	     * _.findIndex(users, 'active');
 	     * // => 2
 	     */
-	    function findIndex(array, predicate) {
-	      return (array && array.length)
-	        ? baseFindIndex(array, getIteratee(predicate, 3))
-	        : -1;
+	    function findIndex(array, predicate, fromIndex) {
+	      var length = array ? array.length : 0;
+	      if (!length) {
+	        return -1;
+	      }
+	      var index = fromIndex == null ? 0 : toInteger(fromIndex);
+	      if (index < 0) {
+	        index = nativeMax(length + index, 0);
+	      }
+	      return baseFindIndex(array, getIteratee(predicate, 3), index);
 	    }
 
 	    /**
@@ -28214,6 +28361,7 @@
 	     * @param {Array} array The array to search.
 	     * @param {Array|Function|Object|string} [predicate=_.identity]
 	     *  The function invoked per iteration.
+	     * @param {number} [fromIndex=array.length-1] The index to search from.
 	     * @returns {number} Returns the index of the found element, else `-1`.
 	     * @example
 	     *
@@ -28238,10 +28386,19 @@
 	     * _.findLastIndex(users, 'active');
 	     * // => 0
 	     */
-	    function findLastIndex(array, predicate) {
-	      return (array && array.length)
-	        ? baseFindIndex(array, getIteratee(predicate, 3), true)
-	        : -1;
+	    function findLastIndex(array, predicate, fromIndex) {
+	      var length = array ? array.length : 0;
+	      if (!length) {
+	        return -1;
+	      }
+	      var index = length - 1;
+	      if (fromIndex !== undefined) {
+	        index = toInteger(fromIndex);
+	        index = fromIndex < 0
+	          ? nativeMax(length + index, 0)
+	          : nativeMin(index, length - 1);
+	      }
+	      return baseFindIndex(array, getIteratee(predicate, 3), index, true);
 	    }
 
 	    /**
@@ -28388,11 +28545,11 @@
 	      if (!length) {
 	        return -1;
 	      }
-	      fromIndex = toInteger(fromIndex);
-	      if (fromIndex < 0) {
-	        fromIndex = nativeMax(length + fromIndex, 0);
+	      var index = fromIndex == null ? 0 : toInteger(fromIndex);
+	      if (index < 0) {
+	        index = nativeMax(length + index, 0);
 	      }
-	      return baseIndexOf(array, value, fromIndex);
+	      return baseIndexOf(array, value, index);
 	    }
 
 	    /**
@@ -28427,7 +28584,7 @@
 	     * @returns {Array} Returns the new array of intersecting values.
 	     * @example
 	     *
-	     * _.intersection([2, 1], [4, 2], [1, 2]);
+	     * _.intersection([2, 1], [2, 3]);
 	     * // => [2]
 	     */
 	    var intersection = rest(function(arrays) {
@@ -28453,7 +28610,7 @@
 	     * @returns {Array} Returns the new array of intersecting values.
 	     * @example
 	     *
-	     * _.intersectionBy([2.1, 1.2], [4.3, 2.4], Math.floor);
+	     * _.intersectionBy([2.1, 1.2], [2.3, 3.4], Math.floor);
 	     * // => [2.1]
 	     *
 	     * // The `_.property` iteratee shorthand.
@@ -28583,7 +28740,7 @@
 	        ) + 1;
 	      }
 	      if (value !== value) {
-	        return indexOfNaN(array, index, true);
+	        return indexOfNaN(array, index - 1, true);
 	      }
 	      while (index--) {
 	        if (array[index] === value) {
@@ -28594,8 +28751,8 @@
 	    }
 
 	    /**
-	     * Gets the nth element of `array`. If `n` is negative, the nth element
-	     * from the end is returned.
+	     * Gets the element at index `n` of `array`. If `n` is negative, the nth
+	     * element from the end is returned.
 	     *
 	     * @static
 	     * @memberOf _
@@ -28635,11 +28792,11 @@
 	     * @returns {Array} Returns `array`.
 	     * @example
 	     *
-	     * var array = [1, 2, 3, 1, 2, 3];
+	     * var array = ['a', 'b', 'c', 'a', 'b', 'c'];
 	     *
-	     * _.pull(array, 2, 3);
+	     * _.pull(array, 'a', 'c');
 	     * console.log(array);
-	     * // => [1, 1]
+	     * // => ['b', 'b']
 	     */
 	    var pull = rest(pullAll);
 
@@ -28657,11 +28814,11 @@
 	     * @returns {Array} Returns `array`.
 	     * @example
 	     *
-	     * var array = [1, 2, 3, 1, 2, 3];
+	     * var array = ['a', 'b', 'c', 'a', 'b', 'c'];
 	     *
-	     * _.pullAll(array, [2, 3]);
+	     * _.pullAll(array, ['a', 'c']);
 	     * console.log(array);
-	     * // => [1, 1]
+	     * // => ['b', 'b']
 	     */
 	    function pullAll(array, values) {
 	      return (array && array.length && values && values.length)
@@ -28743,14 +28900,14 @@
 	     * @returns {Array} Returns the new array of removed elements.
 	     * @example
 	     *
-	     * var array = [5, 10, 15, 20];
-	     * var evens = _.pullAt(array, 1, 3);
+	     * var array = ['a', 'b', 'c', 'd'];
+	     * var pulled = _.pullAt(array, [1, 3]);
 	     *
 	     * console.log(array);
-	     * // => [5, 15]
+	     * // => ['a', 'c']
 	     *
-	     * console.log(evens);
-	     * // => [10, 20]
+	     * console.log(pulled);
+	     * // => ['b', 'd']
 	     */
 	    var pullAt = rest(function(array, indexes) {
 	      indexes = baseFlatten(indexes, 1);
@@ -28890,9 +29047,6 @@
 	     *
 	     * _.sortedIndex([30, 50], 40);
 	     * // => 1
-	     *
-	     * _.sortedIndex([4, 5], 4);
-	     * // => 0
 	     */
 	    function sortedIndex(array, value) {
 	      return baseSortedIndex(array, value);
@@ -28915,13 +29069,13 @@
 	     *  into `array`.
 	     * @example
 	     *
-	     * var dict = { 'thirty': 30, 'forty': 40, 'fifty': 50 };
+	     * var objects = [{ 'x': 4 }, { 'x': 5 }];
 	     *
-	     * _.sortedIndexBy(['thirty', 'fifty'], 'forty', _.propertyOf(dict));
-	     * // => 1
+	     * _.sortedIndexBy(objects, { 'x': 4 }, function(o) { return o.x; });
+	     * // => 0
 	     *
 	     * // The `_.property` iteratee shorthand.
-	     * _.sortedIndexBy([{ 'x': 4 }, { 'x': 5 }], { 'x': 4 }, 'x');
+	     * _.sortedIndexBy(objects, { 'x': 4 }, 'x');
 	     * // => 0
 	     */
 	    function sortedIndexBy(array, value, iteratee) {
@@ -28941,8 +29095,8 @@
 	     * @returns {number} Returns the index of the matched value, else `-1`.
 	     * @example
 	     *
-	     * _.sortedIndexOf([1, 1, 2, 2], 2);
-	     * // => 2
+	     * _.sortedIndexOf([4, 5, 5, 5, 6], 5);
+	     * // => 1
 	     */
 	    function sortedIndexOf(array, value) {
 	      var length = array ? array.length : 0;
@@ -28970,8 +29124,8 @@
 	     *  into `array`.
 	     * @example
 	     *
-	     * _.sortedLastIndex([4, 5], 4);
-	     * // => 1
+	     * _.sortedLastIndex([4, 5, 5, 5, 6], 5);
+	     * // => 4
 	     */
 	    function sortedLastIndex(array, value) {
 	      return baseSortedIndex(array, value, true);
@@ -28994,8 +29148,13 @@
 	     *  into `array`.
 	     * @example
 	     *
+	     * var objects = [{ 'x': 4 }, { 'x': 5 }];
+	     *
+	     * _.sortedLastIndexBy(objects, { 'x': 4 }, function(o) { return o.x; });
+	     * // => 1
+	     *
 	     * // The `_.property` iteratee shorthand.
-	     * _.sortedLastIndexBy([{ 'x': 4 }, { 'x': 5 }], { 'x': 4 }, 'x');
+	     * _.sortedLastIndexBy(objects, { 'x': 4 }, 'x');
 	     * // => 1
 	     */
 	    function sortedLastIndexBy(array, value, iteratee) {
@@ -29015,7 +29174,7 @@
 	     * @returns {number} Returns the index of the matched value, else `-1`.
 	     * @example
 	     *
-	     * _.sortedLastIndexOf([1, 1, 2, 2], 2);
+	     * _.sortedLastIndexOf([4, 5, 5, 5, 6], 5);
 	     * // => 3
 	     */
 	    function sortedLastIndexOf(array, value) {
@@ -29255,8 +29414,8 @@
 	     * @returns {Array} Returns the new array of combined values.
 	     * @example
 	     *
-	     * _.union([2, 1], [4, 2], [1, 2]);
-	     * // => [2, 1, 4]
+	     * _.union([2], [1, 2]);
+	     * // => [2, 1]
 	     */
 	    var union = rest(function(arrays) {
 	      return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true));
@@ -29278,8 +29437,8 @@
 	     * @returns {Array} Returns the new array of combined values.
 	     * @example
 	     *
-	     * _.unionBy([2.1, 1.2], [4.3, 2.4], Math.floor);
-	     * // => [2.1, 1.2, 4.3]
+	     * _.unionBy([2.1], [1.2, 2.3], Math.floor);
+	     * // => [2.1, 1.2]
 	     *
 	     * // The `_.property` iteratee shorthand.
 	     * _.unionBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
@@ -29386,7 +29545,7 @@
 	     * @returns {Array} Returns the new duplicate free array.
 	     * @example
 	     *
-	     * var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 },  { 'x': 1, 'y': 2 }];
+	     * var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
 	     *
 	     * _.uniqWith(objects, _.isEqual);
 	     * // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
@@ -29475,13 +29634,13 @@
 	     * @memberOf _
 	     * @since 0.1.0
 	     * @category Array
-	     * @param {Array} array The array to filter.
+	     * @param {Array} array The array to inspect.
 	     * @param {...*} [values] The values to exclude.
 	     * @returns {Array} Returns the new array of filtered values.
 	     * @see _.difference, _.xor
 	     * @example
 	     *
-	     * _.without([1, 2, 1, 3], 1, 2);
+	     * _.without([2, 1, 2, 3], 1, 2);
 	     * // => [3]
 	     */
 	    var without = rest(function(array, values) {
@@ -29501,12 +29660,12 @@
 	     * @since 2.4.0
 	     * @category Array
 	     * @param {...Array} [arrays] The arrays to inspect.
-	     * @returns {Array} Returns the new array of values.
+	     * @returns {Array} Returns the new array of filtered values.
 	     * @see _.difference, _.without
 	     * @example
 	     *
-	     * _.xor([2, 1], [4, 2]);
-	     * // => [1, 4]
+	     * _.xor([2, 1], [2, 3]);
+	     * // => [1, 3]
 	     */
 	    var xor = rest(function(arrays) {
 	      return baseXor(arrayFilter(arrays, isArrayLikeObject));
@@ -29525,11 +29684,11 @@
 	     * @param {...Array} [arrays] The arrays to inspect.
 	     * @param {Array|Function|Object|string} [iteratee=_.identity]
 	     *  The iteratee invoked per element.
-	     * @returns {Array} Returns the new array of values.
+	     * @returns {Array} Returns the new array of filtered values.
 	     * @example
 	     *
-	     * _.xorBy([2.1, 1.2], [4.3, 2.4], Math.floor);
-	     * // => [1.2, 4.3]
+	     * _.xorBy([2.1, 1.2], [2.3, 3.4], Math.floor);
+	     * // => [1.2, 3.4]
 	     *
 	     * // The `_.property` iteratee shorthand.
 	     * _.xorBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
@@ -29554,7 +29713,7 @@
 	     * @category Array
 	     * @param {...Array} [arrays] The arrays to inspect.
 	     * @param {Function} [comparator] The comparator invoked per element.
-	     * @returns {Array} Returns the new array of values.
+	     * @returns {Array} Returns the new array of filtered values.
 	     * @example
 	     *
 	     * var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }];
@@ -29762,9 +29921,6 @@
 	     *
 	     * _(object).at(['a[0].b.c', 'a[1]']).value();
 	     * // => [3, 4]
-	     *
-	     * _(['a', 'b', 'c']).at(0, 2).value();
-	     * // => ['a', 'c']
 	     */
 	    var wrapperAt = rest(function(paths) {
 	      paths = baseFlatten(paths, 1);
@@ -30027,6 +30183,7 @@
 	     * _.countBy([6.1, 4.2, 6.3], Math.floor);
 	     * // => { '4': 1, '6': 2 }
 	     *
+	     * // The `_.property` iteratee shorthand.
 	     * _.countBy(['one', 'two', 'three'], 'length');
 	     * // => { '3': 2, '5': 1 }
 	     */
@@ -30132,6 +30289,7 @@
 	     * @param {Array|Object} collection The collection to search.
 	     * @param {Array|Function|Object|string} [predicate=_.identity]
 	     *  The function invoked per iteration.
+	     * @param {number} [fromIndex=0] The index to search from.
 	     * @returns {*} Returns the matched element, else `undefined`.
 	     * @example
 	     *
@@ -30156,14 +30314,7 @@
 	     * _.find(users, 'active');
 	     * // => object for 'barney'
 	     */
-	    function find(collection, predicate) {
-	      predicate = getIteratee(predicate, 3);
-	      if (isArray(collection)) {
-	        var index = baseFindIndex(collection, predicate);
-	        return index > -1 ? collection[index] : undefined;
-	      }
-	      return baseFind(collection, predicate, baseEach);
-	    }
+	    var find = createFind(findIndex);
 
 	    /**
 	     * This method is like `_.find` except that it iterates over elements of
@@ -30176,6 +30327,7 @@
 	     * @param {Array|Object} collection The collection to search.
 	     * @param {Array|Function|Object|string} [predicate=_.identity]
 	     *  The function invoked per iteration.
+	     * @param {number} [fromIndex=collection.length-1] The index to search from.
 	     * @returns {*} Returns the matched element, else `undefined`.
 	     * @example
 	     *
@@ -30184,14 +30336,7 @@
 	     * });
 	     * // => 3
 	     */
-	    function findLast(collection, predicate) {
-	      predicate = getIteratee(predicate, 3);
-	      if (isArray(collection)) {
-	        var index = baseFindIndex(collection, predicate, true);
-	        return index > -1 ? collection[index] : undefined;
-	      }
-	      return baseFind(collection, predicate, baseEachRight);
-	    }
+	    var findLast = createFind(findLastIndex);
 
 	    /**
 	     * Creates a flattened array of values by running each element in `collection`
@@ -30302,9 +30447,8 @@
 	     * // => Logs 'a' then 'b' (iteration order is not guaranteed).
 	     */
 	    function forEach(collection, iteratee) {
-	      return (typeof iteratee == 'function' && isArray(collection))
-	        ? arrayEach(collection, iteratee)
-	        : baseEach(collection, getIteratee(iteratee));
+	      var func = isArray(collection) ? arrayEach : baseEach;
+	      return func(collection, getIteratee(iteratee, 3));
 	    }
 
 	    /**
@@ -30328,9 +30472,8 @@
 	     * // => Logs `2` then `1`.
 	     */
 	    function forEachRight(collection, iteratee) {
-	      return (typeof iteratee == 'function' && isArray(collection))
-	        ? arrayEachRight(collection, iteratee)
-	        : baseEachRight(collection, getIteratee(iteratee));
+	      var func = isArray(collection) ? arrayEachRight : baseEachRight;
+	      return func(collection, getIteratee(iteratee, 3));
 	    }
 
 	    /**
@@ -30950,7 +31093,6 @@
 	     * @static
 	     * @memberOf _
 	     * @since 2.4.0
-	     * @type {Function}
 	     * @category Date
 	     * @returns {number} Returns the timestamp.
 	     * @example
@@ -30958,9 +31100,11 @@
 	     * _.defer(function(stamp) {
 	     *   console.log(_.now() - stamp);
 	     * }, _.now());
-	     * // => Logs the number of milliseconds it took for the deferred function to be invoked.
+	     * // => Logs the number of milliseconds it took for the deferred invocation.
 	     */
-	    var now = Date.now;
+	    function now() {
+	      return Date.now();
+	    }
 
 	    /*------------------------------------------------------------------------*/
 
@@ -31011,7 +31155,7 @@
 	     * @param {Function} func The function to cap arguments for.
 	     * @param {number} [n=func.length] The arity cap.
 	     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new capped function.
 	     * @example
 	     *
 	     * _.map(['6', '8', '10'], _.ary(parseInt, 1));
@@ -31064,7 +31208,7 @@
 	     * The `_.bind.placeholder` value, which defaults to `_` in monolithic builds,
 	     * may be used as a placeholder for partially applied arguments.
 	     *
-	     * **Note:** Unlike native `Function#bind` this method doesn't set the "length"
+	     * **Note:** Unlike native `Function#bind`, this method doesn't set the "length"
 	     * property of bound functions.
 	     *
 	     * @static
@@ -31095,7 +31239,7 @@
 	    var bind = rest(function(func, thisArg, partials) {
 	      var bitmask = BIND_FLAG;
 	      if (partials.length) {
-	        var holders = replaceHolders(partials, getPlaceholder(bind));
+	        var holders = replaceHolders(partials, getHolder(bind));
 	        bitmask |= PARTIAL_FLAG;
 	      }
 	      return createWrapper(func, bitmask, thisArg, partials, holders);
@@ -31149,7 +31293,7 @@
 	    var bindKey = rest(function(object, key, partials) {
 	      var bitmask = BIND_FLAG | BIND_KEY_FLAG;
 	      if (partials.length) {
-	        var holders = replaceHolders(partials, getPlaceholder(bindKey));
+	        var holders = replaceHolders(partials, getHolder(bindKey));
 	        bitmask |= PARTIAL_FLAG;
 	      }
 	      return createWrapper(key, bitmask, object, partials, holders);
@@ -31304,7 +31448,7 @@
 	          maxWait,
 	          result,
 	          timerId,
-	          lastCallTime = 0,
+	          lastCallTime,
 	          lastInvokeTime = 0,
 	          leading = false,
 	          maxing = false,
@@ -31355,7 +31499,7 @@
 	        // Either this is the first call, activity has stopped and we're at the
 	        // trailing edge, the system time has gone backwards and we're treating
 	        // it as the trailing edge, or we've hit the `maxWait` limit.
-	        return (!lastCallTime || (timeSinceLastCall >= wait) ||
+	        return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
 	          (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
 	      }
 
@@ -31369,7 +31513,6 @@
 	      }
 
 	      function trailingEdge(time) {
-	        clearTimeout(timerId);
 	        timerId = undefined;
 
 	        // Only invoke if we have `lastArgs` which means `func` has been
@@ -31382,11 +31525,8 @@
 	      }
 
 	      function cancel() {
-	        if (timerId !== undefined) {
-	          clearTimeout(timerId);
-	        }
-	        lastCallTime = lastInvokeTime = 0;
-	        lastArgs = lastThis = timerId = undefined;
+	        lastInvokeTime = 0;
+	        lastArgs = lastCallTime = lastThis = timerId = undefined;
 	      }
 
 	      function flush() {
@@ -31407,7 +31547,6 @@
 	          }
 	          if (maxing) {
 	            // Handle invocations in a tight loop.
-	            clearTimeout(timerId);
 	            timerId = setTimeout(timerExpired, wait);
 	            return invokeFunc(lastCallTime);
 	          }
@@ -31475,7 +31614,7 @@
 	     * @since 4.0.0
 	     * @category Function
 	     * @param {Function} func The function to flip arguments for.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new flipped function.
 	     * @example
 	     *
 	     * var flipped = _.flip(function() {
@@ -31508,7 +31647,7 @@
 	     * @category Function
 	     * @param {Function} func The function to have its output memoized.
 	     * @param {Function} [resolver] The function to resolve the cache key.
-	     * @returns {Function} Returns the new memoizing function.
+	     * @returns {Function} Returns the new memoized function.
 	     * @example
 	     *
 	     * var object = { 'a': 1, 'b': 2 };
@@ -31566,7 +31705,7 @@
 	     * @since 3.0.0
 	     * @category Function
 	     * @param {Function} predicate The predicate to negate.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new negated function.
 	     * @example
 	     *
 	     * function isEven(n) {
@@ -31631,7 +31770,7 @@
 	     *
 	     * var func = _.overArgs(function(x, y) {
 	     *   return [x, y];
-	     * }, square, doubled);
+	     * }, [square, doubled]);
 	     *
 	     * func(9, 3);
 	     * // => [81, 6]
@@ -31690,7 +31829,7 @@
 	     * // => 'hi fred'
 	     */
 	    var partial = rest(function(func, partials) {
-	      var holders = replaceHolders(partials, getPlaceholder(partial));
+	      var holders = replaceHolders(partials, getHolder(partial));
 	      return createWrapper(func, PARTIAL_FLAG, undefined, partials, holders);
 	    });
 
@@ -31727,7 +31866,7 @@
 	     * // => 'hello fred'
 	     */
 	    var partialRight = rest(function(func, partials) {
-	      var holders = replaceHolders(partials, getPlaceholder(partialRight));
+	      var holders = replaceHolders(partials, getHolder(partialRight));
 	      return createWrapper(func, PARTIAL_RIGHT_FLAG, undefined, partials, holders);
 	    });
 
@@ -31748,7 +31887,7 @@
 	     *
 	     * var rearged = _.rearg(function(a, b, c) {
 	     *   return [a, b, c];
-	     * }, 2, 0, 1);
+	     * }, [2, 0, 1]);
 	     *
 	     * rearged('b', 'c', 'a')
 	     * // => ['a', 'b', 'c']
@@ -31929,7 +32068,7 @@
 	     * @since 4.0.0
 	     * @category Function
 	     * @param {Function} func The function to cap arguments for.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new capped function.
 	     * @example
 	     *
 	     * _.map(['6', '8', '10'], _.unary(parseInt));
@@ -32387,7 +32526,7 @@
 	     * _.isBuffer(new Uint8Array(2));
 	     * // => false
 	     */
-	    var isBuffer = !Buffer ? constant(false) : function(value) {
+	    var isBuffer = !Buffer ? stubFalse : function(value) {
 	      return value instanceof Buffer;
 	    };
 
@@ -32605,13 +32744,13 @@
 	     * _.isFinite(3);
 	     * // => true
 	     *
-	     * _.isFinite(Number.MAX_VALUE);
-	     * // => true
-	     *
-	     * _.isFinite(3.14);
+	     * _.isFinite(Number.MIN_VALUE);
 	     * // => true
 	     *
 	     * _.isFinite(Infinity);
+	     * // => false
+	     *
+	     * _.isFinite('3');
 	     * // => false
 	     */
 	    function isFinite(value) {
@@ -32887,7 +33026,15 @@
 	    }
 
 	    /**
-	     * Checks if `value` is a native function.
+	     * Checks if `value` is a pristine native function.
+	     *
+	     * **Note:** This method can't reliably detect native functions in the
+	     * presence of the `core-js` package because `core-js` circumvents this kind
+	     * of detection. Despite multiple requests, the `core-js` maintainer has made
+	     * it clear: any attempt to fix the detection will be obstructed. As a result,
+	     * we're left with little choice but to throw an error. Unfortunately, this
+	     * also affects packages, like [babel-polyfill](https://www.npmjs.com/package/babel-polyfill),
+	     * which rely on `core-js`.
 	     *
 	     * @static
 	     * @memberOf _
@@ -32905,11 +33052,10 @@
 	     * // => false
 	     */
 	    function isNative(value) {
-	      if (!isObject(value)) {
-	        return false;
+	      if (isMaskable(value)) {
+	        throw new Error('This method is not supported with `core-js`. Try https://github.com/es-shims.');
 	      }
-	      var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
-	      return pattern.test(toSource(value));
+	      return baseIsNative(value);
 	    }
 
 	    /**
@@ -33334,9 +33480,44 @@
 	    }
 
 	    /**
+	     * Converts `value` to a finite number.
+	     *
+	     * @static
+	     * @memberOf _
+	     * @since 4.12.0
+	     * @category Lang
+	     * @param {*} value The value to convert.
+	     * @returns {number} Returns the converted number.
+	     * @example
+	     *
+	     * _.toFinite(3.2);
+	     * // => 3.2
+	     *
+	     * _.toFinite(Number.MIN_VALUE);
+	     * // => 5e-324
+	     *
+	     * _.toFinite(Infinity);
+	     * // => 1.7976931348623157e+308
+	     *
+	     * _.toFinite('3.2');
+	     * // => 3.2
+	     */
+	    function toFinite(value) {
+	      if (!value) {
+	        return value === 0 ? value : 0;
+	      }
+	      value = toNumber(value);
+	      if (value === INFINITY || value === -INFINITY) {
+	        var sign = (value < 0 ? -1 : 1);
+	        return sign * MAX_INTEGER;
+	      }
+	      return value === value ? value : 0;
+	    }
+
+	    /**
 	     * Converts `value` to an integer.
 	     *
-	     * **Note:** This function is loosely based on
+	     * **Note:** This method is loosely based on
 	     * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
 	     *
 	     * @static
@@ -33347,7 +33528,7 @@
 	     * @returns {number} Returns the converted integer.
 	     * @example
 	     *
-	     * _.toInteger(3);
+	     * _.toInteger(3.2);
 	     * // => 3
 	     *
 	     * _.toInteger(Number.MIN_VALUE);
@@ -33356,20 +33537,14 @@
 	     * _.toInteger(Infinity);
 	     * // => 1.7976931348623157e+308
 	     *
-	     * _.toInteger('3');
+	     * _.toInteger('3.2');
 	     * // => 3
 	     */
 	    function toInteger(value) {
-	      if (!value) {
-	        return value === 0 ? value : 0;
-	      }
-	      value = toNumber(value);
-	      if (value === INFINITY || value === -INFINITY) {
-	        var sign = (value < 0 ? -1 : 1);
-	        return sign * MAX_INTEGER;
-	      }
-	      var remainder = value % 1;
-	      return value === value ? (remainder ? value - remainder : value) : 0;
+	      var result = toFinite(value),
+	          remainder = result % 1;
+
+	      return result === result ? (remainder ? result - remainder : result) : 0;
 	    }
 
 	    /**
@@ -33387,7 +33562,7 @@
 	     * @returns {number} Returns the converted integer.
 	     * @example
 	     *
-	     * _.toLength(3);
+	     * _.toLength(3.2);
 	     * // => 3
 	     *
 	     * _.toLength(Number.MIN_VALUE);
@@ -33396,7 +33571,7 @@
 	     * _.toLength(Infinity);
 	     * // => 4294967295
 	     *
-	     * _.toLength('3');
+	     * _.toLength('3.2');
 	     * // => 3
 	     */
 	    function toLength(value) {
@@ -33414,8 +33589,8 @@
 	     * @returns {number} Returns the number.
 	     * @example
 	     *
-	     * _.toNumber(3);
-	     * // => 3
+	     * _.toNumber(3.2);
+	     * // => 3.2
 	     *
 	     * _.toNumber(Number.MIN_VALUE);
 	     * // => 5e-324
@@ -33423,8 +33598,8 @@
 	     * _.toNumber(Infinity);
 	     * // => Infinity
 	     *
-	     * _.toNumber('3');
-	     * // => 3
+	     * _.toNumber('3.2');
+	     * // => 3.2
 	     */
 	    function toNumber(value) {
 	      if (typeof value == 'number') {
@@ -33487,7 +33662,7 @@
 	     * @returns {number} Returns the converted integer.
 	     * @example
 	     *
-	     * _.toSafeInteger(3);
+	     * _.toSafeInteger(3.2);
 	     * // => 3
 	     *
 	     * _.toSafeInteger(Number.MIN_VALUE);
@@ -33496,7 +33671,7 @@
 	     * _.toSafeInteger(Infinity);
 	     * // => 9007199254740991
 	     *
-	     * _.toSafeInteger('3');
+	     * _.toSafeInteger('3.2');
 	     * // => 3
 	     */
 	    function toSafeInteger(value) {
@@ -33689,16 +33864,13 @@
 	     * @category Object
 	     * @param {Object} object The object to iterate over.
 	     * @param {...(string|string[])} [paths] The property paths of elements to pick.
-	     * @returns {Array} Returns the new array of picked elements.
+	     * @returns {Array} Returns the picked values.
 	     * @example
 	     *
 	     * var object = { 'a': [{ 'b': { 'c': 3 } }, 4] };
 	     *
 	     * _.at(object, ['a[0].b.c', 'a[1]']);
 	     * // => [3, 4]
-	     *
-	     * _.at(['a', 'b', 'c'], 0, 2);
-	     * // => ['a', 'c']
 	     */
 	    var at = rest(function(object, paths) {
 	      return baseAt(object, baseFlatten(paths, 1));
@@ -33831,7 +34003,7 @@
 	     * // => 'barney'
 	     */
 	    function findKey(object, predicate) {
-	      return baseFind(object, getIteratee(predicate, 3), baseForOwn, true);
+	      return baseFindKey(object, getIteratee(predicate, 3), baseForOwn);
 	    }
 
 	    /**
@@ -33871,7 +34043,7 @@
 	     * // => 'pebbles'
 	     */
 	    function findLastKey(object, predicate) {
-	      return baseFind(object, getIteratee(predicate, 3), baseForOwnRight, true);
+	      return baseFindKey(object, getIteratee(predicate, 3), baseForOwnRight);
 	    }
 
 	    /**
@@ -33905,7 +34077,7 @@
 	    function forIn(object, iteratee) {
 	      return object == null
 	        ? object
-	        : baseFor(object, getIteratee(iteratee), keysIn);
+	        : baseFor(object, getIteratee(iteratee, 3), keysIn);
 	    }
 
 	    /**
@@ -33937,7 +34109,7 @@
 	    function forInRight(object, iteratee) {
 	      return object == null
 	        ? object
-	        : baseForRight(object, getIteratee(iteratee), keysIn);
+	        : baseForRight(object, getIteratee(iteratee, 3), keysIn);
 	    }
 
 	    /**
@@ -33969,7 +34141,7 @@
 	     * // => Logs 'a' then 'b' (iteration order is not guaranteed).
 	     */
 	    function forOwn(object, iteratee) {
-	      return object && baseForOwn(object, getIteratee(iteratee));
+	      return object && baseForOwn(object, getIteratee(iteratee, 3));
 	    }
 
 	    /**
@@ -33999,7 +34171,7 @@
 	     * // => Logs 'b' then 'a' assuming `_.forOwn` logs 'a' then 'b'.
 	     */
 	    function forOwnRight(object, iteratee) {
-	      return object && baseForOwnRight(object, getIteratee(iteratee));
+	      return object && baseForOwnRight(object, getIteratee(iteratee, 3));
 	    }
 
 	    /**
@@ -34011,7 +34183,7 @@
 	     * @memberOf _
 	     * @category Object
 	     * @param {Object} object The object to inspect.
-	     * @returns {Array} Returns the new array of property names.
+	     * @returns {Array} Returns the function names.
 	     * @see _.functionsIn
 	     * @example
 	     *
@@ -34038,7 +34210,7 @@
 	     * @since 4.0.0
 	     * @category Object
 	     * @param {Object} object The object to inspect.
-	     * @returns {Array} Returns the new array of property names.
+	     * @returns {Array} Returns the function names.
 	     * @see _.functions
 	     * @example
 	     *
@@ -34391,7 +34563,7 @@
 	     * inherited enumerable string keyed properties of source objects into the
 	     * destination object. Source properties that resolve to `undefined` are
 	     * skipped if a destination value exists. Array and plain object properties
-	     * are merged recursively.Other objects and value types are overridden by
+	     * are merged recursively. Other objects and value types are overridden by
 	     * assignment. Source objects are applied from left to right. Subsequent
 	     * sources overwrite property assignments of previous sources.
 	     *
@@ -34676,7 +34848,8 @@
 
 	    /**
 	     * Creates an array of own enumerable string keyed-value pairs for `object`
-	     * which can be consumed by `_.fromPairs`.
+	     * which can be consumed by `_.fromPairs`. If `object` is a map or set, its
+	     * entries are returned.
 	     *
 	     * @static
 	     * @memberOf _
@@ -34684,7 +34857,7 @@
 	     * @alias entries
 	     * @category Object
 	     * @param {Object} object The object to query.
-	     * @returns {Array} Returns the new array of key-value pairs.
+	     * @returns {Array} Returns the key-value pairs.
 	     * @example
 	     *
 	     * function Foo() {
@@ -34697,13 +34870,12 @@
 	     * _.toPairs(new Foo);
 	     * // => [['a', 1], ['b', 2]] (iteration order is not guaranteed)
 	     */
-	    function toPairs(object) {
-	      return baseToPairs(object, keys(object));
-	    }
+	    var toPairs = createToPairs(keys);
 
 	    /**
 	     * Creates an array of own and inherited enumerable string keyed-value pairs
-	     * for `object` which can be consumed by `_.fromPairs`.
+	     * for `object` which can be consumed by `_.fromPairs`. If `object` is a map
+	     * or set, its entries are returned.
 	     *
 	     * @static
 	     * @memberOf _
@@ -34711,7 +34883,7 @@
 	     * @alias entriesIn
 	     * @category Object
 	     * @param {Object} object The object to query.
-	     * @returns {Array} Returns the new array of key-value pairs.
+	     * @returns {Array} Returns the key-value pairs.
 	     * @example
 	     *
 	     * function Foo() {
@@ -34722,25 +34894,24 @@
 	     * Foo.prototype.c = 3;
 	     *
 	     * _.toPairsIn(new Foo);
-	     * // => [['a', 1], ['b', 2], ['c', 1]] (iteration order is not guaranteed)
+	     * // => [['a', 1], ['b', 2], ['c', 3]] (iteration order is not guaranteed)
 	     */
-	    function toPairsIn(object) {
-	      return baseToPairs(object, keysIn(object));
-	    }
+	    var toPairsIn = createToPairs(keysIn);
 
 	    /**
 	     * An alternative to `_.reduce`; this method transforms `object` to a new
 	     * `accumulator` object which is the result of running each of its own
 	     * enumerable string keyed properties thru `iteratee`, with each invocation
-	     * potentially mutating the `accumulator` object. The iteratee is invoked
-	     * with four arguments: (accumulator, value, key, object). Iteratee functions
-	     * may exit iteration early by explicitly returning `false`.
+	     * potentially mutating the `accumulator` object. If `accumulator` is not
+	     * provided, a new object with the same `[[Prototype]]` will be used. The
+	     * iteratee is invoked with four arguments: (accumulator, value, key, object).
+	     * Iteratee functions may exit iteration early by explicitly returning `false`.
 	     *
 	     * @static
 	     * @memberOf _
 	     * @since 1.3.0
 	     * @category Object
-	     * @param {Array|Object} object The object to iterate over.
+	     * @param {Object} object The object to iterate over.
 	     * @param {Function} [iteratee=_.identity] The function invoked per iteration.
 	     * @param {*} [accumulator] The custom accumulator value.
 	     * @returns {*} Returns the accumulated value.
@@ -35162,7 +35333,7 @@
 	     * @category String
 	     * @param {string} [string=''] The string to search.
 	     * @param {string} [target] The string to search for.
-	     * @param {number} [position=string.length] The position to search from.
+	     * @param {number} [position=string.length] The position to search up to.
 	     * @returns {boolean} Returns `true` if `string` ends with `target`,
 	     *  else `false`.
 	     * @example
@@ -35556,7 +35727,7 @@
 	     * @param {string} [string=''] The string to split.
 	     * @param {RegExp|string} separator The separator pattern to split by.
 	     * @param {number} [limit] The length to truncate results to.
-	     * @returns {Array} Returns the new array of string segments.
+	     * @returns {Array} Returns the string segments.
 	     * @example
 	     *
 	     * _.split('a-b-c', '-', 2);
@@ -35701,12 +35872,6 @@
 	     * compiled({ 'user': 'pebbles' });
 	     * // => 'hello pebbles!'
 	     *
-	     * // Use custom template delimiters.
-	     * _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
-	     * var compiled = _.template('hello {{ user }}!');
-	     * compiled({ 'user': 'mustache' });
-	     * // => 'hello mustache!'
-	     *
 	     * // Use backslashes to treat delimiters as plain text.
 	     * var compiled = _.template('<%= "\\<%- value %\\>" %>');
 	     * compiled({ 'value': 'ignored' });
@@ -35732,9 +35897,15 @@
 	     * //   return __p;
 	     * // }
 	     *
+	     * // Use custom template delimiters.
+	     * _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+	     * var compiled = _.template('hello {{ user }}!');
+	     * compiled({ 'user': 'mustache' });
+	     * // => 'hello mustache!'
+	     *
 	     * // Use the `source` property to inline compiled templates for meaningful
 	     * // line numbers in error messages and stack traces.
-	     * fs.writeFileSync(path.join(cwd, 'jst.js'), '\
+	     * fs.writeFileSync(path.join(process.cwd(), 'jst.js'), '\
 	     *   var JST = {\
 	     *     "main": ' + _.template(mainText).source + '\
 	     *   };\
@@ -36247,7 +36418,7 @@
 	     *   }
 	     * };
 	     *
-	     * _.bindAll(view, 'onClick');
+	     * _.bindAll(view, ['onClick']);
 	     * jQuery(element).on('click', view.onClick);
 	     * // => Logs 'clicked docs' when clicked.
 	     */
@@ -36270,7 +36441,7 @@
 	     * @since 4.0.0
 	     * @category Util
 	     * @param {Array} pairs The predicate-function pairs.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new composite function.
 	     * @example
 	     *
 	     * var func = _.cond([
@@ -36320,7 +36491,7 @@
 	     * @since 4.0.0
 	     * @category Util
 	     * @param {Object} source The object of property predicates to conform to.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     * @example
 	     *
 	     * var users = [
@@ -36328,7 +36499,7 @@
 	     *   { 'user': 'fred',   'age': 40 }
 	     * ];
 	     *
-	     * _.filter(users, _.conforms({ 'age': _.partial(_.gt, _, 38) }));
+	     * _.filter(users, _.conforms({ 'age': function(n) { return n > 38; } }));
 	     * // => [{ 'user': 'fred', 'age': 40 }]
 	     */
 	    function conforms(source) {
@@ -36343,13 +36514,15 @@
 	     * @since 2.4.0
 	     * @category Util
 	     * @param {*} value The value to return from the new function.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new constant function.
 	     * @example
 	     *
-	     * var object = { 'user': 'fred' };
-	     * var getter = _.constant(object);
+	     * var objects = _.times(2, _.constant({ 'a': 1 }));
 	     *
-	     * getter() === object;
+	     * console.log(objects);
+	     * // => [{ 'a': 1 }, { 'a': 1 }]
+	     *
+	     * console.log(objects[0] === objects[1]);
 	     * // => true
 	     */
 	    function constant(value) {
@@ -36368,7 +36541,7 @@
 	     * @since 3.0.0
 	     * @category Util
 	     * @param {...(Function|Function[])} [funcs] Functions to invoke.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new composite function.
 	     * @see _.flowRight
 	     * @example
 	     *
@@ -36376,7 +36549,7 @@
 	     *   return n * n;
 	     * }
 	     *
-	     * var addSquare = _.flow(_.add, square);
+	     * var addSquare = _.flow([_.add, square]);
 	     * addSquare(1, 2);
 	     * // => 9
 	     */
@@ -36391,7 +36564,7 @@
 	     * @memberOf _
 	     * @category Util
 	     * @param {...(Function|Function[])} [funcs] Functions to invoke.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new composite function.
 	     * @see _.flow
 	     * @example
 	     *
@@ -36399,7 +36572,7 @@
 	     *   return n * n;
 	     * }
 	     *
-	     * var addSquare = _.flowRight(square, _.add);
+	     * var addSquare = _.flowRight([square, _.add]);
 	     * addSquare(1, 2);
 	     * // => 9
 	     */
@@ -36418,7 +36591,7 @@
 	     *
 	     * var object = { 'user': 'fred' };
 	     *
-	     * _.identity(object) === object;
+	     * console.log(_.identity(object) === object);
 	     * // => true
 	     */
 	    function identity(value) {
@@ -36484,7 +36657,7 @@
 	     * @since 3.0.0
 	     * @category Util
 	     * @param {Object} source The object of property values to match.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     * @example
 	     *
 	     * var users = [
@@ -36512,7 +36685,7 @@
 	     * @category Util
 	     * @param {Array|string} path The path of the property to get.
 	     * @param {*} srcValue The value to match.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new spec function.
 	     * @example
 	     *
 	     * var users = [
@@ -36537,7 +36710,7 @@
 	     * @category Util
 	     * @param {Array|string} path The path of the method to invoke.
 	     * @param {...*} [args] The arguments to invoke the method with.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new invoker function.
 	     * @example
 	     *
 	     * var objects = [
@@ -36568,7 +36741,7 @@
 	     * @category Util
 	     * @param {Object} object The object to query.
 	     * @param {...*} [args] The arguments to invoke the method with.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new invoker function.
 	     * @example
 	     *
 	     * var array = _.times(3, _.constant),
@@ -36679,8 +36852,7 @@
 	    }
 
 	    /**
-	     * A no-operation function that returns `undefined` regardless of the
-	     * arguments it receives.
+	     * A method that returns `undefined`.
 	     *
 	     * @static
 	     * @memberOf _
@@ -36688,17 +36860,15 @@
 	     * @category Util
 	     * @example
 	     *
-	     * var object = { 'user': 'fred' };
-	     *
-	     * _.noop(object) === undefined;
-	     * // => true
+	     * _.times(2, _.noop);
+	     * // => [undefined, undefined]
 	     */
 	    function noop() {
 	      // No operation performed.
 	    }
 
 	    /**
-	     * Creates a function that returns its nth argument. If `n` is negative,
+	     * Creates a function that gets the argument at index `n`. If `n` is negative,
 	     * the nth argument from the end is returned.
 	     *
 	     * @static
@@ -36706,7 +36876,7 @@
 	     * @since 4.0.0
 	     * @category Util
 	     * @param {number} [n=0] The index of the argument to return.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new pass-thru function.
 	     * @example
 	     *
 	     * var func = _.nthArg(1);
@@ -36737,7 +36907,7 @@
 	     * @returns {Function} Returns the new function.
 	     * @example
 	     *
-	     * var func = _.over(Math.max, Math.min);
+	     * var func = _.over([Math.max, Math.min]);
 	     *
 	     * func(1, 2, 3, 4);
 	     * // => [4, 1]
@@ -36757,7 +36927,7 @@
 	     * @returns {Function} Returns the new function.
 	     * @example
 	     *
-	     * var func = _.overEvery(Boolean, isFinite);
+	     * var func = _.overEvery([Boolean, isFinite]);
 	     *
 	     * func('1');
 	     * // => true
@@ -36783,7 +36953,7 @@
 	     * @returns {Function} Returns the new function.
 	     * @example
 	     *
-	     * var func = _.overSome(Boolean, isFinite);
+	     * var func = _.overSome([Boolean, isFinite]);
 	     *
 	     * func('1');
 	     * // => true
@@ -36804,7 +36974,7 @@
 	     * @since 2.4.0
 	     * @category Util
 	     * @param {Array|string} path The path of the property to get.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new accessor function.
 	     * @example
 	     *
 	     * var objects = [
@@ -36831,7 +37001,7 @@
 	     * @since 3.0.0
 	     * @category Util
 	     * @param {Object} object The object to query.
-	     * @returns {Function} Returns the new function.
+	     * @returns {Function} Returns the new accessor function.
 	     * @example
 	     *
 	     * var array = [0, 1, 2],
@@ -36865,7 +37035,7 @@
 	     * @param {number} [start=0] The start of the range.
 	     * @param {number} end The end of the range.
 	     * @param {number} [step=1] The value to increment or decrement by.
-	     * @returns {Array} Returns the new array of numbers.
+	     * @returns {Array} Returns the range of numbers.
 	     * @see _.inRange, _.rangeRight
 	     * @example
 	     *
@@ -36903,7 +37073,7 @@
 	     * @param {number} [start=0] The start of the range.
 	     * @param {number} end The end of the range.
 	     * @param {number} [step=1] The value to increment or decrement by.
-	     * @returns {Array} Returns the new array of numbers.
+	     * @returns {Array} Returns the range of numbers.
 	     * @see _.inRange, _.range
 	     * @example
 	     *
@@ -36931,6 +37101,101 @@
 	    var rangeRight = createRange(true);
 
 	    /**
+	     * A method that returns a new empty array.
+	     *
+	     * @static
+	     * @memberOf _
+	     * @since 4.13.0
+	     * @category Util
+	     * @returns {Array} Returns the new empty array.
+	     * @example
+	     *
+	     * var arrays = _.times(2, _.stubArray);
+	     *
+	     * console.log(arrays);
+	     * // => [[], []]
+	     *
+	     * console.log(arrays[0] === arrays[1]);
+	     * // => false
+	     */
+	    function stubArray() {
+	      return [];
+	    }
+
+	    /**
+	     * A method that returns `false`.
+	     *
+	     * @static
+	     * @memberOf _
+	     * @since 4.13.0
+	     * @category Util
+	     * @returns {boolean} Returns `false`.
+	     * @example
+	     *
+	     * _.times(2, _.stubFalse);
+	     * // => [false, false]
+	     */
+	    function stubFalse() {
+	      return false;
+	    }
+
+	    /**
+	     * A method that returns a new empty object.
+	     *
+	     * @static
+	     * @memberOf _
+	     * @since 4.13.0
+	     * @category Util
+	     * @returns {Object} Returns the new empty object.
+	     * @example
+	     *
+	     * var objects = _.times(2, _.stubObject);
+	     *
+	     * console.log(objects);
+	     * // => [{}, {}]
+	     *
+	     * console.log(objects[0] === objects[1]);
+	     * // => false
+	     */
+	    function stubObject() {
+	      return {};
+	    }
+
+	    /**
+	     * A method that returns an empty string.
+	     *
+	     * @static
+	     * @memberOf _
+	     * @since 4.13.0
+	     * @category Util
+	     * @returns {string} Returns the empty string.
+	     * @example
+	     *
+	     * _.times(2, _.stubString);
+	     * // => ['', '']
+	     */
+	    function stubString() {
+	      return '';
+	    }
+
+	    /**
+	     * A method that returns `true`.
+	     *
+	     * @static
+	     * @memberOf _
+	     * @since 4.13.0
+	     * @category Util
+	     * @returns {boolean} Returns `true`.
+	     * @example
+	     *
+	     * _.times(2, _.stubTrue);
+	     * // => [true, true]
+	     */
+	    function stubTrue() {
+	      return true;
+	    }
+
+	    /**
 	     * Invokes the iteratee `n` times, returning an array of the results of
 	     * each invocation. The iteratee is invoked with one argument; (index).
 	     *
@@ -36946,8 +37211,8 @@
 	     * _.times(3, String);
 	     * // => ['0', '1', '2']
 	     *
-	     *  _.times(4, _.constant(true));
-	     * // => [true, true, true, true]
+	     *  _.times(4, _.constant(0));
+	     * // => [0, 0, 0, 0]
 	     */
 	    function times(n, iteratee) {
 	      n = toInteger(n);
@@ -36983,15 +37248,6 @@
 	     *
 	     * _.toPath('a[0].b.c');
 	     * // => ['a', '0', 'b', 'c']
-	     *
-	     * var path = ['a', 'b', 'c'],
-	     *     newPath = _.toPath(path);
-	     *
-	     * console.log(newPath);
-	     * // => ['a', 'b', 'c']
-	     *
-	     * console.log(path === newPath);
-	     * // => false
 	     */
 	    function toPath(value) {
 	      if (isArray(value)) {
@@ -37630,6 +37886,11 @@
 	    lodash.meanBy = meanBy;
 	    lodash.min = min;
 	    lodash.minBy = minBy;
+	    lodash.stubArray = stubArray;
+	    lodash.stubFalse = stubFalse;
+	    lodash.stubObject = stubObject;
+	    lodash.stubString = stubString;
+	    lodash.stubTrue = stubTrue;
 	    lodash.multiply = multiply;
 	    lodash.nth = nth;
 	    lodash.noConflict = noConflict;
@@ -37664,6 +37925,7 @@
 	    lodash.sumBy = sumBy;
 	    lodash.template = template;
 	    lodash.times = times;
+	    lodash.toFinite = toFinite;
 	    lodash.toInteger = toInteger;
 	    lodash.toLength = toLength;
 	    lodash.toLower = toLower;
@@ -37935,7 +38197,7 @@
 	  // also prevents errors in cases where Lodash is loaded by a script tag in the
 	  // presence of an AMD loader. See http://requirejs.org/docs/errors.html#mismatch
 	  // for more details. Use `_.noConflict` to remove Lodash from the global object.
-	  (freeWindow || freeSelf || {})._ = _;
+	  (freeSelf || {})._ = _;
 
 	  // Some AMD build optimizers like r.js check for condition patterns like the following:
 	  if (true) {
@@ -37946,11 +38208,9 @@
 	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  }
 	  // Check for `exports` after `define` in case a build optimizer adds an `exports` object.
-	  else if (freeExports && freeModule) {
+	  else if (freeModule) {
 	    // Export for Node.js.
-	    if (moduleExports) {
-	      (freeModule.exports = _)._ = _;
-	    }
+	    (freeModule.exports = _)._ = _;
 	    // Export for CommonJS support.
 	    freeExports._ = _;
 	  }
@@ -37990,7 +38250,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * jQuery JavaScript Library v2.2.3
+	 * jQuery JavaScript Library v2.2.4
 	 * http://jquery.com/
 	 *
 	 * Includes Sizzle.js
@@ -38000,7 +38260,7 @@
 	 * Released under the MIT license
 	 * http://jquery.org/license
 	 *
-	 * Date: 2016-04-05T19:26Z
+	 * Date: 2016-05-20T17:23Z
 	 */
 
 	(function( global, factory ) {
@@ -38056,7 +38316,7 @@
 
 
 	var
-		version = "2.2.3",
+		version = "2.2.4",
 
 		// Define a local copy of jQuery
 		jQuery = function( selector, context ) {
@@ -42997,13 +43257,14 @@
 		isDefaultPrevented: returnFalse,
 		isPropagationStopped: returnFalse,
 		isImmediatePropagationStopped: returnFalse,
+		isSimulated: false,
 
 		preventDefault: function() {
 			var e = this.originalEvent;
 
 			this.isDefaultPrevented = returnTrue;
 
-			if ( e ) {
+			if ( e && !this.isSimulated ) {
 				e.preventDefault();
 			}
 		},
@@ -43012,7 +43273,7 @@
 
 			this.isPropagationStopped = returnTrue;
 
-			if ( e ) {
+			if ( e && !this.isSimulated ) {
 				e.stopPropagation();
 			}
 		},
@@ -43021,7 +43282,7 @@
 
 			this.isImmediatePropagationStopped = returnTrue;
 
-			if ( e ) {
+			if ( e && !this.isSimulated ) {
 				e.stopImmediatePropagation();
 			}
 
@@ -43951,19 +44212,6 @@
 			val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 			styles = getStyles( elem ),
 			isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-		// Support: IE11 only
-		// In IE 11 fullscreen elements inside of an iframe have
-		// 100x too small dimensions (gh-1764).
-		if ( document.msFullscreenElement && window.top !== window ) {
-
-			// Support: IE11 only
-			// Running getBoundingClientRect on a disconnected node
-			// in IE throws an error.
-			if ( elem.getClientRects().length ) {
-				val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-			}
-		}
 
 		// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 		// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -45855,6 +46103,7 @@
 		},
 
 		// Piggyback on a donor event to simulate a different one
+		// Used only for `focus(in | out)` events
 		simulate: function( type, elem, event ) {
 			var e = jQuery.extend(
 				new jQuery.Event(),
@@ -45862,27 +46111,10 @@
 				{
 					type: type,
 					isSimulated: true
-
-					// Previously, `originalEvent: {}` was set here, so stopPropagation call
-					// would not be triggered on donor event, since in our own
-					// jQuery.event.stopPropagation function we had a check for existence of
-					// originalEvent.stopPropagation method, so, consequently it would be a noop.
-					//
-					// But now, this "simulate" function is used only for events
-					// for which stopPropagation() is noop, so there is no need for that anymore.
-					//
-					// For the 1.x branch though, guard for "click" and "submit"
-					// events is still used, but was moved to jQuery.event.stopPropagation function
-					// because `originalEvent` should point to the original event for the constancy
-					// with other events and for more focused logic
 				}
 			);
 
 			jQuery.event.trigger( e, null, elem );
-
-			if ( e.isDefaultPrevented() ) {
-				event.preventDefault();
-			}
 		}
 
 	} );
@@ -48164,13 +48396,14 @@
 	  var field = _ref3.field;
 	  var value = _ref3.value;
 	  var touch = _ref3.touch;
-
-	  // remove _active from state
 	  var _active = state._active;
 
-	  var stateCopy = _objectWithoutProperties(state, ['_active']); // eslint-disable-line prefer-const
+	  var stateCopy = _objectWithoutProperties(state, ['_active']);
 
-
+	  if (_active && _active !== field) {
+	    // remove _active from state
+	    stateCopy._active = _active;
+	  }
 	  return (0, _write2.default)(field, function (previous) {
 	    var result = _extends({}, previous);
 	    if (value !== undefined) {
@@ -48836,7 +49069,7 @@
 	    }
 	    return (0, _fieldValue.makeFieldValue)(state);
 	  };
-	  if (state instanceof File) {
+	  if (typeof File !== 'undefined' && state instanceof File) {
 	    return state;
 	  }
 	  if (!errors) {
@@ -50270,6 +50503,7 @@
 	    var onChange = (0, _createOnChange2.default)(name, change, isReactNative);
 	    var initialFormValue = (0, _read2.default)(name + '.initial', form);
 	    var initialValue = initialFormValue || (0, _read2.default)(name, initialValues);
+	    initialValue = initialValue === undefined ? '' : initialValue;
 	    field.name = name;
 	    field.checked = initialValue === true || undefined;
 	    field.value = initialValue;
@@ -50294,7 +50528,12 @@
 	    Object.defineProperty(field, '_isField', { value: true });
 	  }
 
-	  var fieldState = (fieldName ? state[fieldName] : state) || {};
+	  var defaultFieldState = {
+	    initial: field.value,
+	    value: field.value
+	  };
+
+	  var fieldState = (fieldName ? state[fieldName] : state) || defaultFieldState;
 	  var syncError = (0, _read2.default)(name, syncErrors);
 	  var updated = (0, _updateField2.default)(field, fieldState, name === form._active, syncError);
 	  if (fieldName || fields[fieldName] !== updated) {
@@ -51011,7 +51250,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(251).default;
-	module.exports.utils = __webpack_require__(256);
+	module.exports.utils = __webpack_require__(255);
 	module.exports.Responsive = __webpack_require__(263).default;
 	module.exports.Responsive.utils = __webpack_require__(264);
 	module.exports.WidthProvider = __webpack_require__(265).default;
@@ -51035,9 +51274,9 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _utils = __webpack_require__(256);
+	var _utils = __webpack_require__(255);
 
-	var _GridItem = __webpack_require__(257);
+	var _GridItem = __webpack_require__(256);
 
 	var _GridItem2 = _interopRequireDefault(_GridItem);
 
@@ -51531,16 +51770,21 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * lodash 4.1.4 (Custom Build) <https://lodash.com/>
+	 * lodash (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
 	 * Released under MIT license <https://lodash.com/license>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
-	var Stack = __webpack_require__(253),
-	    keys = __webpack_require__(254),
-	    root = __webpack_require__(255);
+	var keys = __webpack_require__(253),
+	    root = __webpack_require__(254);
+
+	/** Used as the size to enable large array optimizations. */
+	var LARGE_ARRAY_SIZE = 200;
+
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
 
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -51646,11 +51890,11 @@
 	}
 
 	/**
-	 * Converts `map` to an array.
+	 * Converts `map` to its key-value pairs.
 	 *
 	 * @private
 	 * @param {Object} map The map to convert.
-	 * @returns {Array} Returns the converted array.
+	 * @returns {Array} Returns the key-value pairs.
 	 */
 	function mapToArray(map) {
 	  var index = -1,
@@ -51663,11 +51907,11 @@
 	}
 
 	/**
-	 * Converts `set` to an array.
+	 * Converts `set` to an array of its values.
 	 *
 	 * @private
 	 * @param {Object} set The set to convert.
-	 * @returns {Array} Returns the converted array.
+	 * @returns {Array} Returns the values.
 	 */
 	function setToArray(set) {
 	  var index = -1,
@@ -51680,7 +51924,8 @@
 	}
 
 	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+	var arrayProto = Array.prototype,
+	    objectProto = Object.prototype;
 
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString = Function.prototype.toString;
@@ -51703,7 +51948,8 @@
 
 	/** Built-in value references. */
 	var Symbol = root.Symbol,
-	    Uint8Array = root.Uint8Array;
+	    Uint8Array = root.Uint8Array,
+	    splice = arrayProto.splice;
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeGetPrototype = Object.getPrototypeOf;
@@ -51713,7 +51959,8 @@
 	    Map = getNative(root, 'Map'),
 	    Promise = getNative(root, 'Promise'),
 	    Set = getNative(root, 'Set'),
-	    WeakMap = getNative(root, 'WeakMap');
+	    WeakMap = getNative(root, 'WeakMap'),
+	    nativeCreate = getNative(Object, 'create');
 
 	/** Used to detect maps, sets, and weakmaps. */
 	var dataViewCtorString = toSource(DataView),
@@ -51725,6 +51972,465 @@
 	/** Used to convert symbols to primitives and strings. */
 	var symbolProto = Symbol ? Symbol.prototype : undefined,
 	    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+
+	/**
+	 * Creates a hash object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function Hash(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+
+	/**
+	 * Removes all key-value entries from the hash.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Hash
+	 */
+	function hashClear() {
+	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+	}
+
+	/**
+	 * Removes `key` and its value from the hash.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Hash
+	 * @param {Object} hash The hash to modify.
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function hashDelete(key) {
+	  return this.has(key) && delete this.__data__[key];
+	}
+
+	/**
+	 * Gets the hash value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function hashGet(key) {
+	  var data = this.__data__;
+	  if (nativeCreate) {
+	    var result = data[key];
+	    return result === HASH_UNDEFINED ? undefined : result;
+	  }
+	  return hasOwnProperty.call(data, key) ? data[key] : undefined;
+	}
+
+	/**
+	 * Checks if a hash value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Hash
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function hashHas(key) {
+	  var data = this.__data__;
+	  return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+	}
+
+	/**
+	 * Sets the hash `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the hash instance.
+	 */
+	function hashSet(key, value) {
+	  var data = this.__data__;
+	  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+	  return this;
+	}
+
+	// Add methods to `Hash`.
+	Hash.prototype.clear = hashClear;
+	Hash.prototype['delete'] = hashDelete;
+	Hash.prototype.get = hashGet;
+	Hash.prototype.has = hashHas;
+	Hash.prototype.set = hashSet;
+
+	/**
+	 * Creates an list cache object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function ListCache(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+
+	/**
+	 * Removes all key-value entries from the list cache.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf ListCache
+	 */
+	function listCacheClear() {
+	  this.__data__ = [];
+	}
+
+	/**
+	 * Removes `key` and its value from the list cache.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function listCacheDelete(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+
+	  if (index < 0) {
+	    return false;
+	  }
+	  var lastIndex = data.length - 1;
+	  if (index == lastIndex) {
+	    data.pop();
+	  } else {
+	    splice.call(data, index, 1);
+	  }
+	  return true;
+	}
+
+	/**
+	 * Gets the list cache value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function listCacheGet(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+
+	  return index < 0 ? undefined : data[index][1];
+	}
+
+	/**
+	 * Checks if a list cache value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf ListCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function listCacheHas(key) {
+	  return assocIndexOf(this.__data__, key) > -1;
+	}
+
+	/**
+	 * Sets the list cache `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the list cache instance.
+	 */
+	function listCacheSet(key, value) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+
+	  if (index < 0) {
+	    data.push([key, value]);
+	  } else {
+	    data[index][1] = value;
+	  }
+	  return this;
+	}
+
+	// Add methods to `ListCache`.
+	ListCache.prototype.clear = listCacheClear;
+	ListCache.prototype['delete'] = listCacheDelete;
+	ListCache.prototype.get = listCacheGet;
+	ListCache.prototype.has = listCacheHas;
+	ListCache.prototype.set = listCacheSet;
+
+	/**
+	 * Creates a map cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function MapCache(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+
+	/**
+	 * Removes all key-value entries from the map.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf MapCache
+	 */
+	function mapCacheClear() {
+	  this.__data__ = {
+	    'hash': new Hash,
+	    'map': new (Map || ListCache),
+	    'string': new Hash
+	  };
+	}
+
+	/**
+	 * Removes `key` and its value from the map.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function mapCacheDelete(key) {
+	  return getMapData(this, key)['delete'](key);
+	}
+
+	/**
+	 * Gets the map value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function mapCacheGet(key) {
+	  return getMapData(this, key).get(key);
+	}
+
+	/**
+	 * Checks if a map value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf MapCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function mapCacheHas(key) {
+	  return getMapData(this, key).has(key);
+	}
+
+	/**
+	 * Sets the map `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the map cache instance.
+	 */
+	function mapCacheSet(key, value) {
+	  getMapData(this, key).set(key, value);
+	  return this;
+	}
+
+	// Add methods to `MapCache`.
+	MapCache.prototype.clear = mapCacheClear;
+	MapCache.prototype['delete'] = mapCacheDelete;
+	MapCache.prototype.get = mapCacheGet;
+	MapCache.prototype.has = mapCacheHas;
+	MapCache.prototype.set = mapCacheSet;
+
+	/**
+	 *
+	 * Creates an array cache object to store unique values.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [values] The values to cache.
+	 */
+	function SetCache(values) {
+	  var index = -1,
+	      length = values ? values.length : 0;
+
+	  this.__data__ = new MapCache;
+	  while (++index < length) {
+	    this.add(values[index]);
+	  }
+	}
+
+	/**
+	 * Adds `value` to the array cache.
+	 *
+	 * @private
+	 * @name add
+	 * @memberOf SetCache
+	 * @alias push
+	 * @param {*} value The value to cache.
+	 * @returns {Object} Returns the cache instance.
+	 */
+	function setCacheAdd(value) {
+	  this.__data__.set(value, HASH_UNDEFINED);
+	  return this;
+	}
+
+	/**
+	 * Checks if `value` is in the array cache.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf SetCache
+	 * @param {*} value The value to search for.
+	 * @returns {number} Returns `true` if `value` is found, else `false`.
+	 */
+	function setCacheHas(value) {
+	  return this.__data__.has(value);
+	}
+
+	// Add methods to `SetCache`.
+	SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+	SetCache.prototype.has = setCacheHas;
+
+	/**
+	 * Creates a stack cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function Stack(entries) {
+	  this.__data__ = new ListCache(entries);
+	}
+
+	/**
+	 * Removes all key-value entries from the stack.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Stack
+	 */
+	function stackClear() {
+	  this.__data__ = new ListCache;
+	}
+
+	/**
+	 * Removes `key` and its value from the stack.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function stackDelete(key) {
+	  return this.__data__['delete'](key);
+	}
+
+	/**
+	 * Gets the stack value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function stackGet(key) {
+	  return this.__data__.get(key);
+	}
+
+	/**
+	 * Checks if a stack value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Stack
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function stackHas(key) {
+	  return this.__data__.has(key);
+	}
+
+	/**
+	 * Sets the stack `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the stack cache instance.
+	 */
+	function stackSet(key, value) {
+	  var cache = this.__data__;
+	  if (cache instanceof ListCache && cache.__data__.length == LARGE_ARRAY_SIZE) {
+	    cache = this.__data__ = new MapCache(cache.__data__);
+	  }
+	  cache.set(key, value);
+	  return this;
+	}
+
+	// Add methods to `Stack`.
+	Stack.prototype.clear = stackClear;
+	Stack.prototype['delete'] = stackDelete;
+	Stack.prototype.get = stackGet;
+	Stack.prototype.has = stackHas;
+	Stack.prototype.set = stackSet;
+
+	/**
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
+	 *
+	 * @private
+	 * @param {Array} array The array to search.
+	 * @param {*} key The key to search for.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function assocIndexOf(array, key) {
+	  var length = array.length;
+	  while (length--) {
+	    if (eq(array[length][0], key)) {
+	      return length;
+	    }
+	  }
+	  return -1;
+	}
 
 	/**
 	 * The base implementation of `_.has` without support for deep paths.
@@ -51840,9 +52546,7 @@
 	 * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
 	 */
 	function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
-	  var index = -1,
-	      isPartial = bitmask & PARTIAL_COMPARE_FLAG,
-	      isUnordered = bitmask & UNORDERED_COMPARE_FLAG,
+	  var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
 	      arrLength = array.length,
 	      othLength = other.length;
 
@@ -51854,7 +52558,10 @@
 	  if (stacked) {
 	    return stacked == other;
 	  }
-	  var result = true;
+	  var index = -1,
+	      result = true,
+	      seen = (bitmask & UNORDERED_COMPARE_FLAG) ? new SetCache : undefined;
+
 	  stack.set(array, other);
 
 	  // Ignore non-index properties.
@@ -51875,10 +52582,12 @@
 	      break;
 	    }
 	    // Recursively compare arrays (susceptible to call stack limits).
-	    if (isUnordered) {
-	      if (!arraySome(other, function(othValue) {
-	            return arrValue === othValue ||
-	              equalFunc(arrValue, othValue, customizer, bitmask, stack);
+	    if (seen) {
+	      if (!arraySome(other, function(othValue, othIndex) {
+	            if (!seen.has(othIndex) &&
+	                (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+	              return seen.add(othIndex);
+	            }
 	          })) {
 	        result = false;
 	        break;
@@ -52057,6 +52766,21 @@
 	}
 
 	/**
+	 * Gets the data for `map`.
+	 *
+	 * @private
+	 * @param {Object} map The map to query.
+	 * @param {string} key The reference key.
+	 * @returns {*} Returns the map data.
+	 */
+	function getMapData(map, key) {
+	  var data = map.__data__;
+	  return isKeyable(key)
+	    ? data[typeof key == 'string' ? 'string' : 'hash']
+	    : data.map;
+	}
+
+	/**
 	 * Gets the native function at `key` of `object`.
 	 *
 	 * @private
@@ -52117,6 +52841,20 @@
 	}
 
 	/**
+	 * Checks if `value` is suitable for use as unique object key.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+	 */
+	function isKeyable(value) {
+	  var type = typeof value;
+	  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+	    ? (value !== '__proto__')
+	    : (value === null);
+	}
+
+	/**
 	 * Converts `func` to its source code.
 	 *
 	 * @private
@@ -52133,6 +52871,42 @@
 	    } catch (e) {}
 	  }
 	  return '';
+	}
+
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 * var other = { 'user': 'fred' };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
 	}
 
 	/**
@@ -52365,679 +53139,10 @@
 
 /***/ },
 /* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module, global) {/**
-	 * lodash 4.1.3 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modularize exports="npm" -o ./`
-	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
-	 * Released under MIT license <https://lodash.com/license>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 */
-
-	/** Used as the size to enable large array optimizations. */
-	var LARGE_ARRAY_SIZE = 200;
-
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
-
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]',
-	    genTag = '[object GeneratorFunction]';
-
-	/**
-	 * Used to match `RegExp`
-	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
-	 */
-	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-
-	/** Used to detect host constructors (Safari). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-	/** Used to determine if values are of the language type `Object`. */
-	var objectTypes = {
-	  'function': true,
-	  'object': true
-	};
-
-	/** Detect free variable `exports`. */
-	var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
-	  ? exports
-	  : undefined;
-
-	/** Detect free variable `module`. */
-	var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
-	  ? module
-	  : undefined;
-
-	/** Detect free variable `global` from Node.js. */
-	var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
-
-	/** Detect free variable `self`. */
-	var freeSelf = checkGlobal(objectTypes[typeof self] && self);
-
-	/** Detect free variable `window`. */
-	var freeWindow = checkGlobal(objectTypes[typeof window] && window);
-
-	/** Detect `this` as the global object. */
-	var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
-
-	/**
-	 * Used as a reference to the global object.
-	 *
-	 * The `this` value is used if it's the global object to avoid Greasemonkey's
-	 * restricted `window` object, otherwise the `window` object is used.
-	 */
-	var root = freeGlobal ||
-	  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
-	    freeSelf || thisGlobal || Function('return this')();
-
-	/**
-	 * Checks if `value` is a global object.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {null|Object} Returns `value` if it's a global object, else `null`.
-	 */
-	function checkGlobal(value) {
-	  return (value && value.Object === Object) ? value : null;
-	}
-
-	/**
-	 * Checks if `value` is a host object in IE < 9.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-	 */
-	function isHostObject(value) {
-	  // Many host objects are `Object` objects that can coerce to strings
-	  // despite having improperly defined `toString` methods.
-	  var result = false;
-	  if (value != null && typeof value.toString != 'function') {
-	    try {
-	      result = !!(value + '');
-	    } catch (e) {}
-	  }
-	  return result;
-	}
-
-	/** Used for built-in method references. */
-	var arrayProto = Array.prototype,
-	    objectProto = Object.prototype;
-
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = Function.prototype.toString;
-
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
-
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-
-	/** Built-in value references. */
-	var splice = arrayProto.splice;
-
-	/* Built-in method references that are verified to be native. */
-	var Map = getNative(root, 'Map'),
-	    nativeCreate = getNative(Object, 'create');
-
-	/**
-	 * Creates a hash object.
-	 *
-	 * @private
-	 * @constructor
-	 * @returns {Object} Returns the new hash object.
-	 */
-	function Hash() {}
-
-	/**
-	 * Removes `key` and its value from the hash.
-	 *
-	 * @private
-	 * @param {Object} hash The hash to modify.
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function hashDelete(hash, key) {
-	  return hashHas(hash, key) && delete hash[key];
-	}
-
-	/**
-	 * Gets the hash value for `key`.
-	 *
-	 * @private
-	 * @param {Object} hash The hash to query.
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function hashGet(hash, key) {
-	  if (nativeCreate) {
-	    var result = hash[key];
-	    return result === HASH_UNDEFINED ? undefined : result;
-	  }
-	  return hasOwnProperty.call(hash, key) ? hash[key] : undefined;
-	}
-
-	/**
-	 * Checks if a hash value for `key` exists.
-	 *
-	 * @private
-	 * @param {Object} hash The hash to query.
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function hashHas(hash, key) {
-	  return nativeCreate ? hash[key] !== undefined : hasOwnProperty.call(hash, key);
-	}
-
-	/**
-	 * Sets the hash `key` to `value`.
-	 *
-	 * @private
-	 * @param {Object} hash The hash to modify.
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 */
-	function hashSet(hash, key, value) {
-	  hash[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
-	}
-
-	// Avoid inheriting from `Object.prototype` when possible.
-	Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
-
-	/**
-	 * Creates a map cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [values] The values to cache.
-	 */
-	function MapCache(values) {
-	  var index = -1,
-	      length = values ? values.length : 0;
-
-	  this.clear();
-	  while (++index < length) {
-	    var entry = values[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	/**
-	 * Removes all key-value entries from the map.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf MapCache
-	 */
-	function mapClear() {
-	  this.__data__ = {
-	    'hash': new Hash,
-	    'map': Map ? new Map : [],
-	    'string': new Hash
-	  };
-	}
-
-	/**
-	 * Removes `key` and its value from the map.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function mapDelete(key) {
-	  var data = this.__data__;
-	  if (isKeyable(key)) {
-	    return hashDelete(typeof key == 'string' ? data.string : data.hash, key);
-	  }
-	  return Map ? data.map['delete'](key) : assocDelete(data.map, key);
-	}
-
-	/**
-	 * Gets the map value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function mapGet(key) {
-	  var data = this.__data__;
-	  if (isKeyable(key)) {
-	    return hashGet(typeof key == 'string' ? data.string : data.hash, key);
-	  }
-	  return Map ? data.map.get(key) : assocGet(data.map, key);
-	}
-
-	/**
-	 * Checks if a map value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf MapCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function mapHas(key) {
-	  var data = this.__data__;
-	  if (isKeyable(key)) {
-	    return hashHas(typeof key == 'string' ? data.string : data.hash, key);
-	  }
-	  return Map ? data.map.has(key) : assocHas(data.map, key);
-	}
-
-	/**
-	 * Sets the map `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the map cache instance.
-	 */
-	function mapSet(key, value) {
-	  var data = this.__data__;
-	  if (isKeyable(key)) {
-	    hashSet(typeof key == 'string' ? data.string : data.hash, key, value);
-	  } else if (Map) {
-	    data.map.set(key, value);
-	  } else {
-	    assocSet(data.map, key, value);
-	  }
-	  return this;
-	}
-
-	// Add methods to `MapCache`.
-	MapCache.prototype.clear = mapClear;
-	MapCache.prototype['delete'] = mapDelete;
-	MapCache.prototype.get = mapGet;
-	MapCache.prototype.has = mapHas;
-	MapCache.prototype.set = mapSet;
-
-	/**
-	 * Creates a stack cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [values] The values to cache.
-	 */
-	function Stack(values) {
-	  var index = -1,
-	      length = values ? values.length : 0;
-
-	  this.clear();
-	  while (++index < length) {
-	    var entry = values[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	/**
-	 * Removes all key-value entries from the stack.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf Stack
-	 */
-	function stackClear() {
-	  this.__data__ = { 'array': [], 'map': null };
-	}
-
-	/**
-	 * Removes `key` and its value from the stack.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf Stack
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function stackDelete(key) {
-	  var data = this.__data__,
-	      array = data.array;
-
-	  return array ? assocDelete(array, key) : data.map['delete'](key);
-	}
-
-	/**
-	 * Gets the stack value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf Stack
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function stackGet(key) {
-	  var data = this.__data__,
-	      array = data.array;
-
-	  return array ? assocGet(array, key) : data.map.get(key);
-	}
-
-	/**
-	 * Checks if a stack value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf Stack
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function stackHas(key) {
-	  var data = this.__data__,
-	      array = data.array;
-
-	  return array ? assocHas(array, key) : data.map.has(key);
-	}
-
-	/**
-	 * Sets the stack `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf Stack
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the stack cache instance.
-	 */
-	function stackSet(key, value) {
-	  var data = this.__data__,
-	      array = data.array;
-
-	  if (array) {
-	    if (array.length < (LARGE_ARRAY_SIZE - 1)) {
-	      assocSet(array, key, value);
-	    } else {
-	      data.array = null;
-	      data.map = new MapCache(array);
-	    }
-	  }
-	  var map = data.map;
-	  if (map) {
-	    map.set(key, value);
-	  }
-	  return this;
-	}
-
-	// Add methods to `Stack`.
-	Stack.prototype.clear = stackClear;
-	Stack.prototype['delete'] = stackDelete;
-	Stack.prototype.get = stackGet;
-	Stack.prototype.has = stackHas;
-	Stack.prototype.set = stackSet;
-
-	/**
-	 * Removes `key` and its value from the associative array.
-	 *
-	 * @private
-	 * @param {Array} array The array to modify.
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function assocDelete(array, key) {
-	  var index = assocIndexOf(array, key);
-	  if (index < 0) {
-	    return false;
-	  }
-	  var lastIndex = array.length - 1;
-	  if (index == lastIndex) {
-	    array.pop();
-	  } else {
-	    splice.call(array, index, 1);
-	  }
-	  return true;
-	}
-
-	/**
-	 * Gets the associative array value for `key`.
-	 *
-	 * @private
-	 * @param {Array} array The array to query.
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function assocGet(array, key) {
-	  var index = assocIndexOf(array, key);
-	  return index < 0 ? undefined : array[index][1];
-	}
-
-	/**
-	 * Checks if an associative array value for `key` exists.
-	 *
-	 * @private
-	 * @param {Array} array The array to query.
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function assocHas(array, key) {
-	  return assocIndexOf(array, key) > -1;
-	}
-
-	/**
-	 * Gets the index at which the `key` is found in `array` of key-value pairs.
-	 *
-	 * @private
-	 * @param {Array} array The array to search.
-	 * @param {*} key The key to search for.
-	 * @returns {number} Returns the index of the matched value, else `-1`.
-	 */
-	function assocIndexOf(array, key) {
-	  var length = array.length;
-	  while (length--) {
-	    if (eq(array[length][0], key)) {
-	      return length;
-	    }
-	  }
-	  return -1;
-	}
-
-	/**
-	 * Sets the associative array `key` to `value`.
-	 *
-	 * @private
-	 * @param {Array} array The array to modify.
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 */
-	function assocSet(array, key, value) {
-	  var index = assocIndexOf(array, key);
-	  if (index < 0) {
-	    array.push([key, value]);
-	  } else {
-	    array[index][1] = value;
-	  }
-	}
-
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object[key];
-	  return isNative(value) ? value : undefined;
-	}
-
-	/**
-	 * Checks if `value` is suitable for use as unique object key.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
-	 */
-	function isKeyable(value) {
-	  var type = typeof value;
-	  return type == 'number' || type == 'boolean' ||
-	    (type == 'string' && value != '__proto__') || value == null;
-	}
-
-	/**
-	 * Converts `func` to its source code.
-	 *
-	 * @private
-	 * @param {Function} func The function to process.
-	 * @returns {string} Returns the source code.
-	 */
-	function toSource(func) {
-	  if (func != null) {
-	    try {
-	      return funcToString.call(func);
-	    } catch (e) {}
-	    try {
-	      return (func + '');
-	    } catch (e) {}
-	  }
-	  return '';
-	}
-
-	/**
-	 * Performs a
-	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
-	 * comparison between two values to determine if they are equivalent.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to compare.
-	 * @param {*} other The other value to compare.
-	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
-	 * @example
-	 *
-	 * var object = { 'user': 'fred' };
-	 * var other = { 'user': 'fred' };
-	 *
-	 * _.eq(object, object);
-	 * // => true
-	 *
-	 * _.eq(object, other);
-	 * // => false
-	 *
-	 * _.eq('a', 'a');
-	 * // => true
-	 *
-	 * _.eq('a', Object('a'));
-	 * // => false
-	 *
-	 * _.eq(NaN, NaN);
-	 * // => true
-	 */
-	function eq(value, other) {
-	  return value === other || (value !== value && other !== other);
-	}
-
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified,
-	 *  else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
-	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
-	  var tag = isObject(value) ? objectToString.call(value) : '';
-	  return tag == funcTag || tag == genTag;
-	}
-
-	/**
-	 * Checks if `value` is the
-	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
-	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(_.noop);
-	 * // => true
-	 *
-	 * _.isObject(null);
-	 * // => false
-	 */
-	function isObject(value) {
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 3.0.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function,
-	 *  else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (!isObject(value)) {
-	    return false;
-	  }
-	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
-	  return pattern.test(toSource(value));
-	}
-
-	module.exports = Stack;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(185)(module), (function() { return this; }())))
-
-/***/ },
-/* 254 */
 /***/ function(module, exports) {
 
 	/**
-	 * lodash 4.0.6 (Custom Build) <https://lodash.com/>
+	 * lodash (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
 	 * Released under MIT license <https://lodash.com/license>
@@ -53076,20 +53181,6 @@
 	  return result;
 	}
 
-	/**
-	 * Checks if `value` is a valid array-like index.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-	 */
-	function isIndex(value, length) {
-	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-	  length = length == null ? MAX_SAFE_INTEGER : length;
-	  return value > -1 && value % 1 == 0 && value < length;
-	}
-
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
 
@@ -53097,7 +53188,8 @@
 	var hasOwnProperty = objectProto.hasOwnProperty;
 
 	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto.toString;
@@ -53142,7 +53234,7 @@
 	 *
 	 * @private
 	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
+	 * @returns {Function} Returns the new accessor function.
 	 */
 	function baseProperty(key) {
 	  return function(object) {
@@ -53189,6 +53281,21 @@
 	    return baseTimes(length, String);
 	  }
 	  return null;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return !!length &&
+	    (typeof value == 'number' || reIsUint.test(value)) &&
+	    (value > -1 && value % 1 == 0 && value < length);
 	}
 
 	/**
@@ -53373,8 +53480,9 @@
 	}
 
 	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
 	 *
 	 * @static
 	 * @memberOf _
@@ -53504,7 +53612,7 @@
 
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -53570,7 +53678,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(185)(module), (function() { return this; }())))
 
 /***/ },
-/* 256 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -54026,7 +54134,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 257 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54039,11 +54147,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDraggable = __webpack_require__(258);
+	var _reactDraggable = __webpack_require__(257);
 
-	var _reactResizable = __webpack_require__(259);
+	var _reactResizable = __webpack_require__(258);
 
-	var _utils = __webpack_require__(256);
+	var _utils = __webpack_require__(255);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54513,7 +54621,7 @@
 	exports.default = GridItem;
 
 /***/ },
-/* 258 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -55883,7 +55991,7 @@
 	//# sourceMappingURL=react-draggable.js.map
 
 /***/ },
-/* 259 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55891,12 +55999,12 @@
 	  throw new Error("Don't instantiate Resizable directly! Use require('react-resizable').Resizable");
 	};
 
-	module.exports.Resizable = __webpack_require__(260).default;
+	module.exports.Resizable = __webpack_require__(259).default;
 	module.exports.ResizableBox = __webpack_require__(262).default;
 
 
 /***/ },
-/* 260 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55909,7 +56017,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDraggable = __webpack_require__(258);
+	var _reactDraggable = __webpack_require__(260);
 
 	var _cloneElement = __webpack_require__(261);
 
@@ -55926,8 +56034,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	/*:: type Position = {
-	  deltaX: number,
-	  deltaY: number
+
 	};*/
 	/*:: type State = {
 	  resizing: boolean,
@@ -55936,7 +56043,9 @@
 	};*/
 	/*:: type DragCallbackData = {
 	  node: HTMLElement,
-	  position: Position
+	  x: number, y: number,
+	  deltaX: number, deltaY: number,
+	  lastX: number, lastY: number
 	};*/
 
 	var Resizable = function (_React$Component) {
@@ -56036,9 +56145,8 @@
 
 	    return function (e, _ref) {
 	      var node = _ref.node;
-	      var position = _ref.position;
-	      var deltaX = position.deltaX;
-	      var deltaY = position.deltaY;
+	      var deltaX = _ref.deltaX;
+	      var deltaY = _ref.deltaY;
 
 	      var width = _this2.state.width + deltaX,
 	          height = _this2.state.height + deltaY;
@@ -56059,6 +56167,7 @@
 	        newState.resizing = true;
 	      } else if (handlerName === 'onResizeStop') {
 	        newState.resizing = false;
+	        newState.slackW = newState.slackH = 0;
 	      } else {
 	        // Early return if no change after constraints
 	        if (width === _this2.state.width && height === _this2.state.height) return;
@@ -56090,6 +56199,7 @@
 	      children: [p.children.props.children, _react2.default.createElement(
 	        _reactDraggable.DraggableCore,
 	        _extends({}, p.draggableOpts, {
+	          key: 'resizableHandle',
 	          ref: 'draggable',
 	          onStop: this.resizeHandler('onResizeStop'),
 	          onStart: this.resizeHandler('onResizeStart'),
@@ -56146,6 +56256,1387 @@
 	exports.default = Resizable;
 
 /***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function webpackUniversalModuleDefinition(root, factory) {
+		if(true)
+			module.exports = factory(__webpack_require__(2), __webpack_require__(159));
+		else if(typeof define === 'function' && define.amd)
+			define(["react", "react-dom"], factory);
+		else if(typeof exports === 'object')
+			exports["ReactDraggable"] = factory(require("react"), require("react-dom"));
+		else
+			root["ReactDraggable"] = factory(root["React"], root["ReactDOM"]);
+	})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
+	return /******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+	/******/
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+	/******/
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId])
+	/******/ 			return installedModules[moduleId].exports;
+	/******/
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			exports: {},
+	/******/ 			id: moduleId,
+	/******/ 			loaded: false
+	/******/ 		};
+	/******/
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	/******/
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.loaded = true;
+	/******/
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+	/******/
+	/******/
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+	/******/
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+	/******/
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "";
+	/******/
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(0);
+	/******/ })
+	/************************************************************************/
+	/******/ ([
+	/* 0 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		'use strict';
+		
+		module.exports = __webpack_require__(1).default;
+		module.exports.DraggableCore = __webpack_require__(9).default;
+
+	/***/ },
+	/* 1 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		
+		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+		
+		var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+		
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+		
+		var _react = __webpack_require__(2);
+		
+		var _react2 = _interopRequireDefault(_react);
+		
+		var _reactDom = __webpack_require__(3);
+		
+		var _reactDom2 = _interopRequireDefault(_reactDom);
+		
+		var _classnames = __webpack_require__(4);
+		
+		var _classnames2 = _interopRequireDefault(_classnames);
+		
+		var _domFns = __webpack_require__(5);
+		
+		var _positionFns = __webpack_require__(8);
+		
+		var _shims = __webpack_require__(6);
+		
+		var _DraggableCore = __webpack_require__(9);
+		
+		var _DraggableCore2 = _interopRequireDefault(_DraggableCore);
+		
+		var _log = __webpack_require__(10);
+		
+		var _log2 = _interopRequireDefault(_log);
+		
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+		
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+		
+		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+		
+		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+		// $FlowIgnore
+		
+		
+		/*:: import type {DraggableEventHandler} from './utils/types';*/
+		/*:: type DraggableState = {
+		  dragging: boolean,
+		  dragged: boolean,
+		  x: number, y: number,
+		  slackX: number, slackY: number,
+		  isElementSVG: boolean
+		};*/
+		
+		
+		//
+		// Define <Draggable>
+		//
+		
+		/*:: type ConstructorProps = {
+		  position: { x: number, y: number },
+		  defaultPosition: { x: number, y: number }
+		}*/
+		
+		var Draggable = function (_React$Component) {
+		  _inherits(Draggable, _React$Component);
+		
+		  function Draggable(props /*: ConstructorProps*/) {
+		    _classCallCheck(this, Draggable);
+		
+		    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Draggable).call(this, props));
+		
+		    _this.onDragStart = function (e, coreData) {
+		      (0, _log2.default)('Draggable: onDragStart: %j', coreData);
+		
+		      // Short-circuit if user's callback killed it.
+		      var shouldStart = _this.props.onStart(e, (0, _positionFns.createDraggableData)(_this, coreData));
+		      // Kills start event on core as well, so move handlers are never bound.
+		      if (shouldStart === false) return false;
+		
+		      _this.setState({ dragging: true, dragged: true });
+		    };
+		
+		    _this.onDrag = function (e, coreData) {
+		      if (!_this.state.dragging) return false;
+		      (0, _log2.default)('Draggable: onDrag: %j', coreData);
+		
+		      var uiData = (0, _positionFns.createDraggableData)(_this, coreData);
+		
+		      var newState /*: $Shape<DraggableState>*/ = {
+		        x: uiData.x,
+		        y: uiData.y
+		      };
+		
+		      // Keep within bounds.
+		      if (_this.props.bounds) {
+		        // Save original x and y.
+		        var _x = newState.x;
+		        var _y = newState.y;
+		
+		        // Add slack to the values used to calculate bound position. This will ensure that if
+		        // we start removing slack, the element won't react to it right away until it's been
+		        // completely removed.
+		
+		        newState.x += _this.state.slackX;
+		        newState.y += _this.state.slackY;
+		
+		        // Get bound position. This will ceil/floor the x and y within the boundaries.
+		        // $FlowBug
+		
+		
+		        // Recalculate slack by noting how much was shaved by the boundPosition handler.
+		
+		        var _getBoundPosition = (0, _positionFns.getBoundPosition)(_this, newState.x, newState.y);
+		
+		        var _getBoundPosition2 = _slicedToArray(_getBoundPosition, 2);
+		
+		        newState.x = _getBoundPosition2[0];
+		        newState.y = _getBoundPosition2[1];
+		        newState.slackX = _this.state.slackX + (_x - newState.x);
+		        newState.slackY = _this.state.slackY + (_y - newState.y);
+		
+		        // Update the event we fire to reflect what really happened after bounds took effect.
+		        uiData.x = _x;
+		        uiData.y = _y;
+		        uiData.deltaX = newState.x - _this.state.x;
+		        uiData.deltaY = newState.y - _this.state.y;
+		      }
+		
+		      // Short-circuit if user's callback killed it.
+		      var shouldUpdate = _this.props.onDrag(e, uiData);
+		      if (shouldUpdate === false) return false;
+		
+		      _this.setState(newState);
+		    };
+		
+		    _this.onDragStop = function (e, coreData) {
+		      if (!_this.state.dragging) return false;
+		
+		      // Short-circuit if user's callback killed it.
+		      var shouldStop = _this.props.onStop(e, (0, _positionFns.createDraggableData)(_this, coreData));
+		      if (shouldStop === false) return false;
+		
+		      (0, _log2.default)('Draggable: onDragStop: %j', coreData);
+		
+		      var newState /*: $Shape<DraggableState>*/ = {
+		        dragging: false,
+		        slackX: 0,
+		        slackY: 0
+		      };
+		
+		      // If this is a controlled component, the result of this operation will be to
+		      // revert back to the old position. We expect a handler on `onDragStop`, at the least.
+		      var controlled = Boolean(_this.props.position);
+		      if (controlled) {
+		        var _this$props$position = _this.props.position;
+		        var _x2 = _this$props$position.x;
+		        var _y2 = _this$props$position.y;
+		
+		        newState.x = _x2;
+		        newState.y = _y2;
+		      }
+		
+		      _this.setState(newState);
+		    };
+		
+		    _this.state = {
+		      // Whether or not we are currently dragging.
+		      dragging: false,
+		
+		      // Whether or not we have been dragged before.
+		      dragged: false,
+		
+		      // Current transform x and y.
+		      x: props.position ? props.position.x : props.defaultPosition.x,
+		      y: props.position ? props.position.y : props.defaultPosition.y,
+		
+		      // Used for compensating for out-of-bounds drags
+		      slackX: 0, slackY: 0,
+		
+		      // Can only determine if SVG after mounting
+		      isElementSVG: false
+		    };
+		    return _this;
+		  }
+		
+		  _createClass(Draggable, [{
+		    key: 'componentWillMount',
+		    value: function componentWillMount() {
+		      if (this.props.position && !(this.props.onDrag || this.props.onStop)) {
+		        // eslint-disable-next-line
+		        console.warn('A `position` was applied to this <Draggable>, without drag handlers. This will make this ' + 'component effectively undraggable. Please attach `onDrag` or `onStop` handlers so you can adjust the ' + '`position` of this element.');
+		      }
+		    }
+		  }, {
+		    key: 'componentDidMount',
+		    value: function componentDidMount() {
+		      // Check to see if the element passed is an instanceof SVGElement
+		      if (typeof global.SVGElement !== 'undefined' && _reactDom2.default.findDOMNode(this) instanceof global.SVGElement) {
+		        this.setState({ isElementSVG: true });
+		      }
+		    }
+		  }, {
+		    key: 'componentWillReceiveProps',
+		    value: function componentWillReceiveProps(nextProps /*: Object*/) {
+		      // Set x/y if position has changed
+		      if (nextProps.position && (!this.props.position || nextProps.position.x !== this.props.position.x || nextProps.position.y !== this.props.position.y)) {
+		        this.setState({ x: nextProps.position.x, y: nextProps.position.y });
+		      }
+		    }
+		  }, {
+		    key: 'componentWillUnmount',
+		    value: function componentWillUnmount() {
+		      this.setState({ dragging: false }); // prevents invariant if unmounted while dragging
+		    }
+		  }, {
+		    key: 'render',
+		    value: function render() {
+		      var style = {},
+		          svgTransform = null;
+		
+		      // If this is controlled, we don't want to move it - unless it's dragging.
+		      var controlled = Boolean(this.props.position);
+		      var draggable = !controlled || this.state.dragging;
+		
+		      var position = this.props.position || this.props.defaultPosition;
+		      var transformOpts = {
+		        // Set left if horizontal drag is enabled
+		        x: (0, _positionFns.canDragX)(this) && draggable ? this.state.x : position.x,
+		
+		        // Set top if vertical drag is enabled
+		        y: (0, _positionFns.canDragY)(this) && draggable ? this.state.y : position.y
+		      };
+		
+		      // If this element was SVG, we use the `transform` attribute.
+		      if (this.state.isElementSVG) {
+		        svgTransform = (0, _domFns.createSVGTransform)(transformOpts);
+		      } else {
+		        // Add a CSS transform to move the element around. This allows us to move the element around
+		        // without worrying about whether or not it is relatively or absolutely positioned.
+		        // If the item you are dragging already has a transform set, wrap it in a <span> so <Draggable>
+		        // has a clean slate.
+		        style = (0, _domFns.createCSSTransform)(transformOpts);
+		      }
+		
+		      // Mark with class while dragging
+		      var className = (0, _classnames2.default)(this.props.children.props.className || '', 'react-draggable', {
+		        'react-draggable-dragging': this.state.dragging,
+		        'react-draggable-dragged': this.state.dragged
+		      });
+		
+		      // Reuse the child provided
+		      // This makes it flexible to use whatever element is wanted (div, ul, etc)
+		      return _react2.default.createElement(
+		        _DraggableCore2.default,
+		        _extends({}, this.props, { onStart: this.onDragStart, onDrag: this.onDrag, onStop: this.onDragStop }),
+		        _react2.default.cloneElement(_react2.default.Children.only(this.props.children), {
+		          className: className,
+		          style: _extends({}, this.props.children.props.style, style),
+		          transform: svgTransform
+		        })
+		      );
+		    }
+		  }]);
+		
+		  return Draggable;
+		}(_react2.default.Component);
+		
+		Draggable.displayName = 'Draggable';
+		Draggable.propTypes = _extends({}, _DraggableCore2.default.propTypes, {
+		
+		  /**
+		   * `axis` determines which axis the draggable can move.
+		   *
+		   *  Note that all callbacks will still return data as normal. This only
+		   *  controls flushing to the DOM.
+		   *
+		   * 'both' allows movement horizontally and vertically.
+		   * 'x' limits movement to horizontal axis.
+		   * 'y' limits movement to vertical axis.
+		   * 'none' limits all movement.
+		   *
+		   * Defaults to 'both'.
+		   */
+		  axis: _react.PropTypes.oneOf(['both', 'x', 'y', 'none']),
+		
+		  /**
+		   * `bounds` determines the range of movement available to the element.
+		   * Available values are:
+		   *
+		   * 'parent' restricts movement within the Draggable's parent node.
+		   *
+		   * Alternatively, pass an object with the following properties, all of which are optional:
+		   *
+		   * {left: LEFT_BOUND, right: RIGHT_BOUND, bottom: BOTTOM_BOUND, top: TOP_BOUND}
+		   *
+		   * All values are in px.
+		   *
+		   * Example:
+		   *
+		   * ```jsx
+		   *   let App = React.createClass({
+		   *       render: function () {
+		   *         return (
+		   *            <Draggable bounds={{right: 300, bottom: 300}}>
+		   *              <div>Content</div>
+		   *           </Draggable>
+		   *         );
+		   *       }
+		   *   });
+		   * ```
+		   */
+		  bounds: _react.PropTypes.oneOfType([_react.PropTypes.shape({
+		    left: _react.PropTypes.number,
+		    right: _react.PropTypes.number,
+		    top: _react.PropTypes.number,
+		    bottom: _react.PropTypes.number
+		  }), _react.PropTypes.string, _react.PropTypes.oneOf([false])]),
+		
+		  /**
+		   * `defaultPosition` specifies the x and y that the dragged item should start at
+		   *
+		   * Example:
+		   *
+		   * ```jsx
+		   *      let App = React.createClass({
+		   *          render: function () {
+		   *              return (
+		   *                  <Draggable defaultPosition={{x: 25, y: 25}}>
+		   *                      <div>I start with transformX: 25px and transformY: 25px;</div>
+		   *                  </Draggable>
+		   *              );
+		   *          }
+		   *      });
+		   * ```
+		   */
+		  defaultPosition: _react.PropTypes.shape({
+		    x: _react.PropTypes.number,
+		    y: _react.PropTypes.number
+		  }),
+		
+		  /**
+		   * `position`, if present, defines the current position of the element.
+		   *
+		   *  This is similar to how form elements in React work - if no `position` is supplied, the component
+		   *  is uncontrolled.
+		   *
+		   * Example:
+		   *
+		   * ```jsx
+		   *      let App = React.createClass({
+		   *          render: function () {
+		   *              return (
+		   *                  <Draggable defaultPosition={{x: 25, y: 25}}>
+		   *                      <div>I start with transformX: 25px and transformY: 25px;</div>
+		   *                  </Draggable>
+		   *              );
+		   *          }
+		   *      });
+		   * ```
+		   */
+		  position: _react.PropTypes.shape({
+		    x: _react.PropTypes.number,
+		    y: _react.PropTypes.number
+		  }),
+		
+		  /**
+		   * These properties should be defined on the child, not here.
+		   */
+		  className: _shims.dontSetMe,
+		  style: _shims.dontSetMe,
+		  transform: _shims.dontSetMe
+		});
+		Draggable.defaultProps = _extends({}, _DraggableCore2.default.defaultProps, {
+		  axis: 'both',
+		  bounds: false,
+		  defaultPosition: { x: 0, y: 0 },
+		  position: null
+		});
+		exports.default = Draggable;
+		/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+	/***/ },
+	/* 2 */
+	/***/ function(module, exports) {
+
+		module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+	/***/ },
+	/* 3 */
+	/***/ function(module, exports) {
+
+		module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+	/***/ },
+	/* 4 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+		  Copyright (c) 2016 Jed Watson.
+		  Licensed under the MIT License (MIT), see
+		  http://jedwatson.github.io/classnames
+		*/
+		/* global define */
+		
+		(function () {
+			'use strict';
+		
+			var hasOwn = {}.hasOwnProperty;
+		
+			function classNames () {
+				var classes = [];
+		
+				for (var i = 0; i < arguments.length; i++) {
+					var arg = arguments[i];
+					if (!arg) continue;
+		
+					var argType = typeof arg;
+		
+					if (argType === 'string' || argType === 'number') {
+						classes.push(arg);
+					} else if (Array.isArray(arg)) {
+						classes.push(classNames.apply(null, arg));
+					} else if (argType === 'object') {
+						for (var key in arg) {
+							if (hasOwn.call(arg, key) && arg[key]) {
+								classes.push(key);
+							}
+						}
+					}
+				}
+		
+				return classes.join(' ');
+			}
+		
+			if (typeof module !== 'undefined' && module.exports) {
+				module.exports = classNames;
+			} else if (true) {
+				// register as 'classnames', consistent with npm package name
+				!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+					return classNames;
+				}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			} else {
+				window.classNames = classNames;
+			}
+		}());
+
+
+	/***/ },
+	/* 5 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		
+		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+		
+		exports.matchesSelector = matchesSelector;
+		exports.matchesSelectorAndParentsTo = matchesSelectorAndParentsTo;
+		exports.addEvent = addEvent;
+		exports.removeEvent = removeEvent;
+		exports.outerHeight = outerHeight;
+		exports.outerWidth = outerWidth;
+		exports.innerHeight = innerHeight;
+		exports.innerWidth = innerWidth;
+		exports.offsetXYFromParentOf = offsetXYFromParentOf;
+		exports.createCSSTransform = createCSSTransform;
+		exports.createSVGTransform = createSVGTransform;
+		exports.getTouch = getTouch;
+		exports.getTouchIdentifier = getTouchIdentifier;
+		exports.addUserSelectStyles = addUserSelectStyles;
+		exports.removeUserSelectStyles = removeUserSelectStyles;
+		exports.styleHacks = styleHacks;
+		
+		var _shims = __webpack_require__(6);
+		
+		var _getPrefix = __webpack_require__(7);
+		
+		var _getPrefix2 = _interopRequireDefault(_getPrefix);
+		
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+		
+		function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+		
+		/*:: import type {ControlPosition} from './types';*/
+		
+		
+		var matchesSelectorFunc = '';
+		function matchesSelector(el /*: Node*/, selector /*: string*/) /*: boolean*/ {
+		  if (!matchesSelectorFunc) {
+		    matchesSelectorFunc = (0, _shims.findInArray)(['matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector', 'oMatchesSelector'], function (method) {
+		      // $FlowIgnore: Doesn't think elements are indexable
+		      return (0, _shims.isFunction)(el[method]);
+		    });
+		  }
+		
+		  // $FlowIgnore: Doesn't think elements are indexable
+		  return el[matchesSelectorFunc].call(el, selector);
+		}
+		
+		// Works up the tree to the draggable itself attempting to match selector.
+		function matchesSelectorAndParentsTo(el /*: Node*/, selector /*: string*/, baseNode /*: Node*/) /*: boolean*/ {
+		  var node = el;
+		  do {
+		    if (matchesSelector(node, selector)) return true;
+		    if (node === baseNode) return false;
+		    node = node.parentNode;
+		  } while (node);
+		
+		  return false;
+		}
+		
+		function addEvent(el /*: ?Node*/, event /*: string*/, handler /*: Function*/) /*: void*/ {
+		  if (!el) {
+		    return;
+		  }
+		  if (el.attachEvent) {
+		    el.attachEvent('on' + event, handler);
+		  } else if (el.addEventListener) {
+		    el.addEventListener(event, handler, true);
+		  } else {
+		    // $FlowIgnore: Doesn't think elements are indexable
+		    el['on' + event] = handler;
+		  }
+		}
+		
+		function removeEvent(el /*: ?Node*/, event /*: string*/, handler /*: Function*/) /*: void*/ {
+		  if (!el) {
+		    return;
+		  }
+		  if (el.detachEvent) {
+		    el.detachEvent('on' + event, handler);
+		  } else if (el.removeEventListener) {
+		    el.removeEventListener(event, handler, true);
+		  } else {
+		    // $FlowIgnore: Doesn't think elements are indexable
+		    el['on' + event] = null;
+		  }
+		}
+		
+		function outerHeight(node /*: HTMLElement*/) /*: number*/ {
+		  // This is deliberately excluding margin for our calculations, since we are using
+		  // offsetTop which is including margin. See getBoundPosition
+		  var height = node.clientHeight;
+		  var computedStyle = window.getComputedStyle(node);
+		  height += (0, _shims.int)(computedStyle.borderTopWidth);
+		  height += (0, _shims.int)(computedStyle.borderBottomWidth);
+		  return height;
+		}
+		
+		function outerWidth(node /*: HTMLElement*/) /*: number*/ {
+		  // This is deliberately excluding margin for our calculations, since we are using
+		  // offsetLeft which is including margin. See getBoundPosition
+		  var width = node.clientWidth;
+		  var computedStyle = window.getComputedStyle(node);
+		  width += (0, _shims.int)(computedStyle.borderLeftWidth);
+		  width += (0, _shims.int)(computedStyle.borderRightWidth);
+		  return width;
+		}
+		function innerHeight(node /*: HTMLElement*/) /*: number*/ {
+		  var height = node.clientHeight;
+		  var computedStyle = window.getComputedStyle(node);
+		  height -= (0, _shims.int)(computedStyle.paddingTop);
+		  height -= (0, _shims.int)(computedStyle.paddingBottom);
+		  return height;
+		}
+		
+		function innerWidth(node /*: HTMLElement*/) /*: number*/ {
+		  var width = node.clientWidth;
+		  var computedStyle = window.getComputedStyle(node);
+		  width -= (0, _shims.int)(computedStyle.paddingLeft);
+		  width -= (0, _shims.int)(computedStyle.paddingRight);
+		  return width;
+		}
+		
+		// Get from offsetParent
+		function offsetXYFromParentOf(evt /*: {clientX: number, clientY: number}*/, node /*: HTMLElement & {offsetParent: HTMLElement}*/) /*: ControlPosition*/ {
+		  var offsetParent = node.offsetParent || document.body;
+		  var offsetParentRect = node.offsetParent === document.body ? { left: 0, top: 0 } : offsetParent.getBoundingClientRect();
+		
+		  var x = evt.clientX + offsetParent.scrollLeft - offsetParentRect.left;
+		  var y = evt.clientY + offsetParent.scrollTop - offsetParentRect.top;
+		
+		  return { x: x, y: y };
+		}
+		
+		function createCSSTransform(_ref) /*: Object*/ {
+		  var x = _ref.x;
+		  var y = _ref.y;
+		
+		  // Replace unitless items with px
+		  return _defineProperty({}, (0, _getPrefix.browserPrefixToKey)('transform', _getPrefix2.default), 'translate(' + x + 'px,' + y + 'px)');
+		}
+		
+		function createSVGTransform(_ref3) /*: string*/ {
+		  var x = _ref3.x;
+		  var y = _ref3.y;
+		
+		  return 'translate(' + x + ',' + y + ')';
+		}
+		
+		function getTouch(e /*: MouseEvent*/, identifier /*: number*/) /*: ?{clientX: number, clientY: number}*/ {
+		  return e.targetTouches && (0, _shims.findInArray)(e.targetTouches, function (t) {
+		    return identifier === t.identifier;
+		  }) || e.changedTouches && (0, _shims.findInArray)(e.changedTouches, function (t) {
+		    return identifier === t.identifier;
+		  });
+		}
+		
+		function getTouchIdentifier(e /*: MouseEvent*/) /*: ?number*/ {
+		  if (e.targetTouches && e.targetTouches[0]) return e.targetTouches[0].identifier;
+		  if (e.changedTouches && e.changedTouches[0]) return e.changedTouches[0].identifier;
+		}
+		
+		// User-select Hacks:
+		//
+		// Useful for preventing blue highlights all over everything when dragging.
+		var userSelectPrefix = (0, _getPrefix.getPrefix)('user-select');
+		var userSelect = (0, _getPrefix.browserPrefixToStyle)('user-select', userSelectPrefix);
+		var userSelectStyle = ';' + userSelect + ': none;';
+		
+		function addUserSelectStyles() {
+		  var style = document.body.getAttribute('style') || '';
+		  document.body.setAttribute('style', style + userSelectStyle);
+		}
+		
+		function removeUserSelectStyles() {
+		  var style = document.body.getAttribute('style') || '';
+		  document.body.setAttribute('style', style.replace(userSelectStyle, ''));
+		}
+		
+		function styleHacks() /*: Object*/ {
+		  var childStyle /*: Object*/ = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+		
+		  // Workaround IE pointer events; see #51
+		  // https://github.com/mzabriskie/react-draggable/issues/51#issuecomment-103488278
+		  return _extends({
+		    touchAction: 'none'
+		  }, childStyle);
+		}
+
+	/***/ },
+	/* 6 */
+	/***/ function(module, exports) {
+
+		'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.findInArray = findInArray;
+		exports.isFunction = isFunction;
+		exports.isNum = isNum;
+		exports.int = int;
+		exports.dontSetMe = dontSetMe;
+		
+		// @credits https://gist.github.com/rogozhnikoff/a43cfed27c41e4e68cdc
+		function findInArray(array /*: Array<any>*/, callback /*: Function*/) /*: any*/ {
+		  for (var i = 0, length = array.length; i < length; i++) {
+		    if (callback.apply(callback, [array[i], i, array])) return array[i];
+		  }
+		}
+		
+		function isFunction(func /*: any*/) /*: boolean*/ {
+		  return typeof func === 'function' || Object.prototype.toString.call(func) === '[object Function]';
+		}
+		
+		function isNum(num /*: any*/) /*: boolean*/ {
+		  return typeof num === 'number' && !isNaN(num);
+		}
+		
+		function int(a /*: string*/) /*: number*/ {
+		  return parseInt(a, 10);
+		}
+		
+		function dontSetMe(props /*: Object*/, propName /*: string*/, componentName /*: string*/) {
+		  if (props[propName]) {
+		    return new Error('Invalid prop ' + propName + ' passed to ' + componentName + ' - do not set this, set it on the child.');
+		  }
+		}
+
+	/***/ },
+	/* 7 */
+	/***/ function(module, exports) {
+
+		'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.getPrefix = getPrefix;
+		exports.browserPrefixToKey = browserPrefixToKey;
+		exports.browserPrefixToStyle = browserPrefixToStyle;
+		
+		var prefixes = ['Moz', 'Webkit', 'O', 'ms'];
+		function getPrefix() /*: string*/ {
+		  var prop /*: string*/ = arguments.length <= 0 || arguments[0] === undefined ? 'transform' : arguments[0];
+		
+		  // Checking specifically for 'window.document' is for pseudo-browser server-side
+		  // environments that define 'window' as the global context.
+		  // E.g. React-rails (see https://github.com/reactjs/react-rails/pull/84)
+		  if (typeof window === 'undefined' || typeof window.document === 'undefined') return '';
+		
+		  var style = window.document.documentElement.style;
+		
+		  if (prop in style) return '';
+		
+		  for (var i = 0; i < prefixes.length; i++) {
+		    if (browserPrefixToKey(prop, prefixes[i]) in style) return prefixes[i];
+		  }
+		
+		  return '';
+		}
+		
+		function browserPrefixToKey(prop /*: string*/, prefix /*: string*/) /*: string*/ {
+		  return prefix ? '' + prefix + kebabToTitleCase(prop) : prop;
+		}
+		
+		function browserPrefixToStyle(prop /*: string*/, prefix /*: string*/) /*: string*/ {
+		  return prefix ? '-' + prefix.toLowerCase() + '-' + prop : prop;
+		}
+		
+		function kebabToTitleCase(str /*: string*/) /*: string*/ {
+		  var out = '';
+		  var shouldCapitalize = true;
+		  for (var i = 0; i < str.length; i++) {
+		    if (shouldCapitalize) {
+		      out += str[i].toUpperCase();
+		      shouldCapitalize = false;
+		    } else if (str[i] === '-') {
+		      shouldCapitalize = true;
+		    } else {
+		      out += str[i];
+		    }
+		  }
+		  return out;
+		}
+		
+		// Default export is the prefix itself, like 'Moz', 'Webkit', etc
+		// Note that you may have to re-test for certain things; for instance, Chrome 50
+		// can handle unprefixed `transform`, but not unprefixed `user-select`
+		exports.default = getPrefix();
+
+	/***/ },
+	/* 8 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.getBoundPosition = getBoundPosition;
+		exports.snapToGrid = snapToGrid;
+		exports.canDragX = canDragX;
+		exports.canDragY = canDragY;
+		exports.getControlPosition = getControlPosition;
+		exports.createCoreData = createCoreData;
+		exports.createDraggableData = createDraggableData;
+		
+		var _shims = __webpack_require__(6);
+		
+		var _reactDom = __webpack_require__(3);
+		
+		var _reactDom2 = _interopRequireDefault(_reactDom);
+		
+		var _domFns = __webpack_require__(5);
+		
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+		
+		/*:: import type Draggable from '../Draggable';*/
+		/*:: import type {Bounds, ControlPosition, DraggableData} from './types';*/
+		/*:: import type DraggableCore from '../DraggableCore';*/
+		function getBoundPosition(draggable /*: Draggable*/, x /*: number*/, y /*: number*/) /*: [number, number]*/ {
+		  // If no bounds, short-circuit and move on
+		  if (!draggable.props.bounds) return [x, y];
+		
+		  // Clone new bounds
+		  var bounds = draggable.props.bounds;
+		
+		  bounds = typeof bounds === 'string' ? bounds : cloneBounds(bounds);
+		  var node = _reactDom2.default.findDOMNode(draggable);
+		
+		  if (typeof bounds === 'string') {
+		    var boundNode = void 0;
+		    if (bounds === 'parent') {
+		      boundNode = node.parentNode;
+		    } else {
+		      boundNode = document.querySelector(bounds);
+		      if (!boundNode) throw new Error('Bounds selector "' + bounds + '" could not find an element.');
+		    }
+		    var nodeStyle = window.getComputedStyle(node);
+		    var boundNodeStyle = window.getComputedStyle(boundNode);
+		    // Compute bounds. This is a pain with padding and offsets but this gets it exactly right.
+		    bounds = {
+		      left: -node.offsetLeft + (0, _shims.int)(boundNodeStyle.paddingLeft) + (0, _shims.int)(nodeStyle.borderLeftWidth) + (0, _shims.int)(nodeStyle.marginLeft),
+		      top: -node.offsetTop + (0, _shims.int)(boundNodeStyle.paddingTop) + (0, _shims.int)(nodeStyle.borderTopWidth) + (0, _shims.int)(nodeStyle.marginTop),
+		      right: (0, _domFns.innerWidth)(boundNode) - (0, _domFns.outerWidth)(node) - node.offsetLeft,
+		      bottom: (0, _domFns.innerHeight)(boundNode) - (0, _domFns.outerHeight)(node) - node.offsetTop
+		    };
+		  }
+		
+		  // Keep x and y below right and bottom limits...
+		  if ((0, _shims.isNum)(bounds.right)) x = Math.min(x, bounds.right);
+		  if ((0, _shims.isNum)(bounds.bottom)) y = Math.min(y, bounds.bottom);
+		
+		  // But above left and top limits.
+		  if ((0, _shims.isNum)(bounds.left)) x = Math.max(x, bounds.left);
+		  if ((0, _shims.isNum)(bounds.top)) y = Math.max(y, bounds.top);
+		
+		  return [x, y];
+		}
+		
+		function snapToGrid(grid /*: [number, number]*/, pendingX /*: number*/, pendingY /*: number*/) /*: [number, number]*/ {
+		  var x = Math.round(pendingX / grid[0]) * grid[0];
+		  var y = Math.round(pendingY / grid[1]) * grid[1];
+		  return [x, y];
+		}
+		
+		function canDragX(draggable /*: Draggable*/) /*: boolean*/ {
+		  return draggable.props.axis === 'both' || draggable.props.axis === 'x';
+		}
+		
+		function canDragY(draggable /*: Draggable*/) /*: boolean*/ {
+		  return draggable.props.axis === 'both' || draggable.props.axis === 'y';
+		}
+		
+		// Get {x, y} positions from event.
+		function getControlPosition(e /*: MouseEvent*/, touchIdentifier /*: ?number*/, draggableCore /*: DraggableCore*/) /*: ?ControlPosition*/ {
+		  var touchObj = typeof touchIdentifier === 'number' ? (0, _domFns.getTouch)(e, touchIdentifier) : null;
+		  if (typeof touchIdentifier === 'number' && !touchObj) return null; // not the right touch
+		  return (0, _domFns.offsetXYFromParentOf)(touchObj || e, _reactDom2.default.findDOMNode(draggableCore));
+		}
+		
+		// Create an data object exposed by <DraggableCore>'s events
+		function createCoreData(draggable /*: DraggableCore*/, x /*: number*/, y /*: number*/) /*: DraggableData*/ {
+		  // State changes are often (but not always!) async. We want the latest value.
+		  var state = draggable._pendingState || draggable.state;
+		  var isStart = !(0, _shims.isNum)(state.lastX);
+		
+		  if (isStart) {
+		    // If this is our first move, use the x and y as last coords.
+		    return {
+		      node: _reactDom2.default.findDOMNode(draggable),
+		      deltaX: 0, deltaY: 0,
+		      lastX: x, lastY: y,
+		      x: x, y: y
+		    };
+		  } else {
+		    // Otherwise calculate proper values.
+		    return {
+		      node: _reactDom2.default.findDOMNode(draggable),
+		      deltaX: x - state.lastX, deltaY: y - state.lastY,
+		      lastX: state.lastX, lastY: state.lastY,
+		      x: x, y: y
+		    };
+		  }
+		}
+		
+		// Create an data exposed by <Draggable>'s events
+		function createDraggableData(draggable /*: Draggable*/, coreData /*: DraggableData*/) /*: DraggableData*/ {
+		  return {
+		    node: coreData.node,
+		    x: draggable.state.x + coreData.deltaX,
+		    y: draggable.state.y + coreData.deltaY,
+		    deltaX: coreData.deltaX,
+		    deltaY: coreData.deltaY,
+		    lastX: draggable.state.x,
+		    lastY: draggable.state.y
+		  };
+		}
+		
+		// A lot faster than stringify/parse
+		function cloneBounds(bounds /*: Bounds*/) /*: Bounds*/ {
+		  return {
+		    left: bounds.left,
+		    top: bounds.top,
+		    right: bounds.right,
+		    bottom: bounds.bottom
+		  };
+		}
+
+	/***/ },
+	/* 9 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		
+		var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+		
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+		
+		var _react = __webpack_require__(2);
+		
+		var _react2 = _interopRequireDefault(_react);
+		
+		var _reactDom = __webpack_require__(3);
+		
+		var _reactDom2 = _interopRequireDefault(_reactDom);
+		
+		var _domFns = __webpack_require__(5);
+		
+		var _positionFns = __webpack_require__(8);
+		
+		var _shims = __webpack_require__(6);
+		
+		var _log = __webpack_require__(10);
+		
+		var _log2 = _interopRequireDefault(_log);
+		
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+		
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+		
+		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+		
+		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+		
+		// Simple abstraction for dragging events names.
+		/*:: import type {EventHandler} from './utils/types';*/
+		var eventsFor = {
+		  touch: {
+		    start: 'touchstart',
+		    move: 'touchmove',
+		    stop: 'touchend'
+		  },
+		  mouse: {
+		    start: 'mousedown',
+		    move: 'mousemove',
+		    stop: 'mouseup'
+		  }
+		};
+		
+		// Default to mouse events.
+		var dragEventFor = eventsFor.mouse;
+		
+		//
+		// Define <DraggableCore>.
+		//
+		// <DraggableCore> is for advanced usage of <Draggable>. It maintains minimal internal state so it can
+		// work well with libraries that require more control over the element.
+		//
+		
+		/*:: type CoreState = {
+		  dragging: boolean,
+		  lastX: number,
+		  lastY: number,
+		  touchIdentifier: ?number
+		};*/
+		
+		var DraggableCore = function (_React$Component) {
+		  _inherits(DraggableCore, _React$Component);
+		
+		  function DraggableCore() {
+		    var _Object$getPrototypeO;
+		
+		    var _temp, _this, _ret;
+		
+		    _classCallCheck(this, DraggableCore);
+		
+		    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+		      args[_key] = arguments[_key];
+		    }
+		
+		    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DraggableCore)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+		      dragging: false,
+		      // Used while dragging to determine deltas.
+		      lastX: NaN, lastY: NaN,
+		      touchIdentifier: null
+		    }, _this.handleDragStart = function (e) {
+		      // Make it possible to attach event handlers on top of this one.
+		      _this.props.onMouseDown(e);
+		
+		      // Only accept left-clicks.
+		      if (!_this.props.allowAnyClick && typeof e.button === 'number' && e.button !== 0) return false;
+		
+		      // Short circuit if handle or cancel prop was provided and selector doesn't match.
+		      if (_this.props.disabled || !(e.target instanceof Node) || _this.props.handle && !(0, _domFns.matchesSelectorAndParentsTo)(e.target, _this.props.handle, _reactDom2.default.findDOMNode(_this)) || _this.props.cancel && (0, _domFns.matchesSelectorAndParentsTo)(e.target, _this.props.cancel, _reactDom2.default.findDOMNode(_this))) {
+		        return;
+		      }
+		
+		      // Set touch identifier in component state if this is a touch event. This allows us to
+		      // distinguish between individual touches on multitouch screens by identifying which
+		      // touchpoint was set to this element.
+		      var touchIdentifier = (0, _domFns.getTouchIdentifier)(e);
+		      _this.setState({ touchIdentifier: touchIdentifier });
+		
+		      // Get the current drag point from the event. This is used as the offset.
+		      var position = (0, _positionFns.getControlPosition)(e, touchIdentifier, _this);
+		      if (position == null) return; // not possible but satisfies flow
+		      var x = position.x;
+		      var y = position.y;
+		
+		      // Create an event object with all the data parents need to make a decision here.
+		
+		      var coreEvent = (0, _positionFns.createCoreData)(_this, x, y);
+		
+		      (0, _log2.default)('DraggableCore: handleDragStart: %j', coreEvent);
+		
+		      // Call event handler. If it returns explicit false, cancel.
+		      (0, _log2.default)('calling', _this.props.onStart);
+		      var shouldUpdate = _this.props.onStart(e, coreEvent);
+		      if (shouldUpdate === false) return;
+		
+		      // Add a style to the body to disable user-select. This prevents text from
+		      // being selected all over the page.
+		      if (_this.props.enableUserSelectHack) (0, _domFns.addUserSelectStyles)();
+		
+		      // Initiate dragging. Set the current x and y as offsets
+		      // so we know how much we've moved during the drag. This allows us
+		      // to drag elements around even if they have been moved, without issue.
+		      _this.setState({
+		        dragging: true,
+		
+		        lastX: x,
+		        lastY: y
+		      });
+		
+		      // Add events to the document directly so we catch when the user's mouse/touch moves outside of
+		      // this element. We use different events depending on whether or not we have detected that this
+		      // is a touch-capable device.
+		      (0, _domFns.addEvent)(document, dragEventFor.move, _this.handleDrag);
+		      (0, _domFns.addEvent)(document, dragEventFor.stop, _this.handleDragStop);
+		    }, _this.handleDrag = function (e) {
+		
+		      // Get the current drag point from the event. This is used as the offset.
+		      var position = (0, _positionFns.getControlPosition)(e, _this.state.touchIdentifier, _this);
+		      if (position == null) return;
+		      var x = position.x;
+		      var y = position.y;
+		
+		      // Snap to grid if prop has been provided
+		
+		      if (x !== x) debugger;
+		
+		      if (Array.isArray(_this.props.grid)) {
+		        var deltaX = x - _this.state.lastX,
+		            deltaY = y - _this.state.lastY;
+		
+		        var _snapToGrid = (0, _positionFns.snapToGrid)(_this.props.grid, deltaX, deltaY);
+		
+		        var _snapToGrid2 = _slicedToArray(_snapToGrid, 2);
+		
+		        deltaX = _snapToGrid2[0];
+		        deltaY = _snapToGrid2[1];
+		
+		        if (!deltaX && !deltaY) return; // skip useless drag
+		        x = _this.state.lastX + deltaX, y = _this.state.lastY + deltaY;
+		      }
+		
+		      var coreEvent = (0, _positionFns.createCoreData)(_this, x, y);
+		
+		      (0, _log2.default)('DraggableCore: handleDrag: %j', coreEvent);
+		
+		      // Call event handler. If it returns explicit false, trigger end.
+		      var shouldUpdate = _this.props.onDrag(e, coreEvent);
+		      if (shouldUpdate === false) {
+		        try {
+		          _this.handleDragStop(new MouseEvent('mouseup'));
+		        } catch (err) {
+		          // Old browsers
+		          var event = document.createEvent('MouseEvents');
+		          // I see why this insanity was deprecated
+		          // $FlowIgnore
+		          event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		          // $FlowIgnore
+		          _this.handleDragStop(event);
+		        }
+		        return;
+		      }
+		
+		      _this.setState({
+		        lastX: x,
+		        lastY: y
+		      });
+		    }, _this.handleDragStop = function (e) {
+		      if (!_this.state.dragging) return;
+		
+		      var position = (0, _positionFns.getControlPosition)(e, _this.state.touchIdentifier, _this);
+		      if (position == null) return;
+		      var x = position.x;
+		      var y = position.y;
+		
+		      var coreEvent = (0, _positionFns.createCoreData)(_this, x, y);
+		
+		      // Remove user-select hack
+		      if (_this.props.enableUserSelectHack) (0, _domFns.removeUserSelectStyles)();
+		
+		      (0, _log2.default)('DraggableCore: handleDragStop: %j', coreEvent);
+		
+		      // Reset the el.
+		      _this.setState({
+		        dragging: false,
+		        lastX: NaN,
+		        lastY: NaN
+		      });
+		
+		      // Call event handler
+		      _this.props.onStop(e, coreEvent);
+		
+		      // Remove event handlers
+		      (0, _log2.default)('DraggableCore: Removing handlers');
+		      (0, _domFns.removeEvent)(document, dragEventFor.move, _this.handleDrag);
+		      (0, _domFns.removeEvent)(document, dragEventFor.stop, _this.handleDragStop);
+		    }, _this.onMouseDown = function (e) {
+		      dragEventFor = eventsFor.mouse; // on touchscreen laptops we could switch back to mouse
+		
+		      return _this.handleDragStart(e);
+		    }, _this.onMouseUp = function (e) {
+		      dragEventFor = eventsFor.mouse;
+		
+		      return _this.handleDragStop(e);
+		    }, _this.onTouchStart = function (e) {
+		      // We're on a touch device now, so change the event handlers
+		      dragEventFor = eventsFor.touch;
+		
+		      return _this.handleDragStart(e);
+		    }, _this.onTouchEnd = function (e) {
+		      // We're on a touch device now, so change the event handlers
+		      dragEventFor = eventsFor.touch;
+		
+		      return _this.handleDragStop(e);
+		    }, _temp), _possibleConstructorReturn(_this, _ret);
+		  }
+		
+		  _createClass(DraggableCore, [{
+		    key: 'componentWillUnmount',
+		    value: function componentWillUnmount() {
+		      // Remove any leftover event handlers. Remove both touch and mouse handlers in case
+		      // some browser quirk caused a touch event to fire during a mouse move, or vice versa.
+		      (0, _domFns.removeEvent)(document, eventsFor.mouse.move, this.handleDrag);
+		      (0, _domFns.removeEvent)(document, eventsFor.touch.move, this.handleDrag);
+		      (0, _domFns.removeEvent)(document, eventsFor.mouse.stop, this.handleDragStop);
+		      (0, _domFns.removeEvent)(document, eventsFor.touch.stop, this.handleDragStop);
+		      if (this.props.enableUserSelectHack) (0, _domFns.removeUserSelectStyles)();
+		    }
+		
+		    // Same as onMouseDown (start drag), but now consider this a touch device.
+		
+		  }, {
+		    key: 'render',
+		    value: function render() {
+		      // Reuse the child provided
+		      // This makes it flexible to use whatever element is wanted (div, ul, etc)
+		      return _react2.default.cloneElement(_react2.default.Children.only(this.props.children), {
+		        style: (0, _domFns.styleHacks)(this.props.children.props.style),
+		
+		        // Note: mouseMove handler is attached to document so it will still function
+		        // when the user drags quickly and leaves the bounds of the element.
+		        onMouseDown: this.onMouseDown,
+		        onTouchStart: this.onTouchStart,
+		        onMouseUp: this.onMouseUp,
+		        onTouchEnd: this.onTouchEnd
+		      });
+		    }
+		  }]);
+		
+		  return DraggableCore;
+		}(_react2.default.Component);
+		
+		DraggableCore.displayName = 'DraggableCore';
+		DraggableCore.propTypes = {
+		  /**
+		   * `allowAnyClick` allows dragging using any mouse button.
+		   * By default, we only accept the left button.
+		   *
+		   * Defaults to `false`.
+		   */
+		  allowAnyClick: _react.PropTypes.bool,
+		
+		  /**
+		   * `disabled`, if true, stops the <Draggable> from dragging. All handlers,
+		   * with the exception of `onMouseDown`, will not fire.
+		   */
+		  disabled: _react.PropTypes.bool,
+		
+		  /**
+		   * By default, we add 'user-select:none' attributes to the document body
+		   * to prevent ugly text selection during drag. If this is causing problems
+		   * for your app, set this to `false`.
+		   */
+		  enableUserSelectHack: _react.PropTypes.bool,
+		
+		  /**
+		   * `grid` specifies the x and y that dragging should snap to.
+		   */
+		  grid: _react.PropTypes.arrayOf(_react.PropTypes.number),
+		
+		  /**
+		   * `handle` specifies a selector to be used as the handle that initiates drag.
+		   *
+		   * Example:
+		   *
+		   * ```jsx
+		   *   let App = React.createClass({
+		   *       render: function () {
+		   *         return (
+		   *            <Draggable handle=".handle">
+		   *              <div>
+		   *                  <div className="handle">Click me to drag</div>
+		   *                  <div>This is some other content</div>
+		   *              </div>
+		   *           </Draggable>
+		   *         );
+		   *       }
+		   *   });
+		   * ```
+		   */
+		  handle: _react.PropTypes.string,
+		
+		  /**
+		   * `cancel` specifies a selector to be used to prevent drag initialization.
+		   *
+		   * Example:
+		   *
+		   * ```jsx
+		   *   let App = React.createClass({
+		   *       render: function () {
+		   *           return(
+		   *               <Draggable cancel=".cancel">
+		   *                   <div>
+		   *                     <div className="cancel">You can't drag from here</div>
+		   *                     <div>Dragging here works fine</div>
+		   *                   </div>
+		   *               </Draggable>
+		   *           );
+		   *       }
+		   *   });
+		   * ```
+		   */
+		  cancel: _react.PropTypes.string,
+		
+		  /**
+		   * Called when dragging starts.
+		   * If this function returns the boolean false, dragging will be canceled.
+		   */
+		  onStart: _react.PropTypes.func,
+		
+		  /**
+		   * Called while dragging.
+		   * If this function returns the boolean false, dragging will be canceled.
+		   */
+		  onDrag: _react.PropTypes.func,
+		
+		  /**
+		   * Called when dragging stops.
+		   * If this function returns the boolean false, the drag will remain active.
+		   */
+		  onStop: _react.PropTypes.func,
+		
+		  /**
+		   * A workaround option which can be passed if onMouseDown needs to be accessed,
+		   * since it'll always be blocked (as there is internal use of onMouseDown)
+		   */
+		  onMouseDown: _react.PropTypes.func,
+		
+		  /**
+		   * These properties should be defined on the child, not here.
+		   */
+		  className: _shims.dontSetMe,
+		  style: _shims.dontSetMe,
+		  transform: _shims.dontSetMe
+		};
+		DraggableCore.defaultProps = {
+		  allowAnyClick: false, // by default only accept left click
+		  cancel: null,
+		  disabled: false,
+		  enableUserSelectHack: true,
+		  handle: null,
+		  grid: null,
+		  transform: null,
+		  onStart: function onStart() {},
+		  onDrag: function onDrag() {},
+		  onStop: function onStop() {},
+		  onMouseDown: function onMouseDown() {}
+		};
+		exports.default = DraggableCore;
+
+	/***/ },
+	/* 10 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		"use strict";
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.default = log;
+		
+		/*eslint no-console:0*/
+		function log() {
+		  var _console;
+		
+		  if ((undefined)) (_console = console).log.apply(_console, arguments);
+		}
+
+	/***/ }
+	/******/ ])
+	});
+	;
+	//# sourceMappingURL=react-draggable.js.map
+
+/***/ },
 /* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -56184,7 +57675,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Resizable = __webpack_require__(260);
+	var _Resizable = __webpack_require__(259);
 
 	var _Resizable2 = _interopRequireDefault(_Resizable);
 
@@ -56298,7 +57789,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _utils = __webpack_require__(256);
+	var _utils = __webpack_require__(255);
 
 	var _responsiveUtils = __webpack_require__(264);
 
@@ -56514,7 +58005,7 @@
 	exports.findOrGenerateResponsiveLayout = findOrGenerateResponsiveLayout;
 	exports.sortBreakpoints = sortBreakpoints;
 
-	var _utils = __webpack_require__(256);
+	var _utils = __webpack_require__(255);
 
 	/**
 	 * Given a width, find the highest breakpoint that matches is valid for it (width > breakpoint).
@@ -94900,21 +96391,26 @@
 	'use strict';
 
 	exports.__esModule = true;
-	exports['default'] = thunkMiddleware;
-	function thunkMiddleware(_ref) {
-	  var dispatch = _ref.dispatch;
-	  var getState = _ref.getState;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
 
-	  return function (next) {
-	    return function (action) {
-	      if (typeof action === 'function') {
-	        return action(dispatch, getState);
-	      }
-
-	      return next(action);
+	        return next(action);
+	      };
 	    };
 	  };
 	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
 
 /***/ },
 /* 338 */
