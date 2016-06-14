@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b06e26875f821dd912c9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5e38293f336fb8648905"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -70938,8 +70938,10 @@
 	var APPEND_DATASOURCE_DATA = exports.APPEND_DATASOURCE_DATA = "APPEND_DATASOURCE_DATA";
 	
 	// Plugins
-	var ADD_PLUGIN = exports.ADD_PLUGIN = "ADD_PLUGIN";
-	var DELETE_PLUGIN = exports.DELETE_PLUGIN = "DELETE_PLUGIN";
+	var ADD_WIDGET_PLUGIN = exports.ADD_WIDGET_PLUGIN = "ADD_WIDGET_PLUGIN";
+	var ADD_DATASOURCE_PLUGIN = exports.ADD_DATASOURCE_PLUGIN = "ADD_DATASOURCE_PLUGIN";
+	var DELETE_WIDGET_PLUGIN = exports.DELETE_WIDGET_PLUGIN = "DELETE_WIDGET_PLUGIN";
+	var DELETE_DATASOURCE_PLUGIN = exports.DELETE_DATASOURCE_PLUGIN = "DELETE_DATASOURCE_PLUGIN";
 	
 	// Modal
 	var SHOW_MODAL = exports.SHOW_MODAL = "SHOW_MODAL";
@@ -71313,6 +71315,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	exports.unloadPlugin = unloadPlugin;
 	exports.widgetPlugins = widgetPlugins;
 	
 	var _widgetPlugin = __webpack_require__(210);
@@ -71374,14 +71377,26 @@
 	
 	var pluginRegistry = exports.pluginRegistry = new WidgetPluginRegistry();
 	
-	var pluginsCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_PLUGIN, Action.DELETE_PLUGIN], widgetPlugin);
+	function unloadPlugin(type) {
+	    return function (dispatch) {
+	        //TODO: Unloading plugins is work in progess
+	        //DatasourcePlugins
+	        dispatch(deletePlugin(type));
+	    };
+	}
+	
+	function deletePlugin(type) {
+	    return {
+	        type: Action.DELETE_WIDGET_PLUGIN,
+	        id: type
+	    };
+	}
+	
+	var pluginsCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_WIDGET_PLUGIN, Action.DELETE_WIDGET_PLUGIN], widgetPlugin);
 	function widgetPlugins() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	    var action = arguments[1];
 	
-	    if (action.pluginType !== 'widget') {
-	        return state;
-	    }
 	
 	    state = pluginsCrudReducer(state, action);
 	    switch (action.type) {
@@ -71392,11 +71407,7 @@
 	
 	function widgetPlugin(state, action) {
 	    switch (action.type) {
-	        case Action.ADD_PLUGIN:
-	            if (action.pluginType !== 'widget') {
-	                return state;
-	            }
-	
+	        case Action.ADD_WIDGET_PLUGIN:
 	            if (!action.typeInfo.type) {
 	                // TODO: Catch this earlier
 	                throw new Error("A Plugin needs a type name.");
@@ -71711,6 +71722,7 @@
 	        this.instances = {};
 	
 	        this.unsubscribe = store.subscribe(this.handleStateChange.bind(this));
+	        this.disposed = false;
 	    }
 	
 	    _createClass(DataSourcePlugin, [{
@@ -71722,6 +71734,9 @@
 	    }, {
 	        key: "getOrCreateInstance",
 	        value: function getOrCreateInstance(id) {
+	            if (this.disposed === true) {
+	                throw new Error("Try to get or create datasource of destroyed type: " + this.type);
+	            }
 	            var instance = this.instances[id];
 	            if (!instance) {
 	                var dsState = this.getDatasourceState(id);
@@ -71735,6 +71750,22 @@
 	        key: "getInstance",
 	        value: function getInstance(id) {
 	            return this.instances[id];
+	        }
+	    }, {
+	        key: "dispose",
+	        value: function dispose() {
+	            this.disposed = true;
+	            _lodash2.default.valuesIn(this.instances).forEach(function (instance) {
+	                if (_lodash2.default.isFunction(instance.dispose)) {
+	                    try {
+	                        instance.dispose();
+	                    } catch (e) {
+	                        console.error("Failed to destroy Datasource instance", instance);
+	                    }
+	                }
+	            });
+	            this.instances = [];
+	            this.unsubscribe();
 	        }
 	    }, {
 	        key: "handleStateChange",
@@ -71765,11 +71796,6 @@
 	                }
 	                instance.props = newProps;
 	            }
-	        }
-	    }, {
-	        key: "dispose",
-	        value: function dispose() {
-	            this.unsubscribe();
 	        }
 	    }, {
 	        key: "type",
@@ -83863,7 +83889,6 @@
 	});
 	exports.loadPlugin = loadPlugin;
 	exports.loadPluginFromUrl = loadPluginFromUrl;
-	exports.unloadPlugin = unloadPlugin;
 	exports.initializeExternalPlugins = initializeExternalPlugins;
 	exports.addPlugin = addPlugin;
 	
@@ -83949,21 +83974,6 @@
 	    };
 	}
 	
-	function unloadPlugin() {
-	    return function (dispatch) {
-	        //TODO: Unloading plugins is work in progess
-	        //DatasourcePlugins
-	        dispatch(deletePlugin(type));
-	    };
-	}
-	
-	function deletePlugin(type) {
-	    return {
-	        type: Action.DELETE_PLUGIN,
-	        pluginType: type
-	    };
-	}
-	
 	function initializeExternalPlugins() {
 	    return function (dispatch, getState) {
 	        var state = getState();
@@ -84017,21 +84027,20 @@
 	            return;
 	        }
 	
-	        var pluginType = "unknown";
+	        var actionType = "unknown-add-widget-action";
 	        if (plugin.Datasource !== undefined) {
-	            pluginType = "datasource";
+	            actionType = Action.ADD_DATASOURCE_PLUGIN;
 	        }
 	        if (plugin.Widget !== undefined) {
-	            pluginType = "widget";
+	            actionType = Action.ADD_WIDGET_PLUGIN;
 	        }
 	
 	        // TODO: Just put the raw plugin + url here and let the reducer do the logic
 	        dispatch({
-	            type: Action.ADD_PLUGIN,
+	            type: actionType,
 	            id: plugin.TYPE_INFO.type, // needed for crud reducer
 	            typeInfo: plugin.TYPE_INFO,
-	            url: url,
-	            pluginType: pluginType
+	            url: url
 	        });
 	        // TODO: Maybe use redux sideeffect and move this call to the reducer
 	        registerPlugin(plugin);
@@ -84051,6 +84060,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	exports.unloadPlugin = unloadPlugin;
 	exports.datasourcePlugins = datasourcePlugins;
 	
 	var _datasourcePlugin = __webpack_require__(212);
@@ -84101,14 +84111,27 @@
 	
 	var pluginRegistry = exports.pluginRegistry = new DatasourcePluginRegistry();
 	
-	var pluginsCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_PLUGIN, Action.DELETE_PLUGIN], datasourcePlugin);
+	function unloadPlugin(type) {
+	    return function (dispatch) {
+	        var dsFactory = pluginRegistry.getPlugin(type);
+	        dsFactory.dispose();
+	        dispatch(deletePlugin(type));
+	    };
+	}
+	
+	function deletePlugin(type) {
+	    return {
+	        type: Action.DELETE_DATASOURCE_PLUGIN,
+	        id: type
+	    };
+	}
+	
+	var pluginsCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_DATASOURCE_PLUGIN, Action.DELETE_DATASOURCE_PLUGIN], datasourcePlugin);
 	function datasourcePlugins() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	    var action = arguments[1];
 	
-	    if (action.pluginType !== 'datasource') {
-	        return state;
-	    }
+	
 	    state = pluginsCrudReducer(state, action);
 	    switch (action.type) {
 	        default:
@@ -84118,11 +84141,7 @@
 	
 	function datasourcePlugin(state, action) {
 	    switch (action.type) {
-	        case Action.ADD_PLUGIN:
-	            if (action.pluginType !== 'datasource') {
-	                return state;
-	            }
-	
+	        case Action.ADD_DATASOURCE_PLUGIN:
 	            if (!action.typeInfo.type) {
 	                // TODO: Catch this earlier
 	                throw new Error("A Plugin needs a type name.");
@@ -87785,6 +87804,17 @@
 	
 	    state = datasourceCrudReducer(state, action);
 	    switch (action.type) {
+	        case Action.DELETE_DATASOURCE_PLUGIN:
+	            // Also delete related datasources
+	            var toDelete = _lodash2.default.valuesIn(state).filter(function (dsState) {
+	                return dsState.type == action.id;
+	            });
+	            var newState = _extends({}, state);
+	            toDelete.forEach(function (dsState) {
+	                delete newState[dsState.id];
+	            });
+	
+	            return newState;
 	        default:
 	            return state;
 	    }
@@ -113065,6 +113095,12 @@
 	            var max = Number(props.max || 100);
 	            var newValue = { x: this.x++, value: getRandomInt(min, max), value2: getRandomInt(min, max) };
 	            return newValue;
+	        }
+	    }, {
+	        key: "dispose",
+	        value: function dispose() {
+	            this.history = [];
+	            console.log("Random Datasource destroyed");
 	        }
 	    }]);
 

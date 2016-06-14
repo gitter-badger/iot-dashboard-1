@@ -2199,6 +2199,10 @@ webpackJsonp([0],{
 	
 	var WidgetsPlugins = _interopRequireWildcard(_widgetPlugins);
 	
+	var _datasourcePlugins = __webpack_require__(243);
+	
+	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -2308,8 +2312,7 @@ webpackJsonp([0],{
 	    datasourcePlugins: _react.PropTypes.object.isRequired,
 	    widgetPlugins: _react.PropTypes.object.isRequired,
 	    closeDialog: _react.PropTypes.func.isRequired,
-	    loadPlugin: _react.PropTypes.func.isRequired,
-	    removePlugin: _react.PropTypes.func.isRequired
+	    loadPlugin: _react.PropTypes.func.isRequired
 	};
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
@@ -2323,13 +2326,10 @@ webpackJsonp([0],{
 	            return dispatch(Modal.closeModal());
 	        },
 	        // TODO: Render loading indicator while Plugin loads
+	        // maybe build some generic solution for Ajax calls where the state can hold all information to render loading indicators / retry buttons etc...
 	        loadPlugin: function loadPlugin(url) {
 	            return dispatch(Plugins.loadPluginFromUrl(url));
-	        },
-	        removePlugin: function removePlugin(type) {
-	            return dispatch(Plugins.unloadPlugin(type));
 	        }
-	
 	    };
 	})(PluginsModal);
 	
@@ -2339,7 +2339,7 @@ webpackJsonp([0],{
 	        'div',
 	        { className: 'ui five cards' },
 	        props.datasourceStates.map(function (dsState) {
-	            return _react2.default.createElement(PluginCard, _extends({ key: dsState.id, pluginState: dsState }, props));
+	            return _react2.default.createElement(DatasourcePluginCard, _extends({ key: dsState.id, pluginState: dsState }, props));
 	        })
 	    );
 	};
@@ -2355,7 +2355,7 @@ webpackJsonp([0],{
 	        'div',
 	        { className: 'ui five cards' },
 	        props.widgetPluginStates.map(function (dsState) {
-	            return _react2.default.createElement(PluginCard, _extends({ key: dsState.id, pluginState: dsState }, props));
+	            return _react2.default.createElement(WidgetPluginCard, _extends({ key: dsState.id, pluginState: dsState }, props));
 	        })
 	    );
 	};
@@ -2449,6 +2449,26 @@ webpackJsonp([0],{
 	    pluginState: _react.PropTypes.object.isRequired,
 	    removePlugin: _react.PropTypes.func.isRequired
 	};
+	
+	var WidgetPluginCard = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, function (dispatch) {
+	    return {
+	        removePlugin: function removePlugin(type) {
+	            return dispatch(WidgetsPlugins.unloadPlugin(type));
+	        }
+	    };
+	})(PluginCard);
+	
+	var DatasourcePluginCard = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, function (dispatch) {
+	    return {
+	        removePlugin: function removePlugin(type) {
+	            return dispatch(DatasourcePlugins.unloadPlugin(type));
+	        }
+	    };
+	})(PluginCard);
 
 /***/ },
 
@@ -2500,7 +2520,6 @@ webpackJsonp([0],{
 	    _createClass(Widget, [{
 	        key: 'render',
 	        value: function render() {
-	            console.log("render");
 	            var props = this.props;
 	            var data = props.getData(this.props.config.datasource);
 	
