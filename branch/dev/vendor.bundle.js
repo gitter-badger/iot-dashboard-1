@@ -88,7 +88,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5e38293f336fb8648905"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b0e49b97d50706e29346"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -70514,8 +70514,6 @@
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactRedux = __webpack_require__(185);
-	
 	var _uuid = __webpack_require__(202);
 	
 	var Uuid = _interopRequireWildcard(_uuid);
@@ -70524,17 +70522,15 @@
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _widgetPlugins = __webpack_require__(209);
-	
-	var _widgetPlugins2 = _interopRequireDefault(_widgetPlugins);
-	
 	var _lodash = __webpack_require__(2);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _reducer = __webpack_require__(213);
+	var _reducer = __webpack_require__(209);
 	
 	var _actionNames = __webpack_require__(204);
+	
+	var Action = _interopRequireWildcard(_actionNames);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -70620,7 +70616,7 @@
 	        var widgets = getState().widgets;
 	
 	        return dispatch(_extends({
-	            type: _actionNames.ADD_WIDGET,
+	            type: Action.ADD_WIDGET,
 	            id: Uuid.generate()
 	        }, calcNewWidgetPosition(widgets), {
 	            width: width,
@@ -70645,7 +70641,7 @@
 	    var widgetProps = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	
 	    return {
-	        type: _actionNames.UPDATE_WIDGET_PROPS,
+	        type: Action.UPDATE_WIDGET_PROPS,
 	        id: id,
 	        widgetProps: widgetProps
 	    };
@@ -70653,35 +70649,46 @@
 	
 	function deleteWidget(id) {
 	    return {
-	        type: _actionNames.DELETE_WIDGET,
+	        type: Action.DELETE_WIDGET,
 	        id: id
 	    };
 	}
 	
 	function updateLayout(layout) {
 	    return {
-	        type: _actionNames.UPDATE_WIDGET_LAYOUT,
+	        type: Action.UPDATE_WIDGET_LAYOUT,
 	        layout: layout
 	    };
 	}
 	
-	var widgetsCrudReducer = (0, _reducer.genCrudReducer)([_actionNames.ADD_WIDGET, _actionNames.DELETE_WIDGET], widget);
+	var widgetsCrudReducer = (0, _reducer.genCrudReducer)([Action.ADD_WIDGET, Action.DELETE_WIDGET], widget);
 	function widgets() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialWidgets : arguments[0];
 	    var action = arguments[1];
 	
 	    state = widgetsCrudReducer(state, action);
 	    switch (action.type) {
-	        case _actionNames.UPDATE_WIDGET_LAYOUT:
+	        case Action.UPDATE_WIDGET_LAYOUT:
 	            return _lodash2.default.valuesIn(state).reduce(function (newState, _ref) {
 	                var id = _ref.id;
 	
 	                newState[id] = widget(newState[id], action);
 	                return newState;
 	            }, _extends({}, state));
-	        case _actionNames.LOAD_LAYOUT:
+	        case Action.LOAD_LAYOUT:
 	            console.assert(action.layout.widgets, "Layout is missing Widgets, id: " + action.layout.id);
 	            return action.layout.widgets || {};
+	        case Action.DELETE_WIDGET_PLUGIN:
+	            // Also delete related widgets // TODO: Or maybe not when we render an empty box instead
+	            var toDelete = _lodash2.default.valuesIn(state).filter(function (widgetState) {
+	                return widgetState.type == action.id;
+	            });
+	            var newState = _extends({}, state);
+	            toDelete.forEach(function (widgetState) {
+	                delete newState[widgetState.id];
+	            });
+	
+	            return newState;
 	        default:
 	            return state;
 	    }
@@ -70692,7 +70699,7 @@
 	    var action = arguments[1];
 	
 	    switch (action.type) {
-	        case _actionNames.ADD_WIDGET:
+	        case Action.ADD_WIDGET:
 	            return {
 	                id: action.id,
 	                type: action.widgetType,
@@ -70703,11 +70710,11 @@
 	                width: action.width,
 	                height: action.height
 	            };
-	        case _actionNames.UPDATE_WIDGET_PROPS:
+	        case Action.UPDATE_WIDGET_PROPS:
 	            return _extends({}, state, {
 	                props: action.widgetProps
 	            });
-	        case _actionNames.UPDATE_WIDGET_LAYOUT:
+	        case Action.UPDATE_WIDGET_LAYOUT:
 	            var layout = layoutById(action.layout, state.id);
 	            if (layout == null) {
 	                console.warn("No layout for widget. Skipping update of position. Id: " + state.id);
@@ -71311,6 +71318,90 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	exports.genCrudReducer = genCrudReducer;
+	
+	var _lodash = __webpack_require__(2);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	/**
+	 * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
+	 * The key of properties always matches the id property of the value object.
+	 *
+	 * @param actionNames
+	 * Object with: create, update, delete action names
+	 * @param elementReducer
+	 * A reducer for a single object that supports the actionNames.create and actionNames.update action.
+	 * @param initialState (optional)
+	 * @param idProperty
+	 * The name of the property to fetch the id from the action. Default: 'id'
+	 * @returns {crudReducer}
+	 */
+	function genCrudReducer(actionNames /*:Array<String>*/, elementReducer /*:Function*/) {
+	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
+	
+	    console.assert(actionNames.length === 2, "ActionNames must contain 2 names for create, delete in that order");
+	
+	    var _actionNames = _slicedToArray(actionNames, 2);
+	
+	    var CREATE_ACTION = _actionNames[0];
+	    var DELETE_ACTION = _actionNames[1];
+	
+	    console.assert(_lodash2.default.includes(CREATE_ACTION, "ADD") || _lodash2.default.includes(CREATE_ACTION, "CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
+	    console.assert(_lodash2.default.includes(DELETE_ACTION, "DELETE") || _lodash2.default.includes(DELETE_ACTION, "REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
+	
+	    return function crudReducer(state, action) {
+	        var id = action[idProperty];
+	        switch (action.type) {
+	            case CREATE_ACTION:
+	                return _extends({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
+	            case DELETE_ACTION:
+	                var deleted = state[id];
+	
+	                var newState = _objectWithoutProperties(state, [id]);
+	
+	                return newState;
+	            default:
+	                // Update if we have an id property
+	                if (id === undefined) return state;
+	                var elementState = state[id];
+	                if (elementState == undefined) {
+	                    // Do not update what we don't have.
+	                    // TODO: Log warning, or document why not.
+	                    return state;
+	                }
+	                var updatedElement = elementReducer(elementState, action);
+	                if (updatedElement == undefined) {
+	                    console.error("ElementReducer has some problem: ", elementReducer, " with action: ", action);
+	                    throw new Error("Reducer must return the original state if they not implement the action. Check action " + action.type + ".");
+	                }
+	
+	                return _extends({}, state, _defineProperty({}, id, updatedElement));
+	        }
+	    };
+	}
+
+/***/ },
+/* 210 */,
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.pluginRegistry = exports.widgetPluginType = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -71318,11 +71409,11 @@
 	exports.unloadPlugin = unloadPlugin;
 	exports.widgetPlugins = widgetPlugins;
 	
-	var _widgetPlugin = __webpack_require__(210);
+	var _widgetPlugin = __webpack_require__(212);
 	
 	var _widgetPlugin2 = _interopRequireDefault(_widgetPlugin);
 	
-	var _pluginRegistry = __webpack_require__(211);
+	var _pluginRegistry = __webpack_require__(213);
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
@@ -71330,7 +71421,7 @@
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(213);
+	var _reducer = __webpack_require__(209);
 	
 	var _react = __webpack_require__(179);
 	
@@ -71379,8 +71470,8 @@
 	
 	function unloadPlugin(type) {
 	    return function (dispatch) {
-	        //TODO: Unloading plugins is work in progess
-	        //DatasourcePlugins
+	        var widgetPlugin = pluginRegistry.getPlugin(type);
+	        widgetPlugin.dispose();
 	        dispatch(deletePlugin(type));
 	    };
 	}
@@ -71426,7 +71517,7 @@
 	}
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71468,6 +71559,7 @@
 	        this.Widget = module.Widget;
 	        this.store = store;
 	        this.instances = {};
+	        this.disposed = false;
 	
 	        // only bind the getData function once, so it can be safely used in the connect function
 	        this.getData = function (getState, dsId) {
@@ -71483,6 +71575,10 @@
 	        key: 'getOrCreateInstance',
 	        value: function getOrCreateInstance(id) {
 	            var _this = this;
+	
+	            if (this.disposed === true) {
+	                throw new Error("Try to get or create widget of destroyed type: " + this.type);
+	            }
 	
 	            if (this.instances[id]) {
 	                return this.instances[id];
@@ -71514,6 +71610,12 @@
 	            this.instances[id] = _react2.default.createElement(widget, { _widgetClass: this.Widget });
 	            // Should we create here or always outside?
 	            return this.instances[id];
+	        }
+	    }, {
+	        key: 'dispose',
+	        value: function dispose() {
+	            this.disposed = true;
+	            this.instances = [];
 	        }
 	    }, {
 	        key: 'type',
@@ -71612,7 +71714,7 @@
 	};
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71625,7 +71727,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _datasourcePlugin = __webpack_require__(212);
+	var _datasourcePlugin = __webpack_require__(214);
 	
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 	
@@ -71684,7 +71786,7 @@
 	exports.default = PluginRegistry;
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71808,90 +71910,6 @@
 	}();
 
 /***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	exports.genCrudReducer = genCrudReducer;
-	
-	var _lodash = __webpack_require__(2);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	/**
-	 * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
-	 * The key of properties always matches the id property of the value object.
-	 *
-	 * @param actionNames
-	 * Object with: create, update, delete action names
-	 * @param elementReducer
-	 * A reducer for a single object that supports the actionNames.create and actionNames.update action.
-	 * @param initialState (optional)
-	 * @param idProperty
-	 * The name of the property to fetch the id from the action. Default: 'id'
-	 * @returns {crudReducer}
-	 */
-	function genCrudReducer(actionNames /*:Array<String>*/, elementReducer /*:Function*/) {
-	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
-	
-	    console.assert(actionNames.length === 2, "ActionNames must contain 2 names for create, delete in that order");
-	
-	    var _actionNames = _slicedToArray(actionNames, 2);
-	
-	    var CREATE_ACTION = _actionNames[0];
-	    var DELETE_ACTION = _actionNames[1];
-	
-	    console.assert(_lodash2.default.includes(CREATE_ACTION, "ADD") || _lodash2.default.includes(CREATE_ACTION, "CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
-	    console.assert(_lodash2.default.includes(DELETE_ACTION, "DELETE") || _lodash2.default.includes(DELETE_ACTION, "REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
-	
-	    return function crudReducer(state, action) {
-	        var id = action[idProperty];
-	        switch (action.type) {
-	            case CREATE_ACTION:
-	                return _extends({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
-	            case DELETE_ACTION:
-	                var deleted = state[id];
-	
-	                var newState = _objectWithoutProperties(state, [id]);
-	
-	                return newState;
-	            default:
-	                // Update if we have an id property
-	                if (id === undefined) return state;
-	                var elementState = state[id];
-	                if (elementState == undefined) {
-	                    // Do not update what we don't have.
-	                    // TODO: Log warning, or document why not.
-	                    return state;
-	                }
-	                var updatedElement = elementReducer(elementState, action);
-	                if (updatedElement == undefined) {
-	                    console.error("ElementReducer has some problem: ", elementReducer, " with action: ", action);
-	                    throw new Error("Reducer must return the original state if they not implement the action. Check action " + action.type + ".");
-	                }
-	
-	                return _extends({}, state, _defineProperty({}, id, updatedElement));
-	        }
-	    };
-	}
-
-/***/ },
-/* 214 */,
 /* 215 */,
 /* 216 */
 /***/ function(module, exports, __webpack_require__) {
@@ -78844,7 +78862,7 @@
 	
 	var _uuid = __webpack_require__(202);
 	
-	var _reducer = __webpack_require__(213);
+	var _reducer = __webpack_require__(209);
 	
 	var _actionNames = __webpack_require__(204);
 	
@@ -83896,13 +83914,13 @@
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(213);
+	var _reducer = __webpack_require__(209);
 	
 	var _datasourcePlugins = __webpack_require__(243);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -84063,11 +84081,11 @@
 	exports.unloadPlugin = unloadPlugin;
 	exports.datasourcePlugins = datasourcePlugins;
 	
-	var _datasourcePlugin = __webpack_require__(212);
+	var _datasourcePlugin = __webpack_require__(214);
 	
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 	
-	var _pluginRegistry = __webpack_require__(211);
+	var _pluginRegistry = __webpack_require__(213);
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
@@ -84075,7 +84093,7 @@
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(213);
+	var _reducer = __webpack_require__(209);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -87648,7 +87666,7 @@
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
-	var _reducer = __webpack_require__(213);
+	var _reducer = __webpack_require__(209);
 	
 	var _actionNames = __webpack_require__(204);
 	
@@ -112683,7 +112701,7 @@
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	

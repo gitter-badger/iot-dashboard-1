@@ -493,7 +493,7 @@ webpackJsonp([1],{
 	
 	var _chai = __webpack_require__(253);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	

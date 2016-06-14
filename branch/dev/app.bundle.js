@@ -41,7 +41,7 @@ webpackJsonp([0],{
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -301,11 +301,11 @@ webpackJsonp([0],{
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _widgetFrame = __webpack_require__(214);
+	var _widgetFrame = __webpack_require__(210);
 	
 	var _widgetFrame2 = _interopRequireDefault(_widgetFrame);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -413,7 +413,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 214:
+/***/ 210:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -434,7 +434,7 @@ webpackJsonp([0],{
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -932,7 +932,7 @@ webpackJsonp([0],{
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -2034,7 +2034,7 @@ webpackJsonp([0],{
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -2195,7 +2195,7 @@ webpackJsonp([0],{
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _widgetPlugins = __webpack_require__(209);
+	var _widgetPlugins = __webpack_require__(211);
 	
 	var WidgetsPlugins = _interopRequireWildcard(_widgetPlugins);
 	
@@ -2744,6 +2744,16 @@ webpackJsonp([0],{
 	        value: function render() {
 	            this._renderChart();
 	            return React.createElement('div', { className: '', id: 'chart-' + this.props._state.id });
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            console.log("Unmounted Chart Widget");
+	        }
+	    }, {
+	        key: 'dispose',
+	        value: function dispose() {
+	            console.log("Disposed Chart Widget");
 	        }
 	    }]);
 	
