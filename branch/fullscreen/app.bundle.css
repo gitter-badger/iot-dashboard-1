@@ -1,4 +1,4 @@
-
+/* BEGIN app.css */
 
 .fullscreen-button {
     position: absolute;
@@ -6,4 +6,6 @@
     top: 20px;
     z-index: 9999;
 }
+
+/* END app.css */
 /*# sourceMappingURL=app.bundle.css.map*/
