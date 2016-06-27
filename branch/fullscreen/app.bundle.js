@@ -45,41 +45,41 @@ webpackJsonp([0],{
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _textWidget = __webpack_require__(299);
+	var _textWidget = __webpack_require__(298);
 	
 	var TextWidget = _interopRequireWildcard(_textWidget);
 	
-	var _chartWidget = __webpack_require__(300);
+	var _chartWidget = __webpack_require__(299);
 	
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 	
-	var _datasourceWorker = __webpack_require__(303);
+	var _datasourceWorker = __webpack_require__(302);
 	
 	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
 	
-	var _randomDatasource = __webpack_require__(307);
+	var _randomDatasource = __webpack_require__(306);
 	
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 	
-	var _timeDatasource = __webpack_require__(308);
+	var _timeDatasource = __webpack_require__(307);
 	
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 	
-	var _store = __webpack_require__(304);
+	var _store = __webpack_require__(303);
 	
 	var Store = _interopRequireWildcard(_store);
 	
-	var _plugins = __webpack_require__(283);
+	var _plugins = __webpack_require__(282);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	__webpack_require__(309);
+	__webpack_require__(308);
+	
+	__webpack_require__(310);
 	
 	__webpack_require__(311);
 	
-	__webpack_require__(312);
-	
-	__webpack_require__(314);
+	__webpack_require__(313);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -172,43 +172,43 @@ webpackJsonp([0],{
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _layouts = __webpack_require__(275);
+	var _layouts = __webpack_require__(274);
 	
 	var _layouts2 = _interopRequireDefault(_layouts);
 	
-	var _widgetConfigDialog = __webpack_require__(277);
+	var _widgetConfigDialog = __webpack_require__(276);
 	
 	var _widgetConfigDialog2 = _interopRequireDefault(_widgetConfigDialog);
 	
-	var _dashboardMenuEntry = __webpack_require__(281);
+	var _dashboardMenuEntry = __webpack_require__(280);
 	
 	var _dashboardMenuEntry2 = _interopRequireDefault(_dashboardMenuEntry);
 	
-	var _importExportDialog = __webpack_require__(291);
+	var _importExportDialog = __webpack_require__(290);
 	
 	var _importExportDialog2 = _interopRequireDefault(_importExportDialog);
 	
-	var _datasourceConfigDialog = __webpack_require__(292);
+	var _datasourceConfigDialog = __webpack_require__(291);
 	
 	var _datasourceConfigDialog2 = _interopRequireDefault(_datasourceConfigDialog);
 	
-	var _datasourceNavItem = __webpack_require__(294);
+	var _datasourceNavItem = __webpack_require__(293);
 	
 	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 	
-	var _widgetsNavItem = __webpack_require__(295);
+	var _widgetsNavItem = __webpack_require__(294);
 	
 	var _widgetsNavItem2 = _interopRequireDefault(_widgetsNavItem);
 	
-	var _pluginNavItem = __webpack_require__(296);
+	var _pluginNavItem = __webpack_require__(295);
 	
 	var _pluginNavItem2 = _interopRequireDefault(_pluginNavItem);
 	
-	var _pluginsDialog = __webpack_require__(297);
+	var _pluginsDialog = __webpack_require__(296);
 	
 	var _pluginsDialog2 = _interopRequireDefault(_pluginsDialog);
 	
-	var _persistence = __webpack_require__(298);
+	var _persistence = __webpack_require__(297);
 	
 	var Persistence = _interopRequireWildcard(_persistence);
 	
@@ -225,27 +225,30 @@ webpackJsonp([0],{
 	var Layout = exports.Layout = function (_Component) {
 	    _inherits(Layout, _Component);
 	
-	    function Layout() {
+	    function Layout(props) {
 	        _classCallCheck(this, Layout);
 	
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
+	
+	        _this.state = { hover: false };
+	        return _this;
 	    }
 	
 	    _createClass(Layout, [{
-	        key: "onFullscreenKeyPress",
-	        value: function onFullscreenKeyPress(e) {
-	            console.log("key pressed", event.keyCode);
+	        key: "onReadOnlyModeKeyPress",
+	        value: function onReadOnlyModeKeyPress(e) {
+	            //console.log("key pressed", event.keyCode);
 	            var intKey = window.Event ? e.which : e.keyCode;
-	            if (intKey === 27 && this.props.isFullscreen) {
-	                this.props.setFullscreen(false);
+	            if (intKey === 27) {
+	                this.props.setReadOnly(!this.props.isReadOnly);
 	            }
 	        }
 	    }, {
 	        key: "componentDidMount",
 	        value: function componentDidMount() {
-	            this.onFullscreenKeyPress = this.onFullscreenKeyPress.bind(this);
+	            this.onReadOnlyModeKeyPress = this.onReadOnlyModeKeyPress.bind(this);
 	
-	            ReactDOM.findDOMNode(this).offsetParent.addEventListener('keydown', this.onFullscreenKeyPress);
+	            ReactDOM.findDOMNode(this).offsetParent.addEventListener('keydown', this.onReadOnlyModeKeyPress);
 	        }
 	    }, {
 	        key: "render",
@@ -254,38 +257,13 @@ webpackJsonp([0],{
 	
 	            var props = this.props;
 	
-	            if (props.isFullscreen) {
-	                return React.createElement(
-	                    "div",
-	                    { onKeyUp: function onKeyUp(event) {
-	                            return _this2.onFullscreenKeyPress(event);
-	                        } },
-	                    React.createElement(
-	                        "div",
-	                        { className: "fullscreen-button" },
-	                        React.createElement(
-	                            "button",
-	                            { "class": "ui large button", onClick: function onClick() {
-	                                    return props.setFullscreen(false);
-	                                } },
-	                            React.createElement("i", { className: "compress icon" })
-	                        )
-	                    ),
-	                    React.createElement(
-	                        "div",
-	                        { className: "container" },
-	                        React.createElement(
-	                            "div",
-	                            { className: "ui grid" },
-	                            React.createElement(_widgetGrid2.default, null)
-	                        )
-	                    )
-	                );
-	            }
+	            var showMenu = !props.isReadOnly || this.state.hover;
 	
 	            return React.createElement(
 	                "div",
-	                null,
+	                { onKeyUp: function onKeyUp(event) {
+	                        return _this2.onReadOnlyModeKeyPress(event);
+	                    } },
 	                React.createElement(
 	                    "div",
 	                    null,
@@ -297,9 +275,25 @@ webpackJsonp([0],{
 	                React.createElement(
 	                    "div",
 	                    { className: "container" },
+	                    React.createElement("div", { className: showMenu ? "" : "menu-trigger",
+	                        onMouseOver: function onMouseOver() {
+	                            _this2.setState({ hover: true });
+	                        },
+	                        onMouseEnter: function onMouseEnter() {
+	                            _this2.setState({ hover: true });
+	                        }
+	
+	                    }),
 	                    React.createElement(
 	                        "div",
-	                        { className: "ui fixed inverted main menu" },
+	                        { className: "ui inverted fixed main menu " + (showMenu ? "topnav--visible" : "topnav--hidden"),
+	                            onMouseOver: function onMouseOver() {
+	                                _this2.setState({ hover: true });
+	                            },
+	                            onMouseLeave: function onMouseLeave() {
+	                                _this2.setState({ hover: false });
+	                            }
+	                        },
 	                        React.createElement(
 	                            "div",
 	                            { className: "ui container" },
@@ -324,9 +318,9 @@ webpackJsonp([0],{
 	                            React.createElement(
 	                                "a",
 	                                { className: "item", onClick: function onClick() {
-	                                        return props.setFullscreen(!props.isFullscreen);
+	                                        return props.setReadOnly(!props.isReadOnly);
 	                                    } },
-	                                React.createElement("i", { className: "angle double up icon" }),
+	                                React.createElement("i", { className: (props.isReadOnly ? "lock" : "unlock alternate") + " icon" }),
 	                                " "
 	                            )
 	                        )
@@ -345,18 +339,18 @@ webpackJsonp([0],{
 	}(_react.Component);
 	
 	Layout.propTypes = {
-	    setFullscreen: _react.PropTypes.func.isRequired,
-	    isFullscreen: _react.PropTypes.bool.isRequired
+	    setReadOnly: _react.PropTypes.func.isRequired,
+	    isReadOnly: _react.PropTypes.bool.isRequired
 	};
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return {
-	        isFullscreen: state.dashboard.isFullscreen
+	        isReadOnly: state.dashboard.isReadOnly
 	    };
 	}, function (dispatch) {
 	    return {
-	        setFullscreen: function setFullscreen(isFullscreen) {
-	            return dispatch(Dashboard.setFullscreen(isFullscreen));
+	        setReadOnly: function setReadOnly(isReadOnly) {
+	            return dispatch(Dashboard.setReadOnly(isReadOnly));
 	        }
 	    };
 	})(Layout);
@@ -375,7 +369,7 @@ webpackJsonp([0],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	exports.setFullscreen = setFullscreen;
+	exports.setReadOnly = setReadOnly;
 	exports.dashboard = dashboard;
 	
 	var _actionNames = __webpack_require__(241);
@@ -384,30 +378,20 @@ webpackJsonp([0],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
-	//import * as Fullscreen from 'screenfull'
-	
 	var initialState = exports.initialState = {
-	    isFullscreen: false
+	    isReadOnly: false
 	};
 	
-	function setFullscreen(isFullscreen) {
+	function setReadOnly(isReadOnly) {
 	    return function (dispatch) {
-	        dispatch(setFullscreenAction(isFullscreen));
-	        /*
-	        if (Fullscreen.enabled && isFullscreen) {
-	            console.log("requesting fullscreen")
-	            Fullscreen.request();
-	        }
-	        else if (Fullscreen.enabled && isFullscreen) {
-	            Fullscreen.exit();
-	        }   */
+	        dispatch(setReadOnlyAction(isReadOnly));
 	    };
 	}
 	
-	function setFullscreenAction(isFullscreen) {
+	function setReadOnlyAction(isReadOnly) {
 	    return {
-	        type: Action.SET_FULLSCREEN,
-	        isFullscreen: isFullscreen
+	        type: Action.SET_READONLY,
+	        isReadOnly: isReadOnly
 	    };
 	}
 	
@@ -416,9 +400,9 @@ webpackJsonp([0],{
 	    var action = arguments[1];
 	
 	    switch (action.type) {
-	        case Action.SET_FULLSCREEN:
+	        case Action.SET_READONLY:
 	            return _extends({}, state, {
-	                isFullscreen: action.isFullscreen
+	                isReadOnly: action.isReadOnly
 	            });
 	        default:
 	            return state;
@@ -439,7 +423,7 @@ webpackJsonp([0],{
 	
 	// Dashboard
 	var DASHBOARD_IMPORT = exports.DASHBOARD_IMPORT = "DASHBOARD_IMPORT";
-	var SET_FULLSCREEN = exports.SET_FULLSCREEN = "SET_FULLSCREEN";
+	var SET_READONLY = exports.SET_READONLY = "SET_READONLY";
 	
 	// Layouts
 	var ADD_LAYOUT = exports.ADD_LAYOUT = "ADD_LAYOUT";
@@ -528,7 +512,10 @@ webpackJsonp([0],{
 	
 	var ResponsiveGrid = (0, _widthProvider2.default)(_reactGridLayout.Responsive);
 	
-	__webpack_require__(273);
+	__webpack_require__(272);
+	
+	var breakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
+	var cols = { lg: 12, md: 12, sm: 12, xs: 6, xxs: 3 };
 	
 	var WidgetGrid = function (_Component) {
 	    _inherits(WidgetGrid, _Component);
@@ -560,7 +547,7 @@ webpackJsonp([0],{
 	                    return null;
 	                }
 	                // WidgetFrame must be loaded as function, else the grid is not working properly.
-	                return (0, _widgetFrame2.default)({ widget: widgetState, widgetPlugin: widgetPlugin });
+	                return (0, _widgetFrame2.default)({ widget: widgetState, widgetPlugin: widgetPlugin, isReadOnly: props.isReadOnly });
 	            }).filter(function (frame) {
 	                return frame !== null;
 	            });
@@ -573,8 +560,8 @@ webpackJsonp([0],{
 	            return React.createElement(
 	                ResponsiveGrid,
 	                { className: "column", rowHeight: Widgets.ROW_HEIGHT,
-	                    breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
-	                    cols: { lg: 12, md: 12, sm: 12, xs: 6, xxs: 3 },
+	                    breakpoints: breakpoints,
+	                    cols: cols,
 	                    draggableCancel: ".no-drag",
 	                    draggableHandle: ".drag",
 	                    onLayoutChange: this.onLayoutChange.bind(this)
@@ -592,14 +579,16 @@ webpackJsonp([0],{
 	    datasources: _react.PropTypes.object.isRequired,
 	    widgetPlugins: _react.PropTypes.object.isRequired,
 	    onLayoutChange: _react.PropTypes.func,
-	    deleteWidget: _react.PropTypes.func
+	    deleteWidget: _react.PropTypes.func,
+	    isReadOnly: _react.PropTypes.bool.isRequired
 	};
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
 	    return {
 	        widgets: _lodash2.default.valuesIn(state.widgets) || [],
 	        datasources: state.datasources || {},
-	        widgetPlugins: state.widgetPlugins || {}
+	        widgetPlugins: state.widgetPlugins || {},
+	        isReadOnly: state.dashboard.isReadOnly
 	    };
 	}, function (dispatch) {
 	    return {
@@ -1531,23 +1520,18 @@ webpackJsonp([0],{
 	            _grid: { x: widgetState.col, y: widgetState.row, w: widgetState.width, h: widgetState.height } },
 	        React.createElement(
 	            'div',
-	            { className: 'ui inverted segment' },
-	            React.createElement(
+	            { className: "ui inverted segment" + (props.isReadOnly ? "" : " drag") },
+	            props.isReadOnly ? null : React.createElement(
 	                'div',
 	                { className: 'ui tiny horizontal right floated inverted list' },
 	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
 	                    visible: props.widgetPlugin.typeInfo.settings ? true : false,
 	                    icon: 'configure' }),
-	                React.createElement(
-	                    'a',
-	                    { className: 'right item drag' },
-	                    React.createElement('i', { className: 'move icon drag' })
-	                ),
 	                React.createElement(DeleteWidgetButton, { className: 'right floated item', widgetState: widgetState, icon: 'remove' })
 	            ),
 	            React.createElement(
 	                'div',
-	                { className: 'ui item top attached' },
+	                { className: "ui item top attached" + (props.isReadOnly ? "" : " drag") },
 	                widgetState.props.name || ' '
 	            )
 	        ),
@@ -1561,7 +1545,8 @@ webpackJsonp([0],{
 	
 	WidgetFrame.propTypes = {
 	    widget: Widgets.widgetPropType.isRequired,
-	    widgetPlugin: WidgetPlugins.widgetPluginType.isRequired
+	    widgetPlugin: WidgetPlugins.widgetPluginType.isRequired,
+	    isReadOnly: _react.PropTypes.bool.isRequired
 	};
 	
 	exports.default = WidgetFrame;
@@ -2251,7 +2236,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 275:
+/***/ 274:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2274,7 +2259,7 @@ webpackJsonp([0],{
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _layouts = __webpack_require__(276);
+	var _layouts = __webpack_require__(275);
 	
 	var Layouts = _interopRequireWildcard(_layouts);
 	
@@ -2492,7 +2477,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 276:
+/***/ 275:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2652,7 +2637,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 277:
+/***/ 276:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2685,11 +2670,11 @@ webpackJsonp([0],{
 	
 	var _reactRedux = __webpack_require__(225);
 	
-	var _settingsForm = __webpack_require__(278);
+	var _settingsForm = __webpack_require__(277);
 	
 	var _settingsForm2 = _interopRequireDefault(_settingsForm);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	var _modalDialogIds = __webpack_require__(249);
 	
@@ -2881,7 +2866,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 278:
+/***/ 277:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -2906,9 +2891,9 @@ webpackJsonp([0],{
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
-	var _collection = __webpack_require__(280);
+	var _collection = __webpack_require__(279);
 	
 	var _lodash = __webpack_require__(42);
 	
@@ -3107,7 +3092,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 280:
+/***/ 279:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3146,7 +3131,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 281:
+/***/ 280:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3161,7 +3146,7 @@ webpackJsonp([0],{
 	
 	var _reactRedux = __webpack_require__(225);
 	
-	var _import = __webpack_require__(282);
+	var _import = __webpack_require__(281);
 	
 	var Import = _interopRequireWildcard(_import);
 	
@@ -3220,7 +3205,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 282:
+/***/ 281:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3242,9 +3227,9 @@ webpackJsonp([0],{
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _layouts = __webpack_require__(276);
+	var _layouts = __webpack_require__(275);
 	
-	var _plugins = __webpack_require__(283);
+	var _plugins = __webpack_require__(282);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
@@ -3306,7 +3291,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 283:
+/***/ 282:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3325,7 +3310,7 @@ webpackJsonp([0],{
 	
 	var _reducer = __webpack_require__(250);
 	
-	var _datasourcePlugins = __webpack_require__(284);
+	var _datasourcePlugins = __webpack_require__(283);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -3333,11 +3318,11 @@ webpackJsonp([0],{
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _loadjs = __webpack_require__(285);
+	var _loadjs = __webpack_require__(284);
 	
 	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
-	var _pluginCache = __webpack_require__(286);
+	var _pluginCache = __webpack_require__(285);
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
@@ -3345,7 +3330,7 @@ webpackJsonp([0],{
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _urijs = __webpack_require__(287);
+	var _urijs = __webpack_require__(286);
 	
 	var _urijs2 = _interopRequireDefault(_urijs);
 	
@@ -3359,46 +3344,52 @@ webpackJsonp([0],{
 	
 	function loadPluginFromUrl(url) {
 	    return function (dispatch) {
-	        (0, _loadjs2.default)([url], function () {
-	            if (PluginCache.hasPlugin()) {
-	                var paths;
+	        (0, _loadjs2.default)([url], { success: function success() {
+	                return onScriptLoaded(url, dispatch);
+	            } });
+	    };
+	}
 	
-	                (function () {
-	                    var plugin = PluginCache.popLoadedPlugin();
+	function onScriptLoaded(url, dispatch) {
+	    if (PluginCache.hasPlugin()) {
+	        var paths;
 	
-	                    var dependencies = plugin.TYPE_INFO.dependencies;
-	                    if (_lodash2.default.isArray(dependencies)) {
-	                        paths = dependencies.map(function (dependency) {
-	                            return (0, _urijs2.default)(dependency).absoluteTo(url).toString();
-	                        });
+	        (function () {
+	            var plugin = PluginCache.popLoadedPlugin();
+	
+	            var dependencies = plugin.TYPE_INFO.dependencies;
+	            if (_lodash2.default.isArray(dependencies)) {
+	                paths = dependencies.map(function (dependency) {
+	                    return (0, _urijs2.default)(dependency).absoluteTo(url).toString();
+	                });
 	
 	
-	                        console.log("Loading Dependencies for Plugin", paths);
+	                console.log("Loading Dependencies for Plugin", paths);
 	
-	                        // TODO: Load Plugins into a sandbox / iframe, and pass as "deps" object
-	                        // Let's wait for the dependency hell before introducing this.
-	                        // Until then we can try to just provide shared libs by the Dashboard, e.g. jQuery, d3, etc.
-	                        // That should avoid that people add too many custom libs.
-	                        /*sandie([dependencies],
-	                         function (deps) {
-	                         plugin.deps = deps;
-	                         console.log("deps loaded", deps);
-	                         dispatch(addPlugin(plugin, url));
-	                         }
-	                         );  */
+	                // TODO: Load Plugins into a sandbox / iframe, and pass as "deps" object
+	                // Let's wait for the dependency hell before introducing this.
+	                // Until then we can try to just provide shared libs by the Dashboard, e.g. jQuery, d3, etc.
+	                // That should avoid that people add too many custom libs.
+	                /*sandie([dependencies],
+	                 function (deps) {
+	                 plugin.deps = deps;
+	                 console.log("deps loaded", deps);
+	                 dispatch(addPlugin(plugin, url));
+	                 }
+	                 );  */
 	
-	                        (0, _loadjs2.default)(paths, function () {
-	                            dispatch(addPlugin(plugin, url));
-	                        });
-	                    } else {
+	                (0, _loadjs2.default)(paths, {
+	                    success: function success() {
 	                        dispatch(addPlugin(plugin, url));
 	                    }
-	                })();
+	                });
 	            } else {
-	                console.error("Failed to load Plugin. Make sure it called window.iotDashboardApi.register***Plugin from url " + url);
+	                dispatch(addPlugin(plugin, url));
 	            }
-	        });
-	    };
+	        })();
+	    } else {
+	        console.error("Failed to load Plugin. Make sure it called window.iotDashboardApi.register***Plugin from url " + url);
+	    }
 	}
 	
 	function initializeExternalPlugins() {
@@ -3476,7 +3467,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 284:
+/***/ 283:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3589,7 +3580,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 286:
+/***/ 285:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3640,7 +3631,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 291:
+/***/ 290:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3657,7 +3648,7 @@ webpackJsonp([0],{
 	
 	var _reactRedux = __webpack_require__(225);
 	
-	var _import = __webpack_require__(282);
+	var _import = __webpack_require__(281);
 	
 	var Import = _interopRequireWildcard(_import);
 	
@@ -3828,7 +3819,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 292:
+/***/ 291:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3851,7 +3842,7 @@ webpackJsonp([0],{
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _datasource = __webpack_require__(293);
+	var _datasource = __webpack_require__(292);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
@@ -3865,11 +3856,11 @@ webpackJsonp([0],{
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _settingsForm = __webpack_require__(278);
+	var _settingsForm = __webpack_require__(277);
 	
 	var _settingsForm2 = _interopRequireDefault(_settingsForm);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	var _modalDialogIds = __webpack_require__(249);
 	
@@ -4104,7 +4095,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 293:
+/***/ 292:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4126,7 +4117,7 @@ webpackJsonp([0],{
 	exports.fetchDatasourceData = fetchDatasourceData;
 	exports.datasources = datasources;
 	
-	var _datasourcePlugins = __webpack_require__(284);
+	var _datasourcePlugins = __webpack_require__(283);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -4330,7 +4321,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 294:
+/***/ 293:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4343,7 +4334,7 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _datasource = __webpack_require__(293);
+	var _datasource = __webpack_require__(292);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
@@ -4357,7 +4348,7 @@ webpackJsonp([0],{
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -4431,7 +4422,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 295:
+/***/ 294:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4466,7 +4457,7 @@ webpackJsonp([0],{
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -4515,7 +4506,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 296:
+/***/ 295:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4538,7 +4529,7 @@ webpackJsonp([0],{
 	
 	var _reactRedux = __webpack_require__(225);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	var _modalDialogIds = __webpack_require__(249);
 	
@@ -4578,7 +4569,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 297:
+/***/ 296:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4605,7 +4596,7 @@ webpackJsonp([0],{
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	var _elements = __webpack_require__(248);
 	
@@ -4619,7 +4610,7 @@ webpackJsonp([0],{
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _plugins = __webpack_require__(283);
+	var _plugins = __webpack_require__(282);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
@@ -4627,7 +4618,7 @@ webpackJsonp([0],{
 	
 	var WidgetsPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _datasourcePlugins = __webpack_require__(284);
+	var _datasourcePlugins = __webpack_require__(283);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -4900,7 +4891,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 298:
+/***/ 297:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4981,7 +4972,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 299:
+/***/ 298:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5060,7 +5051,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 300:
+/***/ 299:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5076,7 +5067,7 @@ webpackJsonp([0],{
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _c = __webpack_require__(301);
+	var _c = __webpack_require__(300);
 	
 	var c3 = _interopRequireWildcard(_c);
 	
@@ -5282,7 +5273,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 303:
+/***/ 302:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5293,15 +5284,15 @@ webpackJsonp([0],{
 	exports.start = start;
 	exports.stop = stop;
 	
-	var _datasource = __webpack_require__(293);
+	var _datasource = __webpack_require__(292);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _datasourcePlugins = __webpack_require__(284);
+	var _datasourcePlugins = __webpack_require__(283);
 	
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 	
-	var _store = __webpack_require__(304);
+	var _store = __webpack_require__(303);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -5329,7 +5320,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 304:
+/***/ 303:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5343,11 +5334,11 @@ webpackJsonp([0],{
 	
 	var Redux = _interopRequireWildcard(_redux);
 	
-	var _reduxThunk = __webpack_require__(305);
+	var _reduxThunk = __webpack_require__(304);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxLogger = __webpack_require__(306);
+	var _reduxLogger = __webpack_require__(305);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
@@ -5359,11 +5350,11 @@ webpackJsonp([0],{
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _layouts = __webpack_require__(276);
+	var _layouts = __webpack_require__(275);
 	
 	var Layouts = _interopRequireWildcard(_layouts);
 	
-	var _datasource = __webpack_require__(293);
+	var _datasource = __webpack_require__(292);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
@@ -5371,7 +5362,7 @@ webpackJsonp([0],{
 	
 	var Dashboard = _interopRequireWildcard(_dashboard);
 	
-	var _import = __webpack_require__(282);
+	var _import = __webpack_require__(281);
 	
 	var Import = _interopRequireWildcard(_import);
 	
@@ -5379,15 +5370,15 @@ webpackJsonp([0],{
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _persistence = __webpack_require__(298);
+	var _persistence = __webpack_require__(297);
 	
 	var Persist = _interopRequireWildcard(_persistence);
 	
-	var _plugins = __webpack_require__(283);
+	var _plugins = __webpack_require__(282);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _reduxForm = __webpack_require__(279);
+	var _reduxForm = __webpack_require__(278);
 	
 	var _actionNames = __webpack_require__(241);
 	
@@ -5397,7 +5388,7 @@ webpackJsonp([0],{
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _datasourcePlugins = __webpack_require__(284);
+	var _datasourcePlugins = __webpack_require__(283);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -5460,7 +5451,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 307:
+/***/ 306:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5560,7 +5551,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 308:
+/***/ 307:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5625,7 +5616,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 309:
+/***/ 308:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5634,19 +5625,19 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _freeboardDatasource = __webpack_require__(310);
+	var _freeboardDatasource = __webpack_require__(309);
 	
 	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
 	
-	var _plugins = __webpack_require__(283);
+	var _plugins = __webpack_require__(282);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _pluginCache = __webpack_require__(286);
+	var _pluginCache = __webpack_require__(285);
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
-	var _store = __webpack_require__(304);
+	var _store = __webpack_require__(303);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -5709,7 +5700,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 310:
+/***/ 309:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5719,7 +5710,7 @@ webpackJsonp([0],{
 	});
 	exports.create = create;
 	
-	var _loadjs = __webpack_require__(285);
+	var _loadjs = __webpack_require__(284);
 	
 	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
@@ -5767,7 +5758,7 @@ webpackJsonp([0],{
 	
 	        // TODO: Maybe no needed anymore when we take care of dependencies elsewhere
 	        if (TYPE_INFO.dependencies) {
-	            (0, _loadjs2.default)([].concat(_toConsumableArray(TYPE_INFO.dependencies)), createNewInstance);
+	            (0, _loadjs2.default)([].concat(_toConsumableArray(TYPE_INFO.dependencies)), { success: createNewInstance });
 	        } else {
 	            createNewInstance();
 	        }
@@ -5780,12 +5771,12 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 311:
+/***/ 310:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _pluginCache = __webpack_require__(286);
+	var _pluginCache = __webpack_require__(285);
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
@@ -5798,14 +5789,14 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 312:
+/***/ 311:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 314:
+/***/ 313:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
