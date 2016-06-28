@@ -13,27 +13,23 @@ webpackJsonp([0],{
 
 	'use strict';
 	
-	var _lodash = __webpack_require__(42);
+	__webpack_require__(42);
 	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	__webpack_require__(44);
+	__webpack_require__(52);
 	
 	__webpack_require__(54);
 	
-	__webpack_require__(56);
-	
-	var _reactDom = __webpack_require__(58);
+	var _reactDom = __webpack_require__(56);
 	
 	var ReactDOM = _interopRequireWildcard(_reactDom);
 	
-	var _exposeReactReact = __webpack_require__(219);
+	var _exposeReactReact = __webpack_require__(217);
 	
 	var React = _interopRequireWildcard(_exposeReactReact);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _pageLayout = __webpack_require__(240);
+	var _pageLayout = __webpack_require__(238);
 	
 	var _pageLayout2 = _interopRequireDefault(_pageLayout);
 	
@@ -73,27 +69,31 @@ webpackJsonp([0],{
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	__webpack_require__(309);
+	var _expose_Lodash = __webpack_require__(309);
 	
-	__webpack_require__(311);
+	var _expose_Lodash2 = _interopRequireDefault(_expose_Lodash);
+	
+	__webpack_require__(310);
 	
 	__webpack_require__(312);
 	
-	__webpack_require__(314);
+	__webpack_require__(313);
 	
-	__webpack_require__(316);
+	__webpack_require__(315);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	__webpack_require__(317);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	Store.default.dispatch(Plugins.loadPlugin(TextWidget));
 	Store.default.dispatch(Plugins.loadPlugin(ChartWidget));
-	
 	Store.default.dispatch(Plugins.loadPluginFromUrl("./plugins/GoogleMapsWidget.js"));
 	
 	Store.default.dispatch(Plugins.loadPlugin(RandomDatasource));
 	Store.default.dispatch(Plugins.loadPlugin(TimeDatasource));
+	Store.default.dispatch(Plugins.loadPluginFromUrl("./plugins/DigimondoGpsDatasource.js"));
 	
 	Store.default.dispatch(Plugins.initializeExternalPlugins());
 	
@@ -102,7 +102,7 @@ webpackJsonp([0],{
 	
 	//noinspection Eslint
 	function cleanupState(state) {
-	    _lodash2.default.valuesIn(state.widgets).forEach(function (widgetState) {
+	    _expose_Lodash2.default.valuesIn(state.widgets).forEach(function (widgetState) {
 	        var widgetPlugin = WidgetPlugins.pluginRegistry.getPlugin(widgetState.type);
 	        if (!widgetPlugin) {
 	            console.error("No WidgetPlugin for type '" + widgetState.type + "'! Deleting the widget.");
@@ -142,15 +142,15 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 219:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["React"] = __webpack_require__(220);
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["React"] = __webpack_require__(218);
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 
-/***/ 240:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -162,25 +162,25 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactDom = __webpack_require__(58);
+	var _reactDom = __webpack_require__(56);
 	
 	var ReactDOM = _interopRequireWildcard(_reactDom);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _dashboard = __webpack_require__(241);
+	var _dashboard = __webpack_require__(239);
 	
 	var Dashboard = _interopRequireWildcard(_dashboard);
 	
-	var _widgetGrid = __webpack_require__(243);
+	var _widgetGrid = __webpack_require__(241);
 	
 	var _widgetGrid2 = _interopRequireDefault(_widgetGrid);
 	
-	var _jquery = __webpack_require__(55);
+	var _jquery = __webpack_require__(53);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -369,7 +369,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 241:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -384,7 +384,7 @@ webpackJsonp([0],{
 	exports.setReadOnly = setReadOnly;
 	exports.dashboard = dashboard;
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -423,7 +423,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 242:
+/***/ 240:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -473,7 +473,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 243:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -484,13 +484,13 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -634,7 +634,7 @@ webpackJsonp([0],{
 	exports.updateLayout = updateLayout;
 	exports.widgets = widgets;
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
@@ -646,13 +646,13 @@ webpackJsonp([0],{
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
 	var _reducer = __webpack_require__(251);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -931,7 +931,7 @@ webpackJsonp([0],{
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var _modalDialog = __webpack_require__(247);
 	
@@ -1050,7 +1050,7 @@ webpackJsonp([0],{
 	exports.closeModal = closeModal;
 	exports.modalDialog = modalDialog;
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -1158,7 +1158,7 @@ webpackJsonp([0],{
 	            return state;
 	    }
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)))
 
 /***/ },
 
@@ -1173,11 +1173,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _modalDialog = __webpack_require__(247);
 	
@@ -1297,7 +1297,7 @@ webpackJsonp([0],{
 	        }
 	    };
 	})(ModalDialog);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)))
 
 /***/ },
 
@@ -1313,7 +1313,7 @@ webpackJsonp([0],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
@@ -1409,7 +1409,7 @@ webpackJsonp([0],{
 	
 	exports.genCrudReducer = genCrudReducer;
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -1489,11 +1489,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _widgetConfig = __webpack_require__(246);
 	
@@ -1537,10 +1537,10 @@ webpackJsonp([0],{
 	            props.isReadOnly ? null : React.createElement(
 	                'div',
 	                { className: 'ui tiny horizontal right floated inverted list' },
-	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
+	                React.createElement(ConfigWidgetButton, { className: 'right item no-drag', widgetState: widgetState,
 	                    visible: props.widgetPlugin.typeInfo.settings ? true : false,
 	                    icon: 'configure' }),
-	                React.createElement(DeleteWidgetButton, { className: 'right floated item', widgetState: widgetState, icon: 'remove' })
+	                React.createElement(DeleteWidgetButton, { className: 'right floated item no-drag', widgetState: widgetState, icon: 'remove' })
 	            ),
 	            React.createElement(
 	                'div',
@@ -1661,13 +1661,13 @@ webpackJsonp([0],{
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
 	var _reducer = __webpack_require__(251);
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -1773,13 +1773,13 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _ = _interopRequireWildcard(_lodash);
 	
@@ -2045,7 +2045,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -2171,11 +2171,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(58);
+	var _reactDom = __webpack_require__(56);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -2277,13 +2277,13 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -2534,7 +2534,7 @@ webpackJsonp([0],{
 	
 	var _reducer = __webpack_require__(251);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -2680,7 +2680,7 @@ webpackJsonp([0],{
 	
 	exports.unshiftIfNotExists = unshiftIfNotExists;
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -2696,7 +2696,7 @@ webpackJsonp([0],{
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _settingsForm = __webpack_require__(278);
 	
@@ -2909,11 +2909,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _elements = __webpack_require__(249);
 	
@@ -2923,7 +2923,7 @@ webpackJsonp([0],{
 	
 	var _collection = __webpack_require__(280);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -3116,7 +3116,7 @@ webpackJsonp([0],{
 	        datasources: state.datasources
 	    };
 	})(DatasourceInput);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)))
 
 /***/ },
 
@@ -3130,7 +3130,7 @@ webpackJsonp([0],{
 	});
 	exports.chunk = chunk;
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -3168,11 +3168,11 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _import = __webpack_require__(282);
 	
@@ -3251,7 +3251,7 @@ webpackJsonp([0],{
 	exports.deserialize = deserialize;
 	exports.doImport = doImport;
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -3332,7 +3332,7 @@ webpackJsonp([0],{
 	exports.initializeExternalPlugins = initializeExternalPlugins;
 	exports.addPlugin = addPlugin;
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -3354,7 +3354,7 @@ webpackJsonp([0],{
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -3518,7 +3518,7 @@ webpackJsonp([0],{
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -3670,11 +3670,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _import = __webpack_require__(282);
 	
@@ -3862,7 +3862,7 @@ webpackJsonp([0],{
 	
 	exports.unshiftIfNotExists = unshiftIfNotExists;
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -3874,9 +3874,9 @@ webpackJsonp([0],{
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -4151,7 +4151,7 @@ webpackJsonp([0],{
 	
 	var _reducer = __webpack_require__(251);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -4159,7 +4159,7 @@ webpackJsonp([0],{
 	
 	var Uuid = _interopRequireWildcard(_uuid);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -4358,7 +4358,7 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -4366,9 +4366,9 @@ webpackJsonp([0],{
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -4459,7 +4459,7 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -4467,13 +4467,13 @@ webpackJsonp([0],{
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _widgetConfig = __webpack_require__(246);
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -4543,11 +4543,11 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -4555,7 +4555,7 @@ webpackJsonp([0],{
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
 	var _reduxForm = __webpack_require__(279);
 	
@@ -4610,7 +4610,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -4618,9 +4618,9 @@ webpackJsonp([0],{
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _reactRedux = __webpack_require__(226);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -5012,7 +5012,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
@@ -5095,7 +5095,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(220);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
@@ -5367,7 +5367,7 @@ webpackJsonp([0],{
 	});
 	exports.clearState = clearState;
 	
-	var _redux = __webpack_require__(227);
+	var _redux = __webpack_require__(225);
 	
 	var Redux = _interopRequireWildcard(_redux);
 	
@@ -5395,7 +5395,7 @@ webpackJsonp([0],{
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _dashboard = __webpack_require__(241);
+	var _dashboard = __webpack_require__(239);
 	
 	var Dashboard = _interopRequireWildcard(_dashboard);
 	
@@ -5417,7 +5417,7 @@ webpackJsonp([0],{
 	
 	var _reduxForm = __webpack_require__(279);
 	
-	var _actionNames = __webpack_require__(242);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -5656,13 +5656,21 @@ webpackJsonp([0],{
 /***/ 309:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["_"] = __webpack_require__(242);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 310:
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
-	var _freeboardDatasource = __webpack_require__(310);
+	var _freeboardDatasource = __webpack_require__(311);
 	
 	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
 	
@@ -5737,7 +5745,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 310:
+/***/ 311:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5751,7 +5759,7 @@ webpackJsonp([0],{
 	
 	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -5808,7 +5816,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 311:
+/***/ 312:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5826,30 +5834,30 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 312:
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(313);
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-
 /***/ 313:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(55);
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(314);
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 
 /***/ 314:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(53);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 315:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 316:
+/***/ 317:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";

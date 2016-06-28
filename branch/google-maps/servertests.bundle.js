@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d7ecc5adb10bc4bb98eb"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bbd1bab6412672f81f98"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -50691,10 +50691,10 @@
 	            props.isReadOnly ? null : React.createElement(
 	                'div',
 	                { className: 'ui tiny horizontal right floated inverted list' },
-	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
+	                React.createElement(ConfigWidgetButton, { className: 'right item no-drag', widgetState: widgetState,
 	                    visible: props.widgetPlugin.typeInfo.settings ? true : false,
 	                    icon: 'configure' }),
-	                React.createElement(DeleteWidgetButton, { className: 'right floated item', widgetState: widgetState, icon: 'remove' })
+	                React.createElement(DeleteWidgetButton, { className: 'right floated item no-drag', widgetState: widgetState, icon: 'remove' })
 	            ),
 	            React.createElement(
 	                'div',
