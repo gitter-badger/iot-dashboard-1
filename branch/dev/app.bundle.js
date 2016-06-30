@@ -13,83 +13,87 @@ webpackJsonp([0],{
 
 	'use strict';
 	
-	var _lodash = __webpack_require__(42);
+	__webpack_require__(42);
 	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	__webpack_require__(44);
+	__webpack_require__(52);
 	
 	__webpack_require__(54);
 	
-	__webpack_require__(56);
-	
-	var _reactDom = __webpack_require__(58);
+	var _reactDom = __webpack_require__(56);
 	
 	var ReactDOM = _interopRequireWildcard(_reactDom);
 	
-	var _react = __webpack_require__(219);
+	var _exposeReactReact = __webpack_require__(217);
 	
-	var React = _interopRequireWildcard(_react);
+	var React = _interopRequireWildcard(_exposeReactReact);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _pageLayout = __webpack_require__(239);
+	var _pageLayout = __webpack_require__(238);
 	
 	var _pageLayout2 = _interopRequireDefault(_pageLayout);
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _textWidget = __webpack_require__(298);
+	var _textWidget = __webpack_require__(299);
 	
 	var TextWidget = _interopRequireWildcard(_textWidget);
 	
-	var _chartWidget = __webpack_require__(299);
+	var _chartWidget = __webpack_require__(300);
 	
 	var ChartWidget = _interopRequireWildcard(_chartWidget);
 	
-	var _datasourceWorker = __webpack_require__(302);
+	var _datasourceWorker = __webpack_require__(303);
 	
 	var DatasourceWorker = _interopRequireWildcard(_datasourceWorker);
 	
-	var _randomDatasource = __webpack_require__(306);
+	var _randomDatasource = __webpack_require__(307);
 	
 	var RandomDatasource = _interopRequireWildcard(_randomDatasource);
 	
-	var _timeDatasource = __webpack_require__(307);
+	var _timeDatasource = __webpack_require__(308);
 	
 	var TimeDatasource = _interopRequireWildcard(_timeDatasource);
 	
-	var _store = __webpack_require__(303);
+	var _store = __webpack_require__(304);
 	
 	var Store = _interopRequireWildcard(_store);
 	
-	var _plugins = __webpack_require__(282);
+	var _plugins = __webpack_require__(283);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	__webpack_require__(308);
+	var _expose_Lodash = __webpack_require__(309);
+	
+	var _expose_Lodash2 = _interopRequireDefault(_expose_Lodash);
 	
 	__webpack_require__(310);
 	
-	__webpack_require__(311);
+	__webpack_require__(312);
 	
 	__webpack_require__(313);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	__webpack_require__(315);
+	
+	__webpack_require__(317);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	Store.default.dispatch(Plugins.loadPlugin(TextWidget));
 	Store.default.dispatch(Plugins.loadPlugin(ChartWidget));
+	Store.default.dispatch(Plugins.loadPluginFromUrl("./plugins/GoogleMapsWidget.js"));
 	
 	Store.default.dispatch(Plugins.loadPlugin(RandomDatasource));
 	Store.default.dispatch(Plugins.loadPlugin(TimeDatasource));
+	Store.default.dispatch(Plugins.loadPluginFromUrl("./plugins/DigimondoGpsDatasource.js"));
 	
 	Store.default.dispatch(Plugins.initializeExternalPlugins());
 	
@@ -98,7 +102,7 @@ webpackJsonp([0],{
 	
 	//noinspection Eslint
 	function cleanupState(state) {
-	    _lodash2.default.valuesIn(state.widgets).forEach(function (widgetState) {
+	    _expose_Lodash2.default.valuesIn(state.widgets).forEach(function (widgetState) {
 	        var widgetPlugin = WidgetPlugins.pluginRegistry.getPlugin(widgetState.type);
 	        if (!widgetPlugin) {
 	            console.error("No WidgetPlugin for type '" + widgetState.type + "'! Deleting the widget.");
@@ -138,7 +142,15 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 239:
+/***/ 217:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["React"] = __webpack_require__(218);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -150,65 +162,65 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactDom = __webpack_require__(58);
+	var _reactDom = __webpack_require__(56);
 	
 	var ReactDOM = _interopRequireWildcard(_reactDom);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _dashboard = __webpack_require__(240);
+	var _dashboard = __webpack_require__(239);
 	
 	var Dashboard = _interopRequireWildcard(_dashboard);
 	
-	var _widgetGrid = __webpack_require__(242);
+	var _widgetGrid = __webpack_require__(241);
 	
 	var _widgetGrid2 = _interopRequireDefault(_widgetGrid);
 	
-	var _jquery = __webpack_require__(55);
+	var _jquery = __webpack_require__(53);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _layouts = __webpack_require__(274);
+	var _layouts = __webpack_require__(275);
 	
 	var _layouts2 = _interopRequireDefault(_layouts);
 	
-	var _widgetConfigDialog = __webpack_require__(276);
+	var _widgetConfigDialog = __webpack_require__(277);
 	
 	var _widgetConfigDialog2 = _interopRequireDefault(_widgetConfigDialog);
 	
-	var _dashboardMenuEntry = __webpack_require__(280);
+	var _dashboardMenuEntry = __webpack_require__(281);
 	
 	var _dashboardMenuEntry2 = _interopRequireDefault(_dashboardMenuEntry);
 	
-	var _importExportDialog = __webpack_require__(290);
+	var _importExportDialog = __webpack_require__(291);
 	
 	var _importExportDialog2 = _interopRequireDefault(_importExportDialog);
 	
-	var _datasourceConfigDialog = __webpack_require__(291);
+	var _datasourceConfigDialog = __webpack_require__(292);
 	
 	var _datasourceConfigDialog2 = _interopRequireDefault(_datasourceConfigDialog);
 	
-	var _datasourceNavItem = __webpack_require__(293);
+	var _datasourceNavItem = __webpack_require__(294);
 	
 	var _datasourceNavItem2 = _interopRequireDefault(_datasourceNavItem);
 	
-	var _widgetsNavItem = __webpack_require__(294);
+	var _widgetsNavItem = __webpack_require__(295);
 	
 	var _widgetsNavItem2 = _interopRequireDefault(_widgetsNavItem);
 	
-	var _pluginNavItem = __webpack_require__(295);
+	var _pluginNavItem = __webpack_require__(296);
 	
 	var _pluginNavItem2 = _interopRequireDefault(_pluginNavItem);
 	
-	var _pluginsDialog = __webpack_require__(296);
+	var _pluginsDialog = __webpack_require__(297);
 	
 	var _pluginsDialog2 = _interopRequireDefault(_pluginsDialog);
 	
-	var _persistence = __webpack_require__(297);
+	var _persistence = __webpack_require__(298);
 	
 	var Persistence = _interopRequireWildcard(_persistence);
 	
@@ -357,7 +369,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 240:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -372,7 +384,7 @@ webpackJsonp([0],{
 	exports.setReadOnly = setReadOnly;
 	exports.dashboard = dashboard;
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -411,7 +423,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 241:
+/***/ 240:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -461,7 +473,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 242:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -472,33 +484,33 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _widgetFrame = __webpack_require__(251);
+	var _widgetFrame = __webpack_require__(252);
 	
 	var _widgetFrame2 = _interopRequireDefault(_widgetFrame);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _widthProvider = __webpack_require__(256);
+	var _widthProvider = __webpack_require__(257);
 	
 	var _widthProvider2 = _interopRequireDefault(_widthProvider);
 	
-	var _reactGridLayout = __webpack_require__(257);
+	var _reactGridLayout = __webpack_require__(258);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -512,7 +524,7 @@ webpackJsonp([0],{
 	
 	var ResponsiveGrid = (0, _widthProvider2.default)(_reactGridLayout.Responsive);
 	
-	__webpack_require__(272);
+	__webpack_require__(273);
 	
 	var breakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
 	var cols = { lg: 12, md: 12, sm: 12, xs: 6, xxs: 3 };
@@ -603,7 +615,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 243:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -622,25 +634,25 @@ webpackJsonp([0],{
 	exports.updateLayout = updateLayout;
 	exports.widgets = widgets;
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _uuid = __webpack_require__(244);
+	var _uuid = __webpack_require__(245);
 	
 	var Uuid = _interopRequireWildcard(_uuid);
 	
-	var _widgetConfig = __webpack_require__(245);
+	var _widgetConfig = __webpack_require__(246);
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _reducer = __webpack_require__(250);
+	var _reducer = __webpack_require__(251);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
@@ -721,8 +733,8 @@ webpackJsonp([0],{
 	
 	function addWidget(widgetType) {
 	    var widgetProps = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	    var width = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
-	    var height = arguments.length <= 3 || arguments[3] === undefined ? 1 : arguments[3];
+	    var width = arguments.length <= 2 || arguments[2] === undefined ? 3 : arguments[2];
+	    var height = arguments.length <= 3 || arguments[3] === undefined ? 3 : arguments[3];
 	
 	    return function (dispatch, getState) {
 	        var widgets = getState().widgets;
@@ -837,7 +849,8 @@ webpackJsonp([0],{
 	                col: layout.x,
 	                width: layout.w,
 	                height: layout.h,
-	                availableHeightPx: layout.h * ROW_HEIGHT - HEADER_HEIGHT
+	                // The 10 px extra seem to be based on a bug in the grid layout ...
+	                availableHeightPx: layout.h * (ROW_HEIGHT + 10) - HEADER_HEIGHT
 	            });
 	        default:
 	            return state;
@@ -878,7 +891,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 244:
+/***/ 245:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -897,7 +910,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 245:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -914,17 +927,17 @@ webpackJsonp([0],{
 	exports.openWidgetConfigDialog = openWidgetConfigDialog;
 	exports.widgetConfigDialog = widgetConfigDialog;
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
-	var _modalDialog = __webpack_require__(246);
+	var _modalDialog = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
@@ -1022,7 +1035,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 246:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -1037,11 +1050,11 @@ webpackJsonp([0],{
 	exports.closeModal = closeModal;
 	exports.modalDialog = modalDialog;
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _modalDialogUi = __webpack_require__(247);
+	var _modalDialogUi = __webpack_require__(248);
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
@@ -1145,11 +1158,11 @@ webpackJsonp([0],{
 	            return state;
 	    }
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)))
 
 /***/ },
 
-/***/ 247:
+/***/ 248:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -1160,17 +1173,17 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _modalDialog = __webpack_require__(246);
+	var _modalDialog = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _elementsUi = __webpack_require__(248);
+	var _elementsUi = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elementsUi);
 	
@@ -1284,11 +1297,11 @@ webpackJsonp([0],{
 	        }
 	    };
 	})(ModalDialog);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)))
 
 /***/ },
 
-/***/ 248:
+/***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1300,7 +1313,7 @@ webpackJsonp([0],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
@@ -1366,7 +1379,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 249:
+/***/ 250:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1381,7 +1394,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 250:
+/***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1396,7 +1409,7 @@ webpackJsonp([0],{
 	
 	exports.genCrudReducer = genCrudReducer;
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -1465,7 +1478,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 251:
+/***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1476,21 +1489,21 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _widgetConfig = __webpack_require__(245);
+	var _widgetConfig = __webpack_require__(246);
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
@@ -1509,8 +1522,8 @@ webpackJsonp([0],{
 	var WidgetFrame = function WidgetFrame(props) {
 	    var widgetState = props.widget;
 	
+	    // Might be null or undefined!
 	    var widgetFactory = WidgetPlugins.pluginRegistry.getPlugin(widgetState.type);
-	    console.assert(widgetFactory, "No registered widget factory with type: " + widgetState.type);
 	
 	    return React.createElement(
 	        'div',
@@ -1524,10 +1537,11 @@ webpackJsonp([0],{
 	            props.isReadOnly ? null : React.createElement(
 	                'div',
 	                { className: 'ui tiny horizontal right floated inverted list' },
-	                React.createElement(ConfigWidgetButton, { className: 'right item', widgetState: widgetState,
+	                React.createElement(ConfigWidgetButton, { className: 'right item no-drag', widgetState: widgetState,
 	                    visible: props.widgetPlugin.typeInfo.settings ? true : false,
 	                    icon: 'configure' }),
-	                React.createElement(DeleteWidgetButton, { className: 'right floated item', widgetState: widgetState, icon: 'remove' })
+	                React.createElement(DeleteWidgetButton, { className: 'right floated item no-drag', widgetState: widgetState,
+	                    icon: 'remove' })
 	            ),
 	            React.createElement(
 	                'div',
@@ -1537,8 +1551,9 @@ webpackJsonp([0],{
 	        ),
 	        React.createElement(
 	            'div',
-	            { className: 'ui segment' },
-	            widgetFactory.getOrCreateInstance(widgetState.id)
+	            { className: 'ui segment',
+	                style: { height: widgetState.availableHeightPx, padding: 0, border: "red dashed 0px" } },
+	            widgetFactory ? widgetFactory.getOrCreateInstance(widgetState.id) : React.createElement(LoadingWidget, { widget: widgetState })
 	        )
 	    );
 	};
@@ -1550,6 +1565,21 @@ webpackJsonp([0],{
 	};
 	
 	exports.default = WidgetFrame;
+	
+	
+	var LoadingWidget = function LoadingWidget(props) {
+	    return React.createElement(
+	        'div',
+	        { className: 'ui active text loader' },
+	        'Loading ',
+	        props.widget.type,
+	        ' Widget ...'
+	    );
+	};
+	
+	LoadingWidget.propTypes = {
+	    widget: Widgets.widgetPropType.isRequired
+	};
 	
 	var WidgetButton = function (_React$Component) {
 	    _inherits(WidgetButton, _React$Component);
@@ -1610,7 +1640,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 252:
+/***/ 253:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1625,21 +1655,21 @@ webpackJsonp([0],{
 	exports.unloadPlugin = unloadPlugin;
 	exports.widgetPlugins = widgetPlugins;
 	
-	var _widgetPlugin = __webpack_require__(253);
+	var _widgetPlugin = __webpack_require__(254);
 	
 	var _widgetPlugin2 = _interopRequireDefault(_widgetPlugin);
 	
-	var _pluginRegistry = __webpack_require__(254);
+	var _pluginRegistry = __webpack_require__(255);
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(250);
+	var _reducer = __webpack_require__(251);
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -1734,7 +1764,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 253:
+/***/ 254:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1745,13 +1775,13 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _ = _interopRequireWildcard(_lodash);
 	
@@ -1932,7 +1962,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 254:
+/***/ 255:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1945,7 +1975,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _datasourcePlugin = __webpack_require__(255);
+	var _datasourcePlugin = __webpack_require__(256);
 	
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 	
@@ -2005,7 +2035,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 255:
+/***/ 256:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2017,7 +2047,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -2130,7 +2160,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 256:
+/***/ 257:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2143,11 +2173,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(58);
+	var _reactDom = __webpack_require__(56);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -2236,7 +2266,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 274:
+/***/ 275:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2249,21 +2279,21 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _layouts = __webpack_require__(275);
+	var _layouts = __webpack_require__(276);
 	
 	var Layouts = _interopRequireWildcard(_layouts);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
@@ -2477,7 +2507,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 275:
+/***/ 276:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2498,15 +2528,15 @@ webpackJsonp([0],{
 	exports.layout = layout;
 	exports.currentLayout = currentLayout;
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _uuid = __webpack_require__(244);
+	var _uuid = __webpack_require__(245);
 	
-	var _reducer = __webpack_require__(250);
+	var _reducer = __webpack_require__(251);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -2637,7 +2667,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 276:
+/***/ 277:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2652,31 +2682,31 @@ webpackJsonp([0],{
 	
 	exports.unshiftIfNotExists = unshiftIfNotExists;
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _modalDialogUi = __webpack_require__(247);
+	var _modalDialogUi = __webpack_require__(248);
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _widgetConfig = __webpack_require__(245);
+	var _widgetConfig = __webpack_require__(246);
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _settingsForm = __webpack_require__(277);
+	var _settingsForm = __webpack_require__(278);
 	
 	var _settingsForm2 = _interopRequireDefault(_settingsForm);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
@@ -2866,7 +2896,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 277:
+/***/ 278:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -2881,21 +2911,21 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
-	var _collection = __webpack_require__(279);
+	var _collection = __webpack_require__(280);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -3088,11 +3118,11 @@ webpackJsonp([0],{
 	        datasources: state.datasources
 	    };
 	})(DatasourceInput);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)))
 
 /***/ },
 
-/***/ 279:
+/***/ 280:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3102,7 +3132,7 @@ webpackJsonp([0],{
 	});
 	exports.chunk = chunk;
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -3131,7 +3161,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 280:
+/***/ 281:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3140,25 +3170,25 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _import = __webpack_require__(281);
+	var _import = __webpack_require__(282);
 	
 	var Import = _interopRequireWildcard(_import);
 	
-	var _modalDialog = __webpack_require__(247);
+	var _modalDialog = __webpack_require__(248);
 	
 	var _modalDialog2 = _interopRequireDefault(_modalDialog);
 	
-	var _modalDialog3 = __webpack_require__(246);
+	var _modalDialog3 = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog3);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
@@ -3205,7 +3235,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 281:
+/***/ 282:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3223,13 +3253,13 @@ webpackJsonp([0],{
 	exports.deserialize = deserialize;
 	exports.doImport = doImport;
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _layouts = __webpack_require__(275);
+	var _layouts = __webpack_require__(276);
 	
-	var _plugins = __webpack_require__(282);
+	var _plugins = __webpack_require__(283);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
@@ -3291,7 +3321,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 282:
+/***/ 283:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3304,33 +3334,33 @@ webpackJsonp([0],{
 	exports.initializeExternalPlugins = initializeExternalPlugins;
 	exports.addPlugin = addPlugin;
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(250);
+	var _reducer = __webpack_require__(251);
 	
-	var _datasourcePlugins = __webpack_require__(283);
+	var _datasourcePlugins = __webpack_require__(284);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _loadjs = __webpack_require__(284);
+	var _loadjs = __webpack_require__(285);
 	
 	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
-	var _pluginCache = __webpack_require__(285);
+	var _pluginCache = __webpack_require__(286);
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _urijs = __webpack_require__(286);
+	var _urijs = __webpack_require__(287);
 	
 	var _urijs2 = _interopRequireDefault(_urijs);
 	
@@ -3358,7 +3388,7 @@ webpackJsonp([0],{
 	            var plugin = PluginCache.popLoadedPlugin();
 	
 	            var dependencies = plugin.TYPE_INFO.dependencies;
-	            if (_lodash2.default.isArray(dependencies)) {
+	            if (_lodash2.default.isArray(dependencies) && dependencies.length !== 0) {
 	                paths = dependencies.map(function (dependency) {
 	                    return (0, _urijs2.default)(dependency).absoluteTo(url).toString();
 	                });
@@ -3467,7 +3497,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 283:
+/***/ 284:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3482,19 +3512,19 @@ webpackJsonp([0],{
 	exports.unloadPlugin = unloadPlugin;
 	exports.datasourcePlugins = datasourcePlugins;
 	
-	var _datasourcePlugin = __webpack_require__(255);
+	var _datasourcePlugin = __webpack_require__(256);
 	
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 	
-	var _pluginRegistry = __webpack_require__(254);
+	var _pluginRegistry = __webpack_require__(255);
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(250);
+	var _reducer = __webpack_require__(251);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -3580,7 +3610,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 285:
+/***/ 286:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3631,7 +3661,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 290:
+/***/ 291:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3642,21 +3672,21 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _import = __webpack_require__(281);
+	var _import = __webpack_require__(282);
 	
 	var Import = _interopRequireWildcard(_import);
 	
-	var _modalDialogUi = __webpack_require__(247);
+	var _modalDialogUi = __webpack_require__(248);
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
@@ -3819,7 +3849,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 291:
+/***/ 292:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3834,35 +3864,35 @@ webpackJsonp([0],{
 	
 	exports.unshiftIfNotExists = unshiftIfNotExists;
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _modalDialogUi = __webpack_require__(247);
+	var _modalDialogUi = __webpack_require__(248);
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _datasource = __webpack_require__(292);
+	var _datasource = __webpack_require__(293);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _settingsForm = __webpack_require__(277);
+	var _settingsForm = __webpack_require__(278);
 	
 	var _settingsForm2 = _interopRequireDefault(_settingsForm);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
@@ -4095,7 +4125,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 292:
+/***/ 293:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4117,29 +4147,29 @@ webpackJsonp([0],{
 	exports.fetchDatasourceData = fetchDatasourceData;
 	exports.datasources = datasources;
 	
-	var _datasourcePlugins = __webpack_require__(283);
+	var _datasourcePlugins = __webpack_require__(284);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
-	var _reducer = __webpack_require__(250);
+	var _reducer = __webpack_require__(251);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _uuid = __webpack_require__(244);
+	var _uuid = __webpack_require__(245);
 	
 	var Uuid = _interopRequireWildcard(_uuid);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
-	var _modalDialog = __webpack_require__(246);
+	var _modalDialog = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
@@ -4321,7 +4351,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 293:
+/***/ 294:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4330,25 +4360,25 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _datasource = __webpack_require__(292);
+	var _datasource = __webpack_require__(293);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -4422,7 +4452,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 294:
+/***/ 295:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4431,33 +4461,33 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _widgetConfig = __webpack_require__(245);
+	var _widgetConfig = __webpack_require__(246);
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -4506,7 +4536,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 295:
+/***/ 296:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4515,27 +4545,27 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
-	var _modalDialog = __webpack_require__(246);
+	var _modalDialog = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
@@ -4569,7 +4599,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 296:
+/***/ 297:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4582,43 +4612,43 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _modalDialogUi = __webpack_require__(247);
+	var _modalDialogUi = __webpack_require__(248);
 	
 	var _modalDialogUi2 = _interopRequireDefault(_modalDialogUi);
 	
-	var _reactRedux = __webpack_require__(225);
+	var _reactRedux = __webpack_require__(224);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
-	var _elements = __webpack_require__(248);
+	var _elements = __webpack_require__(249);
 	
 	var ui = _interopRequireWildcard(_elements);
 	
-	var _modalDialogIds = __webpack_require__(249);
+	var _modalDialogIds = __webpack_require__(250);
 	
 	var ModalIds = _interopRequireWildcard(_modalDialogIds);
 	
-	var _modalDialog = __webpack_require__(246);
+	var _modalDialog = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _plugins = __webpack_require__(282);
+	var _plugins = __webpack_require__(283);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetsPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _datasourcePlugins = __webpack_require__(283);
+	var _datasourcePlugins = __webpack_require__(284);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -4891,7 +4921,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 297:
+/***/ 298:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4972,7 +5002,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 298:
+/***/ 299:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4984,7 +5014,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
@@ -5032,9 +5062,13 @@ webpackJsonp([0],{
 	            }
 	
 	            return React.createElement(
-	                'p',
-	                null,
-	                JSON.stringify(data)
+	                'div',
+	                { style: { padding: "10px" } },
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    JSON.stringify(data)
+	                )
 	            );
 	        }
 	    }]);
@@ -5051,7 +5085,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 299:
+/***/ 300:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5063,11 +5097,11 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(219);
+	var _react = __webpack_require__(218);
 	
 	var React = _interopRequireWildcard(_react);
 	
-	var _c = __webpack_require__(300);
+	var _c = __webpack_require__(301);
 	
 	var c3 = _interopRequireWildcard(_c);
 	
@@ -5243,7 +5277,12 @@ webpackJsonp([0],{
 	        key: 'render',
 	        value: function render() {
 	            this._renderChart();
-	            return React.createElement('div', { className: '', id: 'chart-' + this.props._state.id });
+	            return React.createElement(
+	                'div',
+	                { style: { padding: "10px" } },
+	                React.createElement('div', { className: '', id: 'chart-' + this.props._state.id }),
+	                ' '
+	            );
 	        }
 	    }, {
 	        key: 'componentWillUnmount',
@@ -5273,7 +5312,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 302:
+/***/ 303:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5284,15 +5323,15 @@ webpackJsonp([0],{
 	exports.start = start;
 	exports.stop = stop;
 	
-	var _datasource = __webpack_require__(292);
+	var _datasource = __webpack_require__(293);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _datasourcePlugins = __webpack_require__(283);
+	var _datasourcePlugins = __webpack_require__(284);
 	
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 	
-	var _store = __webpack_require__(303);
+	var _store = __webpack_require__(304);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -5320,7 +5359,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 303:
+/***/ 304:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5330,65 +5369,65 @@ webpackJsonp([0],{
 	});
 	exports.clearState = clearState;
 	
-	var _redux = __webpack_require__(226);
+	var _redux = __webpack_require__(225);
 	
 	var Redux = _interopRequireWildcard(_redux);
 	
-	var _reduxThunk = __webpack_require__(304);
+	var _reduxThunk = __webpack_require__(305);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxLogger = __webpack_require__(305);
+	var _reduxLogger = __webpack_require__(306);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
-	var _widgets = __webpack_require__(243);
+	var _widgets = __webpack_require__(244);
 	
 	var Widgets = _interopRequireWildcard(_widgets);
 	
-	var _widgetConfig = __webpack_require__(245);
+	var _widgetConfig = __webpack_require__(246);
 	
 	var WidgetConfig = _interopRequireWildcard(_widgetConfig);
 	
-	var _layouts = __webpack_require__(275);
+	var _layouts = __webpack_require__(276);
 	
 	var Layouts = _interopRequireWildcard(_layouts);
 	
-	var _datasource = __webpack_require__(292);
+	var _datasource = __webpack_require__(293);
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _dashboard = __webpack_require__(240);
+	var _dashboard = __webpack_require__(239);
 	
 	var Dashboard = _interopRequireWildcard(_dashboard);
 	
-	var _import = __webpack_require__(281);
+	var _import = __webpack_require__(282);
 	
 	var Import = _interopRequireWildcard(_import);
 	
-	var _modalDialog = __webpack_require__(246);
+	var _modalDialog = __webpack_require__(247);
 	
 	var Modal = _interopRequireWildcard(_modalDialog);
 	
-	var _persistence = __webpack_require__(297);
+	var _persistence = __webpack_require__(298);
 	
 	var Persist = _interopRequireWildcard(_persistence);
 	
-	var _plugins = __webpack_require__(282);
+	var _plugins = __webpack_require__(283);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _reduxForm = __webpack_require__(278);
+	var _reduxForm = __webpack_require__(279);
 	
-	var _actionNames = __webpack_require__(241);
+	var _actionNames = __webpack_require__(240);
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _widgetPlugins = __webpack_require__(252);
+	var _widgetPlugins = __webpack_require__(253);
 	
 	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _datasourcePlugins = __webpack_require__(283);
+	var _datasourcePlugins = __webpack_require__(284);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -5451,7 +5490,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 306:
+/***/ 307:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5551,7 +5590,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 307:
+/***/ 308:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5616,7 +5655,15 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 308:
+/***/ 309:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["_"] = __webpack_require__(242);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 310:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5625,19 +5672,19 @@ webpackJsonp([0],{
 	    value: true
 	});
 	
-	var _freeboardDatasource = __webpack_require__(309);
+	var _freeboardDatasource = __webpack_require__(311);
 	
 	var FreeboardDatasource = _interopRequireWildcard(_freeboardDatasource);
 	
-	var _plugins = __webpack_require__(282);
+	var _plugins = __webpack_require__(283);
 	
 	var Plugins = _interopRequireWildcard(_plugins);
 	
-	var _pluginCache = __webpack_require__(285);
+	var _pluginCache = __webpack_require__(286);
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
-	var _store = __webpack_require__(303);
+	var _store = __webpack_require__(304);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -5700,7 +5747,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 309:
+/***/ 311:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5710,11 +5757,11 @@ webpackJsonp([0],{
 	});
 	exports.create = create;
 	
-	var _loadjs = __webpack_require__(284);
+	var _loadjs = __webpack_require__(285);
 	
 	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(242);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -5771,12 +5818,12 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 310:
+/***/ 312:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _pluginCache = __webpack_require__(285);
+	var _pluginCache = __webpack_require__(286);
 	
 	var PluginCache = _interopRequireWildcard(_pluginCache);
 	
@@ -5789,14 +5836,30 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 311:
+/***/ 313:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(314);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 314:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(53);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 315:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 313:
+/***/ 317:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
