@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0d773a73a4fa6cf46110"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "57e76eba654e1f38c6eb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -41947,8 +41947,6 @@
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(49);
-	
 	var _datasourcePlugins = __webpack_require__(43);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
@@ -41959,7 +41957,7 @@
 	
 	var _loadjs = __webpack_require__(111);
 	
-	var loadjs = _interopRequireWildcard(_loadjs);
+	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
 	var _pluginCache = __webpack_require__(112);
 	
@@ -41983,7 +41981,7 @@
 	
 	function loadPluginFromUrl(url) {
 	    return function (dispatch) {
-	        loadjs([url], { success: function success() {
+	        (0, _loadjs2.default)([url], { success: function success() {
 	                return onScriptLoaded(url, dispatch);
 	            } });
 	    };
@@ -42017,7 +42015,7 @@
 	                 }
 	                 );  */
 	
-	                loadjs(paths, {
+	                (0, _loadjs2.default)(paths, {
 	                    success: function success() {
 	                        dispatch(addPlugin(plugin, url));
 	                    }

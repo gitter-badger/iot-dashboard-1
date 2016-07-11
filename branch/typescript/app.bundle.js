@@ -276,9 +276,7 @@ webpackJsonp([0],{
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(58);
-	
-	var _datasourcePlugins = __webpack_require__(59);
+	var _datasourcePlugins = __webpack_require__(58);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -288,7 +286,7 @@ webpackJsonp([0],{
 	
 	var _loadjs = __webpack_require__(55);
 	
-	var loadjs = _interopRequireWildcard(_loadjs);
+	var _loadjs2 = _interopRequireDefault(_loadjs);
 	
 	var _pluginCache = __webpack_require__(76);
 	
@@ -312,7 +310,7 @@ webpackJsonp([0],{
 	
 	function loadPluginFromUrl(url) {
 	    return function (dispatch) {
-	        loadjs([url], { success: function success() {
+	        (0, _loadjs2.default)([url], { success: function success() {
 	                return onScriptLoaded(url, dispatch);
 	            } });
 	    };
@@ -346,7 +344,7 @@ webpackJsonp([0],{
 	                 }
 	                 );  */
 	
-	                loadjs(paths, {
+	                (0, _loadjs2.default)(paths, {
 	                    success: function success() {
 	                        dispatch(addPlugin(plugin, url));
 	                    }
@@ -493,84 +491,6 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	exports.genCrudReducer = genCrudReducer;
-	
-	var _lodash = __webpack_require__(51);
-	
-	var _ = _interopRequireWildcard(_lodash);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	/**
-	 * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
-	 * The key of properties always matches the id property of the value object.
-	 *
-	 * @param actionNames
-	 * Object with: create, update, delete action names
-	 * @param elementReducer
-	 * A reducer for a single object that supports the actionNames.create and actionNames.update action.
-	 * @param initialState (optional)
-	 * @param idProperty
-	 * The name of the property to fetch the id from the action. Default: 'id'
-	 * @returns {crudReducer}
-	 */
-	function genCrudReducer(actionNames, elementReducer) {
-	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
-	
-	    console.assert(actionNames.length === 2, "ActionNames must contain 2 names for create, delete in that order");
-	
-	    var _actionNames = _slicedToArray(actionNames, 2);
-	
-	    var CREATE_ACTION = _actionNames[0];
-	    var DELETE_ACTION = _actionNames[1];
-	
-	    console.assert(_.includes(CREATE_ACTION, "ADD") || _.includes(CREATE_ACTION, "CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
-	    console.assert(_.includes(DELETE_ACTION, "DELETE") || _.includes(DELETE_ACTION, "REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
-	
-	    return function crudReducer(state, action) {
-	        var id = action[idProperty];
-	        switch (action.type) {
-	            case CREATE_ACTION:
-	                return Object.assign({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
-	            case DELETE_ACTION:
-	                var newState = Object.assign({}, state);
-	                delete newState[id];
-	                return newState;
-	            default:
-	                // Update if we have an id property
-	                if (id === undefined) return state;
-	                var elementState = state[id];
-	                if (elementState == undefined) {
-	                    // Do not update what we don't have.
-	                    // TODO: Log warning, or document why not.
-	                    return state;
-	                }
-	                var updatedElement = elementReducer(elementState, action);
-	                if (updatedElement == undefined) {
-	                    console.error("ElementReducer has some problem: ", elementReducer, " with action: ", action);
-	                    throw new Error("Reducer must return the original state if they not implement the action. Check action " + action.type + ".");
-	                }
-	
-	                return Object.assign({}, state, _defineProperty({}, id, updatedElement));
-	        }
-	    };
-	}
-
-/***/ },
-
-/***/ 59:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
 	exports.pluginRegistry = exports.DatasourcePluginRegistry = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -578,11 +498,11 @@ webpackJsonp([0],{
 	exports.unloadPlugin = unloadPlugin;
 	exports.datasourcePlugins = datasourcePlugins;
 	
-	var _datasourcePlugin = __webpack_require__(60);
+	var _datasourcePlugin = __webpack_require__(59);
 	
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 	
-	var _pluginRegistry = __webpack_require__(61);
+	var _pluginRegistry = __webpack_require__(60);
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
@@ -590,7 +510,7 @@ webpackJsonp([0],{
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(58);
+	var _reducer = __webpack_require__(61);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -676,7 +596,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 60:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -801,7 +721,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 61:
+/***/ 60:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -812,7 +732,7 @@ webpackJsonp([0],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _datasourcePlugin = __webpack_require__(60);
+	var _datasourcePlugin = __webpack_require__(59);
 	
 	var DsPlugin = _interopRequireWildcard(_datasourcePlugin);
 	
@@ -872,6 +792,84 @@ webpackJsonp([0],{
 
 /***/ },
 
+/***/ 61:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	exports.genCrudReducer = genCrudReducer;
+	
+	var _lodash = __webpack_require__(51);
+	
+	var _ = _interopRequireWildcard(_lodash);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	/**
+	 * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
+	 * The key of properties always matches the id property of the value object.
+	 *
+	 * @param actionNames
+	 * Object with: create, update, delete action names
+	 * @param elementReducer
+	 * A reducer for a single object that supports the actionNames.create and actionNames.update action.
+	 * @param initialState (optional)
+	 * @param idProperty
+	 * The name of the property to fetch the id from the action. Default: 'id'
+	 * @returns {crudReducer}
+	 */
+	function genCrudReducer(actionNames, elementReducer) {
+	    var idProperty = arguments.length <= 2 || arguments[2] === undefined ? 'id' : arguments[2];
+	
+	    console.assert(actionNames.length === 2, "ActionNames must contain 2 names for create, delete in that order");
+	
+	    var _actionNames = _slicedToArray(actionNames, 2);
+	
+	    var CREATE_ACTION = _actionNames[0];
+	    var DELETE_ACTION = _actionNames[1];
+	
+	    console.assert(_.includes(CREATE_ACTION, "ADD") || _.includes(CREATE_ACTION, "CREATE"), "The create action name should probably contain ADD or DELETE, but is: " + CREATE_ACTION);
+	    console.assert(_.includes(DELETE_ACTION, "DELETE") || _.includes(DELETE_ACTION, "REMOVE"), "The delete action name should probably contain DELETE or REMOVE, but is: " + DELETE_ACTION);
+	
+	    return function crudReducer(state, action) {
+	        var id = action[idProperty];
+	        switch (action.type) {
+	            case CREATE_ACTION:
+	                return Object.assign({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
+	            case DELETE_ACTION:
+	                var newState = Object.assign({}, state);
+	                delete newState[id];
+	                return newState;
+	            default:
+	                // Update if we have an id property
+	                if (id === undefined) return state;
+	                var elementState = state[id];
+	                if (elementState == undefined) {
+	                    // Do not update what we don't have.
+	                    // TODO: Log warning, or document why not.
+	                    return state;
+	                }
+	                var updatedElement = elementReducer(elementState, action);
+	                if (updatedElement == undefined) {
+	                    console.error("ElementReducer has some problem: ", elementReducer, " with action: ", action);
+	                    throw new Error("Reducer must return the original state if they not implement the action. Check action " + action.type + ".");
+	                }
+	
+	                return Object.assign({}, state, _defineProperty({}, id, updatedElement));
+	        }
+	    };
+	}
+
+/***/ },
+
 /***/ 62:
 /***/ function(module, exports, __webpack_require__) {
 
@@ -891,7 +889,7 @@ webpackJsonp([0],{
 	
 	var _widgetPlugin2 = _interopRequireDefault(_widgetPlugin);
 	
-	var _pluginRegistry = __webpack_require__(61);
+	var _pluginRegistry = __webpack_require__(60);
 	
 	var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 	
@@ -899,7 +897,7 @@ webpackJsonp([0],{
 	
 	var Action = _interopRequireWildcard(_actionNames);
 	
-	var _reducer = __webpack_require__(58);
+	var _reducer = __webpack_require__(61);
 	
 	var _react = __webpack_require__(19);
 	
@@ -1261,7 +1259,7 @@ webpackJsonp([0],{
 	var redux_form_1 = __webpack_require__(96);
 	var Action = __webpack_require__(57);
 	var WidgetPlugins = __webpack_require__(62);
-	var DatasourcePlugins = __webpack_require__(59);
+	var DatasourcePlugins = __webpack_require__(58);
 	var store;
 	var appReducer = Redux.combineReducers({
 	    widgets: Widgets.widgets,
@@ -1316,7 +1314,7 @@ webpackJsonp([0],{
 	var react_1 = __webpack_require__(19);
 	var Uuid = __webpack_require__(85);
 	var _ = __webpack_require__(51);
-	var reducer_js_1 = __webpack_require__(58);
+	var reducer_js_1 = __webpack_require__(61);
 	var Action = __webpack_require__(57);
 	var objectAssign = __webpack_require__(26);
 	exports.HEADER_HEIGHT = 77;
@@ -2047,7 +2045,7 @@ webpackJsonp([0],{
 	
 	var _uuid = __webpack_require__(85);
 	
-	var _reducer = __webpack_require__(58);
+	var _reducer = __webpack_require__(61);
 	
 	var _actionNames = __webpack_require__(57);
 	
@@ -2199,11 +2197,11 @@ webpackJsonp([0],{
 	exports.fetchDatasourceData = fetchDatasourceData;
 	exports.datasources = datasources;
 	
-	var _datasourcePlugins = __webpack_require__(59);
+	var _datasourcePlugins = __webpack_require__(58);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
-	var _reducer = __webpack_require__(58);
+	var _reducer = __webpack_require__(61);
 	
 	var _actionNames = __webpack_require__(57);
 	
@@ -5838,7 +5836,7 @@ webpackJsonp([0],{
 	
 	var WidgetsPlugins = _interopRequireWildcard(_widgetPlugins);
 	
-	var _datasourcePlugins = __webpack_require__(59);
+	var _datasourcePlugins = __webpack_require__(58);
 	
 	var DatasourcePlugins = _interopRequireWildcard(_datasourcePlugins);
 	
@@ -6436,7 +6434,7 @@ webpackJsonp([0],{
 	
 	var Datasource = _interopRequireWildcard(_datasource);
 	
-	var _datasourcePlugins = __webpack_require__(59);
+	var _datasourcePlugins = __webpack_require__(58);
 	
 	var _datasourcePlugins2 = _interopRequireDefault(_datasourcePlugins);
 	
