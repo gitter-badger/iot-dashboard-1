@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3fd13e230b810af30a5f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e8e0b26b7544000de2ba"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -67443,7 +67443,7 @@
 	                React.createElement(
 	                    "div",
 	                    { className: "container" },
-	                    React.createElement("div", { className: showMenu ? "" : "menu-trigger",
+	                    React.createElement("div", { className: showMenu ? "menu-trigger" : "menu-trigger",
 	                        onMouseOver: function onMouseOver() {
 	                            _this2.setState({ hover: true });
 	                        },

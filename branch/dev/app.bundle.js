@@ -3805,7 +3805,7 @@ webpackJsonp([0],{
 	                React.createElement(
 	                    "div",
 	                    { className: "container" },
-	                    React.createElement("div", { className: showMenu ? "" : "menu-trigger",
+	                    React.createElement("div", { className: showMenu ? "menu-trigger" : "menu-trigger",
 	                        onMouseOver: function onMouseOver() {
 	                            _this2.setState({ hover: true });
 	                        },
