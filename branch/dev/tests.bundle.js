@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "88fdd70a29fe2f5dc36b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "737461b36f05a913e0c2"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -48634,9 +48634,9 @@
 
 	module.exports = {
 		"version": "0.0.1",
-		"revision": "e459b04dcd92b8b05620bb18f96062abb0a98c48",
-		"revisionShort": "e459b04",
-		"branch": "dev"
+		"revision": "1242b39a3e812c83f553a2f04b82942f386ee947",
+		"revisionShort": "1242b39",
+		"branch": "Detatched: 1242b39a3e812c83f553a2f04b82942f386ee947"
 	};
 
 /***/ },
