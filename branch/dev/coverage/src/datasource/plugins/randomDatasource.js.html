@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">83.33% </span>
+        <span class="strong">86.36% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>40/48</span>
+        <span class='fraction'>38/44</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.38% </span>
+        <span class="strong">68.18% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>17/26</span>
+        <span class='fraction'>15/22</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">81.82% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>9/11</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">81.25% </span>
+        <span class="strong">85.71% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>26/32</span>
+        <span class='fraction'>24/28</span>
       </div>
     </div>
   </div>
@@ -127,16 +127,7 @@
 82
 83
 84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+85</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,9 +166,6 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,17 +174,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -266,13 +248,10 @@ function getRandomInt(min, max) {
 }
 &nbsp;
 var Datasource = exports.Datasource = function () {
-    function Datasource() {
-        var props = arguments.length &lt;= 0 || <span class="branch-1 cbranch-no" title="branch not covered" >arguments[0] === undefined </span>? {} : <span class="branch-1 cbranch-no" title="branch not covered" >arguments[0];</span>
-        var history = arguments[1];
-&nbsp;
+    function Datasource(props) {
         _classCallCheck(this, Datasource);
 &nbsp;
-        this.props = props;
+        var history = props.state.data;
         // Initialize with non random values to demonstrate loading of historic values
         this.history = history || []; // [{value: 10}, {value: 20}, {value: 30}, {value: 40}, {value: 50}]
         this.x = 0;
@@ -282,21 +261,15 @@ var Datasource = exports.Datasource = function () {
         }
     }
 &nbsp;
-    // TODO: We can not edit datasources yet :)
-&nbsp;
-&nbsp;
     _createClass(Datasource, [{
-        key: "updateProps",
-        value: <span class="fstat-no" title="function not covered" >function updateProps(props) {</span>
-<span class="cstat-no" title="statement not covered" >            console.log("New Props: " + props);</span>
-<span class="cstat-no" title="statement not covered" >            this.props = props;</span>
-        }
+        key: "datasourceWillReceiveProps",
+        value: <span class="fstat-no" title="function not covered" >function datasourceWillReceiveProps(props) {</span>}
     }, {
         key: "getValues",
         value: function getValues() {
             this.history.push(this.fetchValue());
 &nbsp;
-            var maxValues = Number(this.props.maxValues) || 1000;
+            var maxValues = Number(this.props.state.settings.maxValues) || 1000;
             while (this.history.length &gt; maxValues) {
 <span class="cstat-no" title="statement not covered" >                this.history.shift();</span>
             }
@@ -306,9 +279,9 @@ var Datasource = exports.Datasource = function () {
     }, {
         key: "fetchValue",
         value: function fetchValue() {
-            var props = this.props;
-            var min = Number(props.min || 0);
-            var max = Number(props.max || 100);
+            var settings = this.props.state.settings;
+            var min = Number(settings.min || 0);
+            var max = Number(settings.max || 100);
             var newValue = { x: this.x++, value: getRandomInt(min, max), value2: getRandomInt(min, max) };
             return newValue;
         }
@@ -328,7 +301,7 @@ var Datasource = exports.Datasource = function () {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Jul 16 2016 18:35:43 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 09:20:31 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

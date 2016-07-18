@@ -483,7 +483,7 @@ exports.initialWidgets = {
         "id": "initial_chart",
         "type": "chart",
         "name": "chart",
-        "props": {
+        "settings": {
             "name": "Random Values",
             "datasource": "initial_random_source",
             "chartType": "area-spline",
@@ -502,7 +502,7 @@ exports.initialWidgets = {
         "id": "initial_text",
         "type": "text",
         "name": "text",
-        "props": {
+        "settings": {
             "name": "Random data",
             "datasource": "initial_random_source"
         },
@@ -516,7 +516,7 @@ exports.initialWidgets = {
         "id": "106913f4-44fb-4f69-ab89-5d5ae857cf3c",
         "type": "chart",
         "name": "chart",
-        "props": {
+        "settings": {
             "name": "Bars",
             "datasource": "initial_random_source",
             "chartType": "spline",
@@ -538,12 +538,12 @@ exports.widgetPropType = react_1.PropTypes.shape({
     row: react_1.PropTypes.number.isRequired,
     width: react_1.PropTypes.number.isRequired,
     height: react_1.PropTypes.number.isRequired,
-    props: react_1.PropTypes.shape({
+    settings: react_1.PropTypes.shape({
         name: react_1.PropTypes.string.isRequired
     }).isRequired
 });
-<span class="fstat-no" title="function not covered" >function addWidget(widgetType, widgetProps, width, height) {</span>
-<span class="cstat-no" title="statement not covered" >    if (widgetProps === void 0) { <span class="cstat-no" title="statement not covered" >widgetProps = {}; </span>}</span>
+<span class="fstat-no" title="function not covered" >function addWidget(widgetType, widgetSettings, width, height) {</span>
+<span class="cstat-no" title="statement not covered" >    if (widgetSettings === void 0) { <span class="cstat-no" title="statement not covered" >widgetSettings = {}; </span>}</span>
 <span class="cstat-no" title="statement not covered" >    if (width === void 0) { <span class="cstat-no" title="statement not covered" >width = 3; </span>}</span>
 <span class="cstat-no" title="statement not covered" >    if (height === void 0) { <span class="cstat-no" title="statement not covered" >height = 3; </span>}</span>
 <span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >function (dispatch, getState) {</span></span>
@@ -557,20 +557,20 @@ exports.widgetPropType = react_1.PropTypes.shape({
             width: width,
             height: height,
             widgetType: widgetType,
-            widgetProps: widgetProps
+            widgetSettings: widgetSettings
         });
     };
 }
 exports.addWidget = addWidget;
-<span class="fstat-no" title="function not covered" >function updateWidgetProps(id, widgetProps) {</span>
-<span class="cstat-no" title="statement not covered" >    if (widgetProps === void 0) { <span class="cstat-no" title="statement not covered" >widgetProps = {}; </span>}</span>
+<span class="fstat-no" title="function not covered" >function updateWidgetSettings(id, widgetSettings) {</span>
+<span class="cstat-no" title="statement not covered" >    if (widgetSettings === void 0) { <span class="cstat-no" title="statement not covered" >widgetSettings = {}; </span>}</span>
 <span class="cstat-no" title="statement not covered" >    return {</span>
         type: Action.UPDATE_WIDGET_PROPS,
         id: id,
-        widgetProps: widgetProps
+        widgetSettings: widgetSettings
     };
 }
-exports.updateWidgetProps = updateWidgetProps;
+exports.updateWidgetSettings = updateWidgetSettings;
 <span class="fstat-no" title="function not covered" >function deleteWidget(id) {</span>
 <span class="cstat-no" title="statement not covered" >    return {</span>
         type: Action.DELETE_WIDGET,
@@ -578,10 +578,10 @@ exports.updateWidgetProps = updateWidgetProps;
     };
 }
 exports.deleteWidget = deleteWidget;
-<span class="fstat-no" title="function not covered" >function updateLayout(layout) {</span>
+<span class="fstat-no" title="function not covered" >function updateLayout(layouts) {</span>
 <span class="cstat-no" title="statement not covered" >    return {</span>
         type: Action.UPDATE_WIDGET_LAYOUT,
-        layout: layout
+        layouts: layouts
     };
 }
 exports.updateLayout = updateLayout;
@@ -624,7 +624,7 @@ exports.widgets = widgets;
                 id: action.id,
                 type: action.widgetType,
                 name: action.widgetType,
-                props: action.widgetProps,
+                settings: action.widgetSettings,
                 row: action.row,
                 col: action.col,
                 width: action.width,
@@ -632,9 +632,9 @@ exports.widgets = widgets;
                 availableHeightPx: calcAvaliableHeight(action.height)
             };
         case Action.UPDATE_WIDGET_PROPS:
-<span class="cstat-no" title="statement not covered" >            return objectAssign({}, state, { props: action.widgetProps });</span>
+<span class="cstat-no" title="statement not covered" >            return objectAssign({}, state, { settings: action.widgetSettings });</span>
         case Action.UPDATE_WIDGET_LAYOUT:
-<span class="cstat-no" title="statement not covered" >            var layout = layoutById(action.layout, state.id);</span>
+<span class="cstat-no" title="statement not covered" >            var layout = layoutById(action.layouts, state.id);</span>
 <span class="cstat-no" title="statement not covered" >            if (layout == null) {</span>
 <span class="cstat-no" title="statement not covered" >                console.warn("No layout for widget. Skipping update of position. Id: " + state.id);</span>
 <span class="cstat-no" title="statement not covered" >                return state;</span>
@@ -688,7 +688,7 @@ exports.widgets = widgets;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Jul 16 2016 18:35:43 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 09:20:31 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../prettify.js"></script>
