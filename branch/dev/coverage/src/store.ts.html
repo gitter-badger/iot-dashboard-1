@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">91.43% </span>
+        <span class="strong">90.2% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>32/35</span>
+        <span class='fraction'>46/51</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>7/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">66.67% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/3</span>
+        <span class='fraction'>4/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">91.43% </span>
+        <span class="strong">90% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>32/35</span>
+        <span class='fraction'>45/50</span>
       </div>
     </div>
   </div>
@@ -105,8 +105,29 @@
 60
 61
 62
-63</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
@@ -137,11 +158,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -155,36 +176,58 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
-var Redux = require('redux');
-var redux_thunk_1 = require('redux-thunk');
-var createLogger = require('redux-logger');
-var Widgets = require('./widgets/widgets');
-var WidgetConfig = require('./widgets/widgetConfig.js');
-var Layouts = require('./layouts/layouts.js');
-var Datasource = require('./datasource/datasource.js');
-var Dashboard = require('./dashboard/dashboard.js');
-var Import = require('./dashboard/import.js');
-var Modal = require('./modal/modalDialog.js');
-var Persist = require('./persistence.js');
-var redux_form_1 = require('redux-form');
-var Action = require('./actionNames.js');
-var WidgetPlugins = require('./widgets/widgetPlugins.js');
-var DatasourcePlugins = require('./datasource/datasourcePlugins.js');
-var Config = require('./config');
-var store;
+var Redux = require("redux");
+var redux_thunk_1 = require("redux-thunk");
+var createLogger = require("redux-logger");
+var Widgets = require("./widgets/widgets");
+var WidgetConfig = require("./widgets/widgetConfig.js");
+var Layouts = require("./layouts/layouts.js");
+var Datasource = require("./datasource/datasource.js");
+var Dashboard = require("./dashboard/dashboard.js");
+var Import = require("./dashboard/import.js");
+var Modal = require("./modal/modalDialog.js");
+var Persist = require("./persistence.js");
+var redux_form_1 = require("redux-form");
+var Action = require("./actionNames.js");
+var WidgetPlugins = require("./widgets/widgetPlugins.js");
+var DatasourcePlugins = require("./datasource/datasourcePlugins.js");
+var Config = require("./config");
 var appReducer = Redux.combineReducers({
     config: Config.config,
     widgets: Widgets.widgets,
@@ -216,18 +259,41 @@ var logger = createLogger({
 <span class="cstat-no" title="statement not covered" >        return !action.doNotLog;</span>
     }
 });
-store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware(redux_thunk_1.default, Persist.persistenceMiddleware, logger // must be last
-));
-DatasourcePlugins.pluginRegistry.store = store;
-WidgetPlugins.pluginRegistry.store = store;
+var store;
+function get() {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!store) {
+<span class="cstat-no" title="statement not covered" >        store = create();</span>
+    }
+    return store;
+}
+exports.get = get;
+function create(options) {
+    /*if (store) {
+     throw new Error("Store already created. Call store.destory() before creating a new one!");
+     }*/
+    if (options === void 0) { options = { log: true }; }
+    var middleware = [];
+    middleware.push(redux_thunk_1.default);
+    middleware.push(Persist.persistenceMiddleware);
+    if (options.log) {
+        middleware.push(logger); // must be last
+    }
+    store = Redux.createStore(reducer, Persist.loadFromLocalStorage(), Redux.applyMiddleware.apply(Redux, middleware));
+    DatasourcePlugins.pluginRegistry.store = store;
+    WidgetPlugins.pluginRegistry.store = store;
+    return store;
+}
+exports.create = create;
+<span class="fstat-no" title="function not covered" >function destroy() {</span>
+<span class="cstat-no" title="statement not covered" >    store = undefined;</span>
+}
+exports.destroy = destroy;
 <span class="fstat-no" title="function not covered" >function clearState() {</span>
 <span class="cstat-no" title="statement not covered" >    return {</span>
         type: Action.CLEAR_STATE
     };
 }
 exports.clearState = clearState;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = store;
 &nbsp;
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -235,7 +301,7 @@ exports.default = store;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 09:58:35 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 16:29:26 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../prettify.js"></script>

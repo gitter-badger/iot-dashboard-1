@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">46.38% </span>
+        <span class="strong">56.52% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>32/69</span>
+        <span class='fraction'>39/69</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">29.27% </span>
+        <span class="strong">39.02% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>12/41</span>
+        <span class='fraction'>16/41</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">71.43% </span>
+        <span class="strong">85.71% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>5/7</span>
+        <span class='fraction'>6/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">61.29% </span>
+        <span class="strong">74.19% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>19/31</span>
+        <span class='fraction'>23/31</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -160,22 +160,22 @@
 <span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5×</span>
-<span class="cline-any cline-yes">20×</span>
-<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">20×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -203,7 +203,7 @@ var _ = _interopRequireWildcard(_lodash);
 &nbsp;
 function _interopRequireWildcard(obj) { <span class="missing-if-branch" title="if path not taken" >I</span>if (obj &amp;&amp; obj.__esModule) { <span class="cstat-no" title="statement not covered" >return obj; </span>} else { var newObj = {}; <span class="missing-if-branch" title="else path not taken" >E</span>if (obj != null) { for (var key in obj) { <span class="missing-if-branch" title="else path not taken" >E</span>if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 &nbsp;
-<span class="fstat-no" title="function not covered" >function _defineProperty(obj, key, value) {</span> <span class="cstat-no" title="statement not covered" >if (key in obj) { <span class="cstat-no" title="statement not covered" >Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); </span>} else { <span class="cstat-no" title="statement not covered" >obj[key] = value; </span>} <span class="cstat-no" title="statement not covered" ></span>return obj; </span>}
+function _defineProperty(obj, key, value) { <span class="missing-if-branch" title="if path not taken" >I</span>if (key in obj) { <span class="cstat-no" title="statement not covered" >Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); </span>} else { obj[key] = value; } return obj; }
 &nbsp;
 /**
  * Creates an reducer that works on an object where you can create, delete and update properties of type Object.
@@ -234,20 +234,20 @@ function genCrudReducer(actionNames, elementReducer) {
     return function crudReducer(state, action) {
         var id = action[idProperty];
         switch (action.type) {
-<span class="branch-0 cbranch-no" title="branch not covered" >            case CREATE_ACTION:</span>
-<span class="cstat-no" title="statement not covered" >                return Object.assign({}, state, _defineProperty({}, id, elementReducer(undefined, action)));</span>
+            case CREATE_ACTION:
+                return Object.assign({}, state, _defineProperty({}, id, elementReducer(undefined, action)));
 <span class="branch-1 cbranch-no" title="branch not covered" >            case DELETE_ACTION:</span>
 <span class="cstat-no" title="statement not covered" >                var newState = Object.assign({}, state);</span>
 <span class="cstat-no" title="statement not covered" >                delete newState[id];</span>
 <span class="cstat-no" title="statement not covered" >                return newState;</span>
             default:
                 // Update if we have an id property
-                <span class="missing-if-branch" title="else path not taken" >E</span>if (id === undefined) return state;
-<span class="cstat-no" title="statement not covered" >                var elementState = state[id];</span>
-<span class="cstat-no" title="statement not covered" >                if (elementState == undefined) {</span>
+                if (id === undefined) return state;
+                var elementState = state[id];
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (elementState == undefined) {
                     // Do not update what we don't have.
                     // TODO: Log warning, or document why not.
-<span class="cstat-no" title="statement not covered" >                    return state;</span>
+                    return state;
                 }
 <span class="cstat-no" title="statement not covered" >                var updatedElement = elementReducer(elementState, action);</span>
 <span class="cstat-no" title="statement not covered" >                if (updatedElement == undefined) {</span>
@@ -265,7 +265,7 @@ function genCrudReducer(actionNames, elementReducer) {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 09:58:35 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 16:29:26 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../prettify.js"></script>

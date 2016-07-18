@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">36.14% </span>
+        <span class="strong">44.32% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>30/83</span>
+        <span class='fraction'>39/88</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10% </span>
+        <span class="strong">21.88% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/30</span>
+        <span class='fraction'>7/32</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">6.25% </span>
+        <span class="strong">23.53% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/16</span>
+        <span class='fraction'>4/17</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">37.18% </span>
+        <span class="strong">46.34% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>29/78</span>
+        <span class='fraction'>38/82</span>
       </div>
     </div>
   </div>
@@ -256,7 +256,12 @@
 211
 212
 213
-214</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+214
+215
+216
+217
+218
+219</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
@@ -335,9 +340,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -374,9 +384,9 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -397,17 +407,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -542,23 +552,28 @@ exports.widgetPropType = react_1.PropTypes.shape({
         name: react_1.PropTypes.string.isRequired
     }).isRequired
 });
-<span class="fstat-no" title="function not covered" >function addWidget(widgetType, widgetSettings, width, height) {</span>
+<span class="fstat-no" title="function not covered" >function createWidget(widgetType, widgetSettings) {</span>
 <span class="cstat-no" title="statement not covered" >    if (widgetSettings === void 0) { <span class="cstat-no" title="statement not covered" >widgetSettings = {}; </span>}</span>
-<span class="cstat-no" title="statement not covered" >    if (width === void 0) { <span class="cstat-no" title="statement not covered" >width = 3; </span>}</span>
-<span class="cstat-no" title="statement not covered" >    if (height === void 0) { <span class="cstat-no" title="statement not covered" >height = 3; </span>}</span>
 <span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >function (dispatch, getState) {</span></span>
 <span class="cstat-no" title="statement not covered" >        var widgets = getState().widgets;</span>
 <span class="cstat-no" title="statement not covered" >        var widgetPositions = calcNewWidgetPosition(widgets);</span>
-<span class="cstat-no" title="statement not covered" >        return dispatch({</span>
-            type: Action.ADD_WIDGET,
-            id: Uuid.generate(),
-            col: widgetPositions.col,
-            row: widgetPositions.row,
-            width: width,
-            height: height,
-            widgetType: widgetType,
-            widgetSettings: widgetSettings
-        });
+<span class="cstat-no" title="statement not covered" >        return dispatch(addWidget(widgetType, widgetSettings, widgetPositions.row, widgetPositions.col));</span>
+    };
+}
+exports.createWidget = createWidget;
+function addWidget(widgetType, widgetSettings, row, col, width, height) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (widgetSettings === void 0) { <span class="cstat-no" title="statement not covered" >widgetSettings = {}; </span>}
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (width === void 0) { <span class="cstat-no" title="statement not covered" >width = 3; </span>}
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (height === void 0) { <span class="cstat-no" title="statement not covered" >height = 3; </span>}
+    return {
+        type: Action.ADD_WIDGET,
+        id: Uuid.generate(),
+        col: col,
+        row: row,
+        width: width,
+        height: height,
+        widgetType: widgetType,
+        widgetSettings: widgetSettings
     };
 }
 exports.addWidget = addWidget;
@@ -614,13 +629,13 @@ function widgets(state, action) {
     }
 }
 exports.widgets = widgets;
-<span class="fstat-no" title="function not covered" >function calcAvaliableHeight(heightUnits) {</span>
-<span class="cstat-no" title="statement not covered" >    return (heightUnits * (exports.ROW_HEIGHT + 10)) - exports.HEADER_HEIGHT;</span>
+function calcAvaliableHeight(heightUnits) {
+    return (heightUnits * (exports.ROW_HEIGHT + 10)) - exports.HEADER_HEIGHT;
 }
-<span class="fstat-no" title="function not covered" >function widget(state, action) {</span>
-<span class="cstat-no" title="statement not covered" >    switch (action.type) {</span>
+function widget(state, action) {
+    switch (action.type) {
         case Action.ADD_WIDGET:
-<span class="cstat-no" title="statement not covered" >            return {</span>
+            return {
                 id: action.id,
                 type: action.widgetType,
                 name: action.widgetType,
@@ -631,9 +646,9 @@ exports.widgets = widgets;
                 height: action.height,
                 availableHeightPx: calcAvaliableHeight(action.height)
             };
-        case Action.UPDATE_WIDGET_PROPS:
+<span class="branch-1 cbranch-no" title="branch not covered" >        case Action.UPDATE_WIDGET_PROPS:</span>
 <span class="cstat-no" title="statement not covered" >            return objectAssign({}, state, { settings: action.widgetSettings });</span>
-        case Action.UPDATE_WIDGET_LAYOUT:
+<span class="branch-2 cbranch-no" title="branch not covered" >        case Action.UPDATE_WIDGET_LAYOUT:</span>
 <span class="cstat-no" title="statement not covered" >            var layout = layoutById(action.layouts, state.id);</span>
 <span class="cstat-no" title="statement not covered" >            if (layout == null) {</span>
 <span class="cstat-no" title="statement not covered" >                console.warn("No layout for widget. Skipping update of position. Id: " + state.id);</span>
@@ -647,7 +662,7 @@ exports.widgets = widgets;
                 // The 10 px extra seem to be based on a bug in the grid layout ...
                 availableHeightPx: calcAvaliableHeight(layout.h)
             });
-        default:
+<span class="branch-3 cbranch-no" title="branch not covered" >        default:</span>
 <span class="cstat-no" title="statement not covered" >            return state;</span>
     }
 }
@@ -688,7 +703,7 @@ exports.widgets = widgets;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 09:58:35 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 18 2016 16:29:26 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../prettify.js"></script>
