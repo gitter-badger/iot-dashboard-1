@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1458b78c87ee027790b5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0f113562abd95374edbd"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -40581,9 +40581,9 @@
 
 	module.exports = {
 		"version": "0.0.1",
-		"revision": "34f0ab44f921c5cda01529d19f9ad8d10a3f0e05",
-		"revisionShort": "34f0ab4",
-		"branch": "Detatched: 34f0ab44f921c5cda01529d19f9ad8d10a3f0e05"
+		"revision": "519764eddf51a1afb3fb32bf5d980c084495360f",
+		"revisionShort": "519764e",
+		"branch": "Detatched: 519764eddf51a1afb3fb32bf5d980c084495360f"
 	};
 
 /***/ },
