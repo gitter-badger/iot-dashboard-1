@@ -48106,9 +48106,9 @@
 
 	module.exports = {
 		"version": "0.0.1",
-		"revision": "7021996760ba2ba4ca0a6ce65e6ce1a88780a7d5",
-		"revisionShort": "7021996",
-		"branch": "Detatched: 7021996760ba2ba4ca0a6ce65e6ce1a88780a7d5"
+		"revision": "8c8ac3248b27e7b2435a9996778e0af51480369c",
+		"revisionShort": "8c8ac32",
+		"branch": "Detatched: 8c8ac3248b27e7b2435a9996778e0af51480369c"
 	};
 
 /***/ },
