@@ -18217,9 +18217,9 @@
 
 	module.exports = {
 		"version": "0.0.1",
-		"revision": "aa8b32dc61501ee808fe642a5d8adad8b63dc4f4",
-		"revisionShort": "aa8b32d",
-		"branch": "Detatched: aa8b32dc61501ee808fe642a5d8adad8b63dc4f4"
+		"revision": "f4fa05a715fa2c6d36fc9f4f110134c9e56e23a6",
+		"revisionShort": "f4fa05a",
+		"branch": "Detatched: f4fa05a715fa2c6d36fc9f4f110134c9e56e23a6"
 	};
 
 /***/ },
@@ -24555,9 +24555,9 @@
 
 	__webpack_require__(164);
 
-	__webpack_require__(165);
+	__webpack_require__(167);
 
-	__webpack_require__(166);
+	__webpack_require__(168);
 
 	__webpack_require__(169);
 
@@ -32701,137 +32701,6 @@
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	var _chai = __webpack_require__(122);
-
-	var _urijs = __webpack_require__(39);
-
-	var _urijs2 = _interopRequireDefault(_urijs);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/* This Source Code Form is subject to the terms of the Mozilla Public
-	* License, v. 2.0. If a copy of the MPL was not distributed with this
-	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-	describe('Uri Tests', function () {
-	    describe('Resolve URIs for plugin loading', function () {
-	        it("Check different uri's on absolute base", function () {
-	            var uri = (0, _urijs2.default)("https://www.domain.de/folder/file.min.js");
-
-	            var dotRelative = "./a/b.js";
-	            var relative = "a/b.js";
-	            var absolute = "/a/b.js";
-
-	            _chai.assert.equal(uri.toString(), "https://www.domain.de/folder/file.min.js");
-	            _chai.assert.equal((0, _urijs2.default)(dotRelative).absoluteTo(uri).toString(), "https://www.domain.de/folder/a/b.js");
-	            _chai.assert.equal((0, _urijs2.default)(relative).absoluteTo(uri).toString(), "https://www.domain.de/folder/a/b.js");
-
-	            _chai.assert.equal((0, _urijs2.default)(absolute).absoluteTo(uri).toString(), "https://www.domain.de/a/b.js");
-	        });
-
-	        it("Check different uri's on relative base", function () {
-	            var uri = "/folder/file.min.js";
-
-	            var dotRelative = "./a/b.js";
-	            var absolute = "/a/b.js";
-
-	            _chai.assert.equal(uri.toString(), "/folder/file.min.js");
-	            _chai.assert.equal((0, _urijs2.default)(dotRelative).absoluteTo(uri).toString(), "/folder/a/b.js");
-
-	            _chai.assert.equal((0, _urijs2.default)(absolute).absoluteTo(uri).toString(), "/a/b.js");
-	        });
-	    });
-	});
-
-/***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _collection = __webpack_require__(95);
-
-	var c = _interopRequireWildcard(_collection);
-
-	var _chai = __webpack_require__(122);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	/* This Source Code Form is subject to the terms of the Mozilla Public
-	* License, v. 2.0. If a copy of the MPL was not distributed with this
-	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-	describe('Collections', function () {
-	    describe('chunk', function () {
-	        it("Splits correctly", function () {
-	            var testChunks = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]];
-
-	            var chunks = c.chunk([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3, function (chunk, i) {
-	                _chai.assert.deepEqual(testChunks[i], chunk);
-	            });
-
-	            _chai.assert.deepEqual(testChunks, chunks);
-	        });
-
-	        it("Can deal with null", function () {
-	            var chunks = c.chunk(null, 3, function (chunk, i) {
-	                _chai.assert.fail("Must not call the callback function");
-	            });
-
-	            _chai.assert.deepEqual(chunks, []);
-	        });
-
-	        it("Can deal with undefined", function () {
-	            var chunks = c.chunk(undefined, 3, function (chunk, i) {
-	                _chai.assert.fail("Must not call the callback function");
-	            });
-
-	            _chai.assert.deepEqual(chunks, []);
-	        });
-	    });
-	});
-
-/***/ },
-/* 164 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _chai = __webpack_require__(122);
-
-	var _widgetPlugins = __webpack_require__(34);
-
-	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	/* This Source Code Form is subject to the terms of the Mozilla Public
-	* License, v. 2.0. If a copy of the MPL was not distributed with this
-	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-	describe('Widget Plugins', function () {
-	    describe('#register() && #getWidget()', function () {
-	        it("It's possible to register and get back a plugin", function () {
-	            WidgetPlugins.pluginRegistry.register({
-	                TYPE_INFO: {
-	                    type: 'foo'
-	                }
-	            });
-
-	            var plugin = WidgetPlugins.pluginRegistry.getPlugin('foo');
-
-	            _chai.assert.isOk(plugin);
-	            _chai.assert.equal('foo', plugin.type);
-	        });
-	    });
-	});
-
-/***/ },
-/* 165 */
-/***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 
 	var _chai = __webpack_require__(122);
@@ -32882,14 +32751,62 @@
 	});
 
 /***/ },
-/* 166 */
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(122);
+
+	var _urijs = __webpack_require__(39);
+
+	var _urijs2 = _interopRequireDefault(_urijs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/* This Source Code Form is subject to the terms of the Mozilla Public
+	* License, v. 2.0. If a copy of the MPL was not distributed with this
+	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+	describe('Uri Tests', function () {
+	    describe('Resolve URIs for plugin loading', function () {
+	        it("Check different uri's on absolute base", function () {
+	            var uri = (0, _urijs2.default)("https://www.domain.de/folder/file.min.js");
+
+	            var dotRelative = "./a/b.js";
+	            var relative = "a/b.js";
+	            var absolute = "/a/b.js";
+
+	            _chai.assert.equal(uri.toString(), "https://www.domain.de/folder/file.min.js");
+	            _chai.assert.equal((0, _urijs2.default)(dotRelative).absoluteTo(uri).toString(), "https://www.domain.de/folder/a/b.js");
+	            _chai.assert.equal((0, _urijs2.default)(relative).absoluteTo(uri).toString(), "https://www.domain.de/folder/a/b.js");
+
+	            _chai.assert.equal((0, _urijs2.default)(absolute).absoluteTo(uri).toString(), "https://www.domain.de/a/b.js");
+	        });
+
+	        it("Check different uri's on relative base", function () {
+	            var uri = "/folder/file.min.js";
+
+	            var dotRelative = "./a/b.js";
+	            var absolute = "/a/b.js";
+
+	            _chai.assert.equal(uri.toString(), "/folder/file.min.js");
+	            _chai.assert.equal((0, _urijs2.default)(dotRelative).absoluteTo(uri).toString(), "/folder/a/b.js");
+
+	            _chai.assert.equal((0, _urijs2.default)(absolute).absoluteTo(uri).toString(), "/a/b.js");
+	        });
+	    });
+	});
+
+/***/ },
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* This Source Code Form is subject to the terms of the Mozilla Public
 	* License, v. 2.0. If a copy of the MPL was not distributed with this
 	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 	"use strict";
-	var ServerRenderer = __webpack_require__(167);
+	var ServerRenderer = __webpack_require__(165);
 	var chai_1 = __webpack_require__(122);
 	var store = __webpack_require__(43);
 	describe('Render Serverside', function () {
@@ -32906,7 +32823,7 @@
 
 
 /***/ },
-/* 167 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32917,11 +32834,11 @@
 	   __cov_QuYVDS2kaSuorryBzguB$w['/home/travis/build/Niondir/iot-dashboard/src/serverRenderer.tsx'] = {"path":"/home/travis/build/Niondir/iot-dashboard/src/serverRenderer.tsx","s":{"1":0,"2":0,"3":0,"4":0,"5":1,"6":0,"7":0},"b":{},"f":{"1":0},"fnMap":{"1":{"name":"render","line":10,"loc":{"start":{"line":10,"column":0},"end":{"line":10,"column":23}}}},"statementMap":{"1":{"start":{"line":5,"column":0},"end":{"line":5,"column":53}},"2":{"start":{"line":6,"column":0},"end":{"line":6,"column":43}},"3":{"start":{"line":7,"column":0},"end":{"line":7,"column":43}},"4":{"start":{"line":8,"column":0},"end":{"line":8,"column":29}},"5":{"start":{"line":10,"column":0},"end":{"line":12,"column":1}},"6":{"start":{"line":11,"column":4},"end":{"line":11,"column":155}},"7":{"start":{"line":13,"column":0},"end":{"line":13,"column":24}}},"branchMap":{},"code":["/* This Source Code Form is subject to the terms of the Mozilla Public","* License, v. 2.0. If a copy of the MPL was not distributed with this","* file, You can obtain one at http://mozilla.org/MPL/2.0/. */","\"use strict\";","var react_dom_server_1 = require('react-dom-server');","var react_redux_1 = require('react-redux');","var pageLayout_1 = require('./pageLayout');","var React = require('react'); //TSC needs a reference to react","// Render the component as string","function render(store) {","    return react_dom_server_1.renderToString(React.createElement(react_redux_1.Provider, {store: store}, React.createElement(pageLayout_1.default, null)));","}","exports.render = render;",""]};
 	}
 	__cov_QuYVDS2kaSuorryBzguB$w = __cov_QuYVDS2kaSuorryBzguB$w['/home/travis/build/Niondir/iot-dashboard/src/serverRenderer.tsx'];
-	__cov_QuYVDS2kaSuorryBzguB$w.s['1']++;var react_dom_server_1=__webpack_require__(168);__cov_QuYVDS2kaSuorryBzguB$w.s['2']++;var react_redux_1=__webpack_require__(36);__cov_QuYVDS2kaSuorryBzguB$w.s['3']++;var pageLayout_1=__webpack_require__(71);__cov_QuYVDS2kaSuorryBzguB$w.s['4']++;var React=__webpack_require__(20);function render(store){__cov_QuYVDS2kaSuorryBzguB$w.f['1']++;__cov_QuYVDS2kaSuorryBzguB$w.s['6']++;return react_dom_server_1.renderToString(React.createElement(react_redux_1.Provider,{store:store},React.createElement(pageLayout_1.default,null)));}__cov_QuYVDS2kaSuorryBzguB$w.s['7']++;exports.render=render;
+	__cov_QuYVDS2kaSuorryBzguB$w.s['1']++;var react_dom_server_1=__webpack_require__(166);__cov_QuYVDS2kaSuorryBzguB$w.s['2']++;var react_redux_1=__webpack_require__(36);__cov_QuYVDS2kaSuorryBzguB$w.s['3']++;var pageLayout_1=__webpack_require__(71);__cov_QuYVDS2kaSuorryBzguB$w.s['4']++;var React=__webpack_require__(20);function render(store){__cov_QuYVDS2kaSuorryBzguB$w.f['1']++;__cov_QuYVDS2kaSuorryBzguB$w.s['6']++;return react_dom_server_1.renderToString(React.createElement(react_redux_1.Provider,{store:store},React.createElement(pageLayout_1.default,null)));}__cov_QuYVDS2kaSuorryBzguB$w.s['7']++;exports.render=render;
 
 
 /***/ },
-/* 168 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32936,6 +32853,89 @@
 	 *
 	 */
 	!function(e){if(true)module.exports=e(__webpack_require__(20));else if("function"==typeof define&&define.amd)define(["react"],e);else{var f;f="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,f.ReactDOMServer=e(f.React)}}(function(e){return e.__SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED});
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _collection = __webpack_require__(95);
+
+	var c = _interopRequireWildcard(_collection);
+
+	var _chai = __webpack_require__(122);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	/* This Source Code Form is subject to the terms of the Mozilla Public
+	* License, v. 2.0. If a copy of the MPL was not distributed with this
+	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+	describe('Collections', function () {
+	    describe('chunk', function () {
+	        it("Splits correctly", function () {
+	            var testChunks = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]];
+
+	            var chunks = c.chunk([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3, function (chunk, i) {
+	                _chai.assert.deepEqual(testChunks[i], chunk);
+	            });
+
+	            _chai.assert.deepEqual(testChunks, chunks);
+	        });
+
+	        it("Can deal with null", function () {
+	            var chunks = c.chunk(null, 3, function (chunk, i) {
+	                _chai.assert.fail("Must not call the callback function");
+	            });
+
+	            _chai.assert.deepEqual(chunks, []);
+	        });
+
+	        it("Can deal with undefined", function () {
+	            var chunks = c.chunk(undefined, 3, function (chunk, i) {
+	                _chai.assert.fail("Must not call the callback function");
+	            });
+
+	            _chai.assert.deepEqual(chunks, []);
+	        });
+	    });
+	});
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(122);
+
+	var _widgetPlugins = __webpack_require__(34);
+
+	var WidgetPlugins = _interopRequireWildcard(_widgetPlugins);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	/* This Source Code Form is subject to the terms of the Mozilla Public
+	* License, v. 2.0. If a copy of the MPL was not distributed with this
+	* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+	describe('Widget Plugins', function () {
+	    describe('#register() && #getWidget()', function () {
+	        it("It's possible to register and get back a plugin", function () {
+	            WidgetPlugins.pluginRegistry.register({
+	                TYPE_INFO: {
+	                    type: 'foo'
+	                }
+	            });
+
+	            var plugin = WidgetPlugins.pluginRegistry.getPlugin('foo');
+
+	            _chai.assert.isOk(plugin);
+	            _chai.assert.equal('foo', plugin.type);
+	        });
+	    });
+	});
 
 /***/ },
 /* 169 */
