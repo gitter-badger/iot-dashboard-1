@@ -538,14 +538,14 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this
-* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "use strict";
-var react_1 = require('react');
-var Uuid = require('../util/uuid.js');
-var _ = require('lodash');
-var reducer_js_1 = require('../util/reducer.js');
-var Action = require('../actionNames.js');
+var react_1 = require("react");
+var Uuid = require("../util/uuid.js");
+var _ = require("lodash");
+var reducer_js_1 = require("../util/reducer.js");
+var Action = require("../actionNames.js");
 var objectAssign = require('object-assign');
 exports.HEADER_HEIGHT = 77;
 exports.ROW_HEIGHT = 100;
@@ -611,36 +611,36 @@ exports.widgetPropType = react_1.PropTypes.shape({
     }).isRequired
 });
 /* // TODO: better explicitly create initial state? But when? ...
-export function createInitialWidgets() {
-    return function(dispatch: AppState.Dispatch) {
-        dispatch(addWidget('chart', {
-            "name": "Random Values",
-            "datasource": "initial_random_source",
-            "chartType": "area-spline",
-            "dataKeys": "[\"value\"]",
-            "xKey": "x",
-            "names": "{\"value\": \"My Value\"}",
-            "gaugeData": "{\"min\":0,\"max\":100,\"units\":\" %\"}"
-        }, 0, 0, 6, 2));
+ export function createInitialWidgets() {
+ return function(dispatch: AppState.Dispatch) {
+ dispatch(addWidget('chart', {
+ "name": "Random Values",
+ "datasource": "initial_random_source",
+ "chartType": "area-spline",
+ "dataKeys": "[\"value\"]",
+ "xKey": "x",
+ "names": "{\"value\": \"My Value\"}",
+ "gaugeData": "{\"min\":0,\"max\":100,\"units\":\" %\"}"
+ }, 0, 0, 6, 2));
 &nbsp;
-        dispatch(addWidget('text', {
-            "name": "Random data",
-            "datasource": "initial_random_source"
-        }, 0, 6, 6, 3));
+ dispatch(addWidget('text', {
+ "name": "Random data",
+ "datasource": "initial_random_source"
+ }, 0, 6, 6, 3));
 &nbsp;
 &nbsp;
-        dispatch(addWidget('text', {
-            "name": "Bars",
-            "datasource": "initial_random_source",
-            "chartType": "spline",
-            "dataKeys": "[\"value\", \"value2\"]",
-            "xKey": "x",
-            "names": "{\"value\": \"My Value\"}",
-            "gaugeData": "{\"min\":0,\"max\":100,\"units\":\" %\"}"
-        }, 2, 0, 6, 2));
-    }
-}
-*/
+ dispatch(addWidget('text', {
+ "name": "Bars",
+ "datasource": "initial_random_source",
+ "chartType": "spline",
+ "dataKeys": "[\"value\", \"value2\"]",
+ "xKey": "x",
+ "names": "{\"value\": \"My Value\"}",
+ "gaugeData": "{\"min\":0,\"max\":100,\"units\":\" %\"}"
+ }, 2, 0, 6, 2));
+ }
+ }
+ */
 function createWidget(widgetType, widgetSettings) {
     return function (dispatch, getState) {
         var widgets = getState().widgets;
@@ -704,13 +704,13 @@ function widgets(state, action) {
 <span class="cstat-no" title="statement not covered" >            return action.layout.widgets || {};</span>
 <span class="branch-2 cbranch-no" title="branch not covered" >        case Action.DELETE_WIDGET_PLUGIN:</span>
 <span class="cstat-no" title="statement not covered" >            var toDelete = _.valuesIn(state).filter(<span class="fstat-no" title="function not covered" >function (widgetState) {</span></span>
-<span class="cstat-no" title="statement not covered" >                return widgetState.type == action.id;</span>
+<span class="cstat-no" title="statement not covered" >                return widgetState.type === action.id;</span>
             });
-<span class="cstat-no" title="statement not covered" >            var newState = objectAssign({}, state);</span>
+<span class="cstat-no" title="statement not covered" >            var newState_1 = objectAssign({}, state);</span>
 <span class="cstat-no" title="statement not covered" >            toDelete.forEach(<span class="fstat-no" title="function not covered" >function (widgetState) {</span></span>
-<span class="cstat-no" title="statement not covered" >                delete newState[widgetState.id];</span>
+<span class="cstat-no" title="statement not covered" >                delete newState_1[widgetState.id];</span>
             });
-<span class="cstat-no" title="statement not covered" >            return newState;</span>
+<span class="cstat-no" title="statement not covered" >            return newState_1;</span>
         default:
             return state;
     }
@@ -790,7 +790,7 @@ exports.calcNewWidgetPosition = calcNewWidgetPosition;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 20 2016 20:07:48 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 20 2016 21:24:57 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../prettify.js"></script>

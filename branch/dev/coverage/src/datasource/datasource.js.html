@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">48.18% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>53/110</span>
+        <span class='fraction'>58/116</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">31.43% </span>
+        <span class="strong">33.33% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>11/35</span>
+        <span class='fraction'>16/48</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10% </span>
+        <span class="strong">17.39% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/20</span>
+        <span class='fraction'>4/23</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">45.83% </span>
+        <span class="strong">47.47% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>44/96</span>
+        <span class='fraction'>47/99</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -267,10 +267,25 @@
 222
 223
 224
-225</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
@@ -449,6 +464,8 @@
 <span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -462,8 +479,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -496,6 +520,9 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+&nbsp;
+var _typeof = typeof Symbol === "function" &amp;&amp; typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : <span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >function (obj) {</span> <span class="cstat-no" title="statement not covered" >return obj &amp;&amp; typeof Symbol === "function" &amp;&amp; obj.constructor === Symbol ? "symbol" : typeof obj; </span>};</span>
+&nbsp;
 exports.createOrUpdateDatasource = createOrUpdateDatasource;
 exports.addDatasource = addDatasource;
 exports.updateDatasourceSettings = updateDatasourceSettings;
@@ -673,21 +700,30 @@ function datasources() {
     var action = arguments[1];
 &nbsp;
     state = datasourceCrudReducer(state, action);
-    switch (action.type) {
-<span class="branch-0 cbranch-no" title="branch not covered" >        case Action.DELETE_DATASOURCE_PLUGIN:</span>
-            // Also delete related datasources
-<span class="cstat-no" title="statement not covered" >            var toDelete = _.valuesIn(state).filter(<span class="fstat-no" title="function not covered" >function (dsState) {</span></span>
-<span class="cstat-no" title="statement not covered" >                return dsState.type == action.id;</span>
-            });
-<span class="cstat-no" title="statement not covered" >            var newState = Object.assign({}, state);</span>
-<span class="cstat-no" title="statement not covered" >            toDelete.forEach(<span class="fstat-no" title="function not covered" >function (dsState) {</span></span>
-<span class="cstat-no" title="statement not covered" >                delete newState[dsState.id];</span>
-            });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            return newState;</span>
-        default:
-            return state;
-    }
+    var _ret = function () {
+        switch (action.type) {
+<span class="branch-0 cbranch-no" title="branch not covered" >            case Action.DELETE_DATASOURCE_PLUGIN:</span>
+                // Also delete related datasources
+<span class="cstat-no" title="statement not covered" >                var toDelete = _.valuesIn(state).filter(<span class="fstat-no" title="function not covered" >function (dsState) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return dsState.type == action.id;</span>
+                });
+<span class="cstat-no" title="statement not covered" >                var newState = Object.assign({}, state);</span>
+<span class="cstat-no" title="statement not covered" >                toDelete.forEach(<span class="fstat-no" title="function not covered" >function (dsState) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    delete newState[dsState.id];</span>
+                });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                return {</span>
+                    v: newState
+                };
+            default:
+                return {
+                    v: state
+                };
+        }
+    }();
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if ((typeof _ret === 'undefined' ? <span class="branch-0 cbranch-no" title="branch not covered" >'undefined' </span>: _typeof(_ret)) === "object") return _ret.v;
 }
 &nbsp;
 <span class="fstat-no" title="function not covered" >function datasource(state, action) {</span>
@@ -721,7 +757,7 @@ function datasources() {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 20 2016 20:07:48 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 20 2016 21:24:57 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../prettify.js"></script>
