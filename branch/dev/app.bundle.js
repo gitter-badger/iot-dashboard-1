@@ -547,10 +547,10 @@ webpackJsonp([0],[
 /***/ function(module, exports) {
 
 	module.exports = {
-		"version": "0.0.3",
-		"revision": "c81df9a0cd9f750219f36d1e747e6e293c7c4e0a",
-		"revisionShort": "c81df9a",
-		"branch": "Detatched: c81df9a0cd9f750219f36d1e747e6e293c7c4e0a"
+		"version": "0.0.4",
+		"revision": "2a67e469d0e117ac1e619b5a54045ea7d5fc85b5",
+		"revisionShort": "2a67e46",
+		"branch": "Detatched: 2a67e469d0e117ac1e619b5a54045ea7d5fc85b5"
 	};
 
 /***/ },
