@@ -548,9 +548,9 @@ webpackJsonp([0],[
 
 	module.exports = {
 		"version": "0.0.4",
-		"revision": "cb10c20438d27b822c743c51c833d4de00ca534b",
-		"revisionShort": "cb10c20",
-		"branch": "Detatched: cb10c20438d27b822c743c51c833d4de00ca534b"
+		"revision": "7b6917d6ef04b28d79209841a7703fceeb8708a2",
+		"revisionShort": "7b6917d",
+		"branch": "Detatched: 7b6917d6ef04b28d79209841a7703fceeb8708a2"
 	};
 
 /***/ },
