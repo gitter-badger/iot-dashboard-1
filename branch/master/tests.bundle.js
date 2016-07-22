@@ -26270,9 +26270,9 @@
 
 	module.exports = {
 		"version": "0.0.4",
-		"revision": "5cec63936ecf212ef8bc519280316fd485bf99ea",
-		"revisionShort": "5cec639",
-		"branch": "Detatched: 5cec63936ecf212ef8bc519280316fd485bf99ea"
+		"revision": "d53a7ec380a05302434d392e791600dec7ea7833",
+		"revisionShort": "d53a7ec",
+		"branch": "Detatched: d53a7ec380a05302434d392e791600dec7ea7833"
 	};
 
 /***/ },
