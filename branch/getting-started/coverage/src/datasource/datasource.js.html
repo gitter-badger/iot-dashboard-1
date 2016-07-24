@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">50.45% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>58/116</span>
+        <span class='fraction'>56/111</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">33.33% </span>
+        <span class="strong">34.04% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>16/48</span>
+        <span class='fraction'>16/47</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">17.39% </span>
+        <span class="strong">18.18% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>4/23</span>
+        <span class='fraction'>4/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">47.47% </span>
+        <span class="strong">47.87% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>47/99</span>
+        <span class='fraction'>45/94</span>
       </div>
     </div>
   </div>
@@ -266,20 +266,7 @@
 221
 222
 223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+224</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -287,7 +274,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
@@ -417,14 +403,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -499,11 +477,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -530,7 +504,6 @@ exports.startCreateDatasource = startCreateDatasource;
 exports.startEditDatasource = startEditDatasource;
 exports.deleteDatasource = deleteDatasource;
 exports.setDatasourceData = setDatasourceData;
-exports.appendDatasourceData = appendDatasourceData;
 exports.fetchDatasourceData = fetchDatasourceData;
 exports.datasources = datasources;
 &nbsp;
@@ -651,14 +624,6 @@ var initialDatasources = {
     };
 }
 &nbsp;
-<span class="fstat-no" title="function not covered" >function appendDatasourceData(id, data) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-        type: Action.APPEND_DATASOURCE_DATA,
-        id: id,
-        data: data
-    };
-}
-&nbsp;
 <span class="fstat-no" title="function not covered" >function fetchDatasourceData() {</span>
 <span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >function (dispatch, getState) {</span></span>
 <span class="cstat-no" title="statement not covered" >        var state = getState();</span>
@@ -732,16 +697,12 @@ function datasources() {
 <span class="cstat-no" title="statement not covered" >            return {</span>
                 id: action.id,
                 type: action.dsType,
-                settings: action.settings
+                settings: action.settings,
+                data: []
             };
         case Action.SET_DATASOURCE_DATA:
 <span class="cstat-no" title="statement not covered" >            return Object.assign({}, state, {</span>
-                data: action.data
-            });
-        case Action.APPEND_DATASOURCE_DATA:
-<span class="cstat-no" title="statement not covered" >            var stateData = state.data || [];</span>
-<span class="cstat-no" title="statement not covered" >            return Object.assign({}, state, {</span>
-                data: [].concat(_toConsumableArray(stateData), _toConsumableArray(action.data))
+                data: action.data || []
             });
         case Action.UPDATE_DATASOURCE:
 <span class="cstat-no" title="statement not covered" >            return Object.assign({}, state, {</span>
@@ -757,7 +718,7 @@ function datasources() {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Jul 23 2016 15:45:59 GMT+0000 (UTC)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jul 24 2016 17:52:29 GMT+0000 (UTC)
 </div>
 </div>
 <script src="../../prettify.js"></script>
