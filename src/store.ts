@@ -121,8 +121,6 @@ export function create(initialState?: AppState.State, options: any = {log: true}
         Redux.applyMiddleware(...middleware)
     );
 
-    DatasourcePlugins.pluginRegistry.store = store;
-    WidgetPlugins.pluginRegistry.store = store;
 
     store.dispatch(Plugins.initializeExternalPlugins());
 

@@ -22,7 +22,7 @@ export const widgetPluginType = Prop.shape({
 });
 
 
-class WidgetPluginRegistry extends PluginRegistry {
+export class WidgetPluginRegistry extends PluginRegistry {
 
     createPluginFromModule(module) {
         return new WidgetPlugin(module, this.store);

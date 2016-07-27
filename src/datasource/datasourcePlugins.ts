@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as DsPlugin from './datasourcePlugin.js'
-import PluginRegistry from '../pluginApi/pluginRegistry.js'
+import PluginRegistry from '../pluginApi/pluginRegistry'
 import * as Action from '../actionNames';
 import {genCrudReducer} from '../util/reducer.js';
 import * as AppState from '../appState'

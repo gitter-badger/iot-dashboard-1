@@ -25,6 +25,7 @@ describe("Datasource", function () {
          - dispose() is called when the datasource is unloaded
          - fetchData() is called as configured in the settings
          -- fetchData(dataStore) can return a promise or a value - must be an array
+         - Error when loading plugin twice
          */
 
         it("datasource must implement getValues()", function () {
@@ -46,7 +47,33 @@ describe("Datasource", function () {
             }
         });
         it("fetchData() is called as configured in the settings", function () {
-            return;
+
+            const DatasourcePlugin = {
+                TYPE_INFO: {
+                    type: "test-ds",
+                    fetchData: {
+                        interval: 1000
+                    }
+                },
+                Datasource: function (props: any) {
+                    this.getValues = function():any[] {
+                        return [];
+                    };
+                    this.fetchData = (resolve: ResolveFunc<any[]>) => {
+                        resolve([1, 2, 3]);
+                    };
+                }
+            };
+
+            // TODO: new store but old state outside of the store :(
+            const store = Store.createEmpty({log: true});
+            store.dispatch(Plugins.loadPlugin(DatasourcePlugin));
+            store.dispatch(Datasource.createDatasource("test-ds", {}, "ds-id"));
+
         })
     });
 });
+
+interface ResolveFunc<T> {
+    (value?: T | Thenable<T>): void
+}
